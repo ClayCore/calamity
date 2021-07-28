@@ -10,3 +10,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Added
 
 -   Basic file structure and repository boilerplate.
+-   [.clang-format](.clang-format) for automatic formatting [.tokeignore](.tokeignore).
+-   [build.yaml](calamity/build.yaml) for build script configuration.
