@@ -128,7 +128,7 @@ project:
         glm:
             enabled: true
             paths:
-                dep: 'glad'
+                dep: 'glm'
                 include: 'include'
 
             header_only: true
