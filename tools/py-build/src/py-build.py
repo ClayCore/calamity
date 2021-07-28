@@ -19,11 +19,14 @@ Subcommands:
     run                 Builds and runs the application.
 '''
 
+from docopt import docopt # type: ignore
+from pathlib import Path
+import colorama # type: ignore
 import os
 import sys
-import colorama # type: ignore
+
 from utils.logger import log
-from docopt import docopt # type: ignore
+from utils.config import Config
 
 def main():
     # Clear the screen
@@ -49,6 +52,11 @@ def main():
         if config_path:
             log.debug('Found config path', path=config_path)
 
+        # Turn the `str` path into `pathlib.Path`
+        config_path = Path(config_path)
+
+        # Entry point
+        # =========================
         log.info('Initializing build system...')
 
         if args['clean'] == True:
