@@ -1,0 +1,57 @@
+{
+    "name": "map-editor",
+    "version": "0.1.0",
+    "description": "Web-based map editor for the Calamity engine",
+    "private": "true",
+    "engines": {
+        "node": "^15.0.0",
+        "yarn": "^1.12.4"
+    },
+    "browserslist": [
+        "last 3 versions"
+    ],
+    "scripts": {
+        "build:sass": "sass src/public/styles/base.scss dist/styles/base.css",
+        "build:ts": "tsc",
+        "build": "yarn build:sass && yarn build:ts && yarn copy:assets",
+        "copy:assets": "ts-node copyStaticAssets.ts",
+        "watch:node": "nodemon dist/server.js",
+        "watch:sass": "sass --watch src/public/styles/base.scss dist/styles/base.css",
+        "watch:ts": "tsc -w",
+        "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch:sass\" \"yarn watch:ts\" \"yarn watch:node\"",
+        "start": "node dist/server.js"
+    },
+    "dependencies": {
+        "bluebird": "3.7.2",
+        "body-parser": "1.19.0",
+        "compression": "1.7.4",
+        "concurrently": "^6.2.0",
+        "express": "^4.17.1",
+        "pug": "^3.0.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.0.0-0",
+        "@babel/preset-typescript": "^7.13.0",
+        "@prettier/plugin-pug": "^1.13.5",
+        "@types/bluebird": "3.5.33",
+        "@types/body-parser": "1.19.0",
+        "@types/compression": "1.7.0",
+        "@types/express": "^4.17.11",
+        "@types/node": "^14.14.14",
+        "@types/pug": "2.0.4",
+        "@types/shelljs": "0.8.8",
+        "@typescript-eslint/eslint-plugin": "^4.20.0",
+        "@typescript-eslint/parser": "^4.20.0",
+        "babel-plugin-module-resolver": "^4.1.0",
+        "eslint": "^7.23.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-css-modules": "^2.11.0",
+        "eslint-plugin-import": "^2.22.1",
+        "nodemon": "2.0.7",
+        "prettier": "^2.1.2",
+        "sass": "^1.32.6",
+        "shelljs": "^0.8.4",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.2.3"
+    }
+}

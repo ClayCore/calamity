@@ -13,4 +13,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 -   [.clang-format](.clang-format) for automatic formatting [.tokeignore](.tokeignore).
 -   [build.yaml](calamity/build.yaml) for build script configuration.
 -   Bare bones of a homebrew build system -- [py-build](tools/py-build).
--   Stub [ROADMAP](docs/ROADMAP.md) documentation.
+-   Bare bones of a homebrew [map editor](tools/map-editor).
+-   Basic [ROADMAP](docs/ROADMAP.md).
