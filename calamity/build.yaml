@@ -13,17 +13,17 @@ project:
 
     setup:
         files:
-            sources: 
+            sources:
                 - 'calamity.c'
                 - 'engine/main.c'
                 - 'utils/log.c'
-            include: 
+            include:
                 - 'common.h'
 
         type: 'exe'
         compiler: 'gcc'
         profiles:
-            - debug:
+            debug:
                 - '-Og'
                 - '-std=c17'
                 - '-Wall'
@@ -37,13 +37,12 @@ project:
                 - '-Wnull-dereference'
                 - '-Wdouble-promotion'
                 - '-Wformat=2'
-                - '-Wmisleading-indentation
                 - '-Wmisleading-indentation'
                 - '-Wduplicated-cond'
                 - '-Wduplicated-branches'
                 - '-Wlogical-op'
                 - '-march=native'
-            - release:
+            release:
                 - '-O3'
                 - '-std=c17'
                 - '-Wall'
@@ -57,7 +56,6 @@ project:
                 - '-Wnull-dereference'
                 - '-Wdouble-promotion'
                 - '-Wformat=2'
-                - '-Wmisleading-indentation
                 - '-Wmisleading-indentation'
                 - '-Wduplicated-cond'
                 - '-Wduplicated-branches'

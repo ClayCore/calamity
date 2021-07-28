@@ -61,7 +61,7 @@ project:
             #
             # NOTE: the name of the profile also gets appended to the target directory.
             # when building
-            - debug: ['-Og', 'std=c17', '-Wall', '-Wextra']
+            debug: ['-Og', 'std=c17', '-Wall', '-Wextra']
 
     dependencies:
         # Arbitrary name for the library
