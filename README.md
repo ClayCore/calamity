@@ -7,7 +7,7 @@ I'm trying to stay true to some previous work in the past done by ID Software.
 
 ## Contributing
 
-See [CONTRIBUTING](CONTRIBUTING) for more details.
+See [CONTRIBUTING](CONTRIBUTING.md) for more details.
 
 ## License
 
