@@ -10,10 +10,10 @@ node_modules
 *.pid.lock
 *.seed
 
-/build/
-/dist/
-/public/
-/target/
+build/
+dist/
+public/
+target/
 
 coverage
 lib-cov
