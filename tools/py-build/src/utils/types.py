@@ -16,103 +16,90 @@ from utils.file import delete_dir, get_file_list
 # Utility types
 # =============
 
-# Stores paths to dependencies
-# their include directories and libraries.
+# Manages dependency paths, collects and resolves them
+# for use in building.
 class DepDict(dict):
     def __init__(self, *arg, **kw):
         super().__init__(*arg, **kw)
-
-
-    # Adds necessary switches to `include/` dir paths
-    def add_inc_switch(self, includes: list) -> list:
-        log.info('Processing include directories...')
-        result = [f'-I{path}' for path in includes]
-
-        return result
-
-
-    def add_lib_switch(self, libs: list) -> list:
-        log.info('Processing libraries...')
-        result = [f'-L{path}' for path in libs]
-
-        return result
-
-
-    # Returns a list of library arguments for all dependencies
-    # TODO: Check for the `enabled` flag
-    def get_libargs(self) -> list:
-        args = []
-        log.info('Fetching libraries...')
-        for key, val in self.items():
-            if 'args' in key:
-                for arg in val:
-                    args.append(arg)
-        
-        return args
-
-
-    # Resolves all dependency paths
-    # TODO: Check for the `enabled` flag
-    def resolve(self, dirs: dict):
-        log.info('Resolving paths...')
-        for key, val in self.items():
-            # FlatDict represents a key like such
-            # lv1:lv2:lv3 = val
-            # We retrieve the topmost key
-            # and use as the name of dependency
-            name = key.split(':')[0]
-
-            # Store the folder name of libraries
-            # for any given dependency
-            lib_dir = ''
-
-            # We encountered the relevant key
-            # that contains all path information
-            if 'paths' in key:
-                # Set the library directory
-                if 'lib' in key:
-                    lib_dir = val
-
-                # Resolve and merge into our dict
-                new_path = dirs['deps'] / name / val
-                self[key] = new_path
-
-            # Do the same for libraries
-            if 'libs' in key:
-                # Libraries are always stored in an array
-                libs = []
-                for lib in val:
-                    # Get directory
-                    lib_path = dirs['deps'] / name / lib_dir / lib
-                    libs.append(lib_path)
-                
-                self[key] = libs
-
-
-    def get_libs(self) -> list:
-        log.info('Fetching library directories...')
-        libraries = []
-        for key, val in self.items():
-            if 'paths' in key and 'lib' in key:
-                libraries.append(f"\"{val}\"")
-
-        return libraries
-
-
-    # Returns a list of necessary include directories
-    # for compiling.
-    # TODO: Check for the `enabled` flag
+    
+    # Returns a list of all include directories
     def get_includes(self, dirs: dict) -> list:
         log.info('Fetching include directories...')
         includes = []
-        for key, val in self.items():
-            if 'paths' in key and 'include' in key:
-                includes.append(f"\"{val}\"")
+        for val in self.values():
+            if val['enabled'] is True:
+                include_dir = val['paths']['include']
+
+                includes.append(f'\"{include_dir}\"')
                 
+        # Append main project source and include directories.
         includes.append(f"\"{dirs['include']}\"")
         includes.append(f"\"{dirs['source']}\"")
 
         return includes
+    
+    # Returns a list of all library directories
+    def get_lib_paths(self) -> list:
+        log.info('Fetching library directories...')
+        libpaths = []
+        for val in self.values():
+            if val['enabled'] is True and val['header_only'] is False:
+                lib_dir = val['paths']['lib']
+
+                libpaths.append(f'\"{lib_dir}\"')
+
+        return libpaths
+
+    # Adds `-I` switch to include dirs
+    def process_include_paths(self, includes: list) -> list:
+        log.info('Adding switches to include directories...')
+        result = [f'-I{path}' for path in includes]
+
+        return result
+
+    # Adds `-L` switch to lib dirs
+    def process_lib_paths(self, libs: list) -> list:
+        log.info('Adding switches to library directories...')
+        result = [f'-L{path}' for path in libs]
+
+        return result
+
+    # Returns a list of library switches for all dependencies
+    def get_lib_bins(self) -> list:
+        log.info('Fetching libraries...')
+        args = []
+        for key, val in self.items():
+            if val['enabled'] is True and val['header_only'] is False:
+                for arg in val['args']:
+                    args.append(arg)
+
+        return args
+
+    def resolve(self, dirs: dict):
+        log.info('Resolving paths...')
+        # Check for the enabled flag
+        for key, val in self.items():
+            if val['enabled'] is True:
+                # Resolve include and lib directory for each dependency.
+                # NOTE: key represents the name of the package here
+                for path in val['paths'].values():
+                    new_path = dirs['deps'] / key / path
+
+                    self[key]['paths'][path] = new_path
+
+                # Do the same for the libraries themselves
+                # NOTE: only if they contain a library.
+                if val['header_only'] is False:
+                    new_libs = []
+                    for path in val['libs']:
+                        lib_path = val['paths']['lib']
+                        new_path = dirs['deps'] / key / lib_path / path
+                        
+                        new_libs.append(new_path)
+                    
+                    self[key]['libs'] = new_libs
+            else:
+                continue
 
 
 # ==============================
@@ -154,7 +141,7 @@ class Config(object):
 
         # Dependencies
         # ============
-        self.raw_deps = self.config_get('project:dependencies')
+        self.raw_deps = self.config_get_raw('dependencies')
         self.process_deps()
 
         # Adjusts target directories and add build flags
@@ -204,12 +191,12 @@ class Config(object):
         self.deps.resolve(self.dirs)
 
         includes = self.deps.get_includes(self.dirs)
-        self.includes = self.deps.add_inc_switch(includes)
+        self.includes = self.deps.process_include_paths(includes)
 
-        libraries = self.deps.get_libs()
-        self.libraries = self.deps.add_lib_switch(libraries)
+        libraries = self.deps.get_lib_paths()
+        self.libraries = self.deps.process_lib_paths(libraries)
 
-        self.libargs = self.deps.get_libargs()
+        self.libargs = self.deps.get_lib_bins()
 
 
     # Acquires a list of target directories
@@ -306,61 +293,69 @@ class Builder(Config):
             delete_dir(path)
 
 
-    # TODO: Check for the `enabled` flag
-    # TODO: clean all this up
+    # TODO: Separate out some methods
     def build(self):
-        for source in self.build_files['sources']:
-            input_file = source.name
-
-            obj_file = self.dirs['build'] / f"{input_file.split('.')[0]}.o"
+        # Start building all targets.
+        # TODO: Support changing the target via arguments
+        # instead of compiling all of them.
+        for index, target in enumerate(self.dirs['target']):
+            log.info(f'Starting \"{target.name}\" build...')
             
-            # First compile object files.
-            # TODO: support for profiles
-            gcc_build_cmd = f"{self.compiler} -c -o \"{obj_file}\" {' '.join(self.includes)} \"{source}\" {' '.join(self.build_flags['debug'])}"
+            # Gather all source files and compile them into object files
+            for source in self.build_files['sources']:
+                src = source.name
 
-            # Split according to windows launch parameter rules
-            gcc_build_cmd = shlex.split(gcc_build_cmd)
+                # Convert source file into object file
+                obj = self.dirs['build'] / f"{src.split('.')[0]}.o"
 
-            # Run the command
-            process = sp.run(gcc_build_cmd, capture_output=True)
+                # Prepare vars for object file compilation
+                includes = ' '.join(self.includes)
+                build_flags = ' '.join(self.build_flags[target.name])
+
+                # Build the command and split for compiler arguments
+                cmd_build_obj = f"{self.compiler} -c -o \"{obj}\" \"{source}\" {includes} {build_flags}"
+                cmd_build_obj = shlex.split(cmd_build_obj)
+
+                # Run and capture output
+                process = sp.run(cmd_build_obj, capture_output=True)
+                if process.returncode == 0:
+                    log.info(f'\"{target.name}\" intermediate build complete')
+
+                    if process.stderr:
+                        log.info('Captured output: ')
+                        log.info(process.stderr.decode('utf-8'))
+                else:
+                    log.error(f'\"{target.name}\" build did not succeed')
+                    log.error(process.stderr.decode('utf-8'))
+                
+            # Link all object files and third-party libraries together
+            objs = get_file_list(self.dirs['build'], '*.o')
+            objs = [f'\"{path}\"' for path in objs]
+
+            # Change file extension based on config
+            # and resolve its path
+            bin_name = self.dirs['target'][index] / f'{self.name}.{self.build_type}'
+
+            # Prepare vars for final build
+            objs = ' '.join(objs)
+            build_flags = ' '.join(self.build_flags[target.name])
+            libs = ' '.join(self.libraries)
+            args = ' '.join(self.libargs)
+
+            # Build command and split
+            cmd_build_bin = f"{self.compiler} -o \"{bin_name}\" {objs} {build_flags} {libs} {args}"
+            cmd_build_bin = shlex.split(cmd_build_bin)
+
+            # Run and capture output
+            process = sp.run(cmd_build_bin, capture_output=True)
             if process.returncode == 0:
-                log.info('Build complete')
+                log.info(f'Final \"{target.name}\" build complete')
 
                 if process.stderr:
                     log.info('Captured output: ')
                     log.info(process.stderr.decode('utf-8'))
             else:
-                log.error('Build did not succeed')
+                log.error(f'Final \"{target.name}\" build did not succeed')
                 log.error(process.stderr.decode('utf-8'))
 
-        # Glob all object files
-        obj_files = get_file_list(self.dirs['build'], '*.o')
-        obj_files = [f'\"{path}\"' for path in obj_files]
-
-        # Change output type and arguments based on config
-        # TODO: support for profiles and different args
-        if self.build_type == 'lib':
-            output_file = self.name + '.lib'
-        elif self.build_type == 'exe':
-            output_file = self.name + '.exe'
-        else:
-            log.error('Invalid project type: ', type=self.build_type)
-            sys.exit(1)
-
-        # TODO: support for changing profile type
-        destination_path = f"\"{self.dirs['target'][0] / output_file}\""
-
-        # Link all object files together
-        gcc_build_cmd = f"{self.compiler} -o {destination_path} {' '.join(obj_files)} {' '.join(self.build_flags['debug'])} {' '.join(self.libraries)} {' '.join(self.libargs)}"
-        gcc_build_cmd = shlex.split(gcc_build_cmd)
-
-        process = sp.run(gcc_build_cmd, capture_output=True)
-        if process.returncode == 0:
-            log.info('Final build complete')
-
-            if process.stderr:
-                log.info('Captured output: ')
-                log.info(process.stderr.decode('utf-8'))
-        else:
-            log.error('Final build did not succeed')
-            log.error(process.stderr.decode('utf-8'))
+            print('\n\n')
