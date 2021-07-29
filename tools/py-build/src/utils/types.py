@@ -306,58 +306,65 @@ class Builder(Config):
     # TODO: Check for the `enabled` flag
     # TODO: clean all this up
     def build(self):
-        for source in self.build_files['sources']:
-            input_file = source.name
-
-            obj_file = self.dirs['build'] / f"{input_file.split('.')[0]}.o"
+        # Start building all targets.
+        # TODO: Support changing the target via arguments
+        # instead of compiling all of them.
+        for index, target in enumerate(self.dirs['target']):
+            log.info(f'Starting \"{target.name}\" build...')
             
-            # First compile object files.
-            # TODO: support for profiles
-            gcc_build_cmd = f"{self.compiler} -c -o \"{obj_file}\" {' '.join(self.includes)} \"{source}\" {' '.join(self.build_flags['debug'])}"
+            # Gather all source files and compile them into object files
+            for source in self.build_files['sources']:
+                src = source.name
 
-            # Split according to windows launch parameter rules
-            gcc_build_cmd = shlex.split(gcc_build_cmd)
+                # Convert source file into object file
+                obj = self.dirs['build'] / f"{src.split('.')[0]}.o"
 
-            # Run the command
-            process = sp.run(gcc_build_cmd, capture_output=True)
+                # Prepare vars for object file compilation
+                includes = ' '.join(self.includes)
+                build_flags = ' '.join(self.build_flags[target.name])
+
+                # Build the command and split for compiler arguments
+                cmd_build_obj = f"{self.compiler} -c -o \"{obj}\" \"{source}\" {includes} {build_flags}"
+                cmd_build_obj = shlex.split(cmd_build_obj)
+
+                # Run and capture output
+                process = sp.run(cmd_build_obj, capture_output=True)
+                if process.returncode == 0:
+                    log.info(f'\"{target.name}\" intermediate build complete')
+
+                    if process.stderr:
+                        log.info('Captured output: ')
+                        log.info(process.stderr.decode('utf-8'))
+                else:
+                    log.error(f'\"{target.name}\" build did not succeed')
+                    log.error(process.stderr.decode('utf-8'))
+                
+            # Link all object files and third-party libraries together
+            objs = get_file_list(self.dirs['build'], '*.o')
+            objs = [f'\"{path}\"' for path in objs]
+
+            # Change file extension based on config
+            # and resolve its path
+            bin_name = self.dirs['target'][index] / f'{self.name}.{self.build_type}'
+
+            # Prepare vars for final build
+            objs = ' '.join(objs)
+            build_flags = ' '.join(self.build_flags[target.name])
+            libs = ' '.join(self.libraries)
+            args = ' '.join(self.libargs)
+
+            # Build command and split
+            cmd_build_bin = f"{self.compiler} -o \"{bin_name}\" {objs} {build_flags} {libs} {args}"
+            cmd_build_bin = shlex.split(cmd_build_bin)
+
+            # Run and capture output
+            process = sp.run(cmd_build_bin, capture_output=True)
             if process.returncode == 0:
-                log.info('Build complete')
+                log.info(f'Final \"{target.name}\" build complete')
 
                 if process.stderr:
                     log.info('Captured output: ')
                     log.info(process.stderr.decode('utf-8'))
             else:
-                log.error('Build did not succeed')
+                log.error(f'Final \"{target.name}\" build did not succeed')
                 log.error(process.stderr.decode('utf-8'))
-
-        # Glob all object files
-        obj_files = get_file_list(self.dirs['build'], '*.o')
-        obj_files = [f'\"{path}\"' for path in obj_files]
-
-        # Change output type and arguments based on config
-        # TODO: support for profiles and different args
-        if self.build_type == 'lib':
-            output_file = self.name + '.lib'
-        elif self.build_type == 'exe':
-            output_file = self.name + '.exe'
-        else:
-            log.error('Invalid project type: ', type=self.build_type)
-            sys.exit(1)
-
-        # TODO: support for changing profile type
-        destination_path = f"\"{self.dirs['target'][0] / output_file}\""
-
-        # Link all object files together
-        gcc_build_cmd = f"{self.compiler} -o {destination_path} {' '.join(obj_files)} {' '.join(self.build_flags['debug'])} {' '.join(self.libraries)} {' '.join(self.libargs)}"
-        gcc_build_cmd = shlex.split(gcc_build_cmd)
-
-        process = sp.run(gcc_build_cmd, capture_output=True)
-        if process.returncode == 0:
-            log.info('Final build complete')
-
-            if process.stderr:
-                log.info('Captured output: ')
-                log.info(process.stderr.decode('utf-8'))
-        else:
-            log.error('Final build did not succeed')
-            log.error(process.stderr.decode('utf-8'))
