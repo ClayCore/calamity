@@ -1,3 +1,11 @@
-vendor/*
 build/
 target/
+
+vendor/*/docs
+vendor/*/doc
+vendor/*/examples
+vendor/*/source
+vendor/*/share
+
+!vendor/*/lib
+!vendor/*/lib/*

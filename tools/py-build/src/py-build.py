@@ -19,11 +19,15 @@ Subcommands:
     run                 Builds and runs the application.
 '''
 
+from pathlib import Path
 import os
 import sys
-import colorama # type: ignore
-from utils.logger import log
+
 from docopt import docopt # type: ignore
+import colorama # type: ignore
+
+from utils.logger import log
+from utils.types import Builder
 
 def main():
     # Clear the screen
@@ -49,20 +53,30 @@ def main():
         if config_path:
             log.debug('Found config path', path=config_path)
 
+        # Turn the `str` path into `pathlib.Path`
+        config_path = Path(config_path)
+
+        # Initialize main `Builder` object
+        builder = Builder(config_path)
+
+        # Entry point
+        # =========================
         log.info('Initializing build system...')
 
         if args['clean'] == True:
             # Clean directories...
             log.info('Starting clean-up...')
-            pass
+            builder.clean_up()
         if args['build'] == True:
             # Build the project
             log.info('Starting build...')
-            pass
+            builder.prepare_dirs()
+            builder.build()
         if args['run'] == True:
             # Build & run
             log.info('Starting build & run...')
-            pass
+            builder.prepare_dirs()
+            builder.build()
 
 
 if __name__ == '__main__':
