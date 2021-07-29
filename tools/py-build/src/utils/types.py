@@ -47,7 +47,7 @@ class DepDict(dict):
             if 'args' in key:
                 for arg in val:
                     args.append(arg)
-        
+
         return args
 
 
@@ -55,16 +55,13 @@ class DepDict(dict):
     # TODO: Check for the `enabled` flag
     def resolve(self, dirs: dict):
         log.info('Resolving paths...')
+        lib_dir = ''
         for key, val in self.items():
             # FlatDict represents a key like such
             # lv1:lv2:lv3 = val
             # We retrieve the topmost key
             # and use as the name of dependency
             name = key.split(':')[0]
-
-            # Store the folder name of libraries
-            # for any given dependency
-            lib_dir = ''
 
             # We encountered the relevant key
             # that contains all path information
