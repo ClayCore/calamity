@@ -15,7 +15,6 @@ project:
         files:
             sources:
                 - 'calamity.c'
-                - 'engine/main.c'
                 - 'utils/log.c'
             include:
                 - 'common.h'
@@ -66,7 +65,6 @@ project:
         sfml:
             enabled: false
             paths:
-                dep: 'sfml'
                 include: 'include'
                 lib: 'lib'
 
@@ -76,13 +74,12 @@ project:
                 - 'libsfml-window.a'
                 - 'libsfml-system.a'
             args:
-                - 'lsfml-graphics'
-                - 'lsfml-window'
-                - 'lsfml-system'
+                - '-lsfml-graphics'
+                - '-lsfml-window'
+                - '-lsfml-system'
         sdl2:
             enabled: true
             paths:
-                dep: 'sdl2'
                 include: 'include'
                 lib: 'lib'
 
@@ -94,14 +91,12 @@ project:
         glad:
             enabled: true
             paths:
-                dep: 'glad'
                 include: 'include'
 
             header_only: true
         glew:
             enabled: true
             paths:
-                dep: 'glew'
                 include: 'include'
                 lib: 'lib'
 
@@ -113,7 +108,6 @@ project:
         glfw3:
             enabled: true
             paths:
-                dep: 'glfw3'
                 include: 'include'
                 lib: 'lib'
 
@@ -126,7 +120,6 @@ project:
         glm:
             enabled: true
             paths:
-                dep: 'glm'
                 include: 'include'
 
             header_only: true

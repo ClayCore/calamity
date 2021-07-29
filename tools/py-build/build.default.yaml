@@ -64,16 +64,14 @@ project:
             debug: ['-Og', 'std=c17', '-Wall', '-Wextra']
 
     dependencies:
-        # Arbitrary name for the library
+        # Name for the package
+        # NOTE: used for resolving the path to a given dep
         example:
             # if disabled, then everything is ignored
             enabled: true
 
             # Paths relative to `dirs:deps`
             paths:
-                # The path to the package itself
-                dep: 'example'
-
                 # Include/header directory
                 include: 'include'
 
