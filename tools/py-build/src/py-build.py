@@ -6,12 +6,17 @@ Builds C/C++ projects based on YAML config.
 
 Usage:
     py-build.py [--help]
-    py-build.py clean <config>
-    py-build.py build <config>
-    py-build.py run <config>
+    py-build.py clean <config> 
+    py-build.py build <config> <profile>
+    py-build.py run <config> <profile>
 
 Options:
     --help              Shows this screen.
+
+Input:
+    <config>            Path to configuration file
+    <profile>           What profile we're building
+                        (as defined in the config)
 
 Subcommands:
     clean               Cleans build and output directories.
@@ -58,6 +63,10 @@ def main():
 
         # Initialize main `Builder` object
         builder = Builder(config_path)
+
+        # Selected target profile
+        target = args['<profile>']
+        builder.set_target(target)
 
         # Entry point
         # =========================
