@@ -15,6 +15,8 @@ dist/
 public/
 target/
 
+!src/public
+
 coverage
 lib-cov
 pids

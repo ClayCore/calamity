@@ -1,0 +1,26 @@
+doctype html
+html(lang='en')
+    head
+        title Calamity Map Editor
+
+        meta(charset='UTF-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='author', content='claymore <marekczjk@gmail.com>')
+        meta(name='description', content='Web-based map editor for the calamity game engine')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+        //- Stylesheets
+        link(href='/styles/master.css', rel='stylesheet')
+
+        //- Extend this block in derived layouts if necessary
+        block head
+
+    body
+        #wrapper
+            noscript
+                h1 This map editor will not function without JavaScript support!
+
+            //- Main render viewport.
+            block viewport
+
+        script(src='/scripts/main.js', type='module')
