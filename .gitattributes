@@ -1,6 +1,6 @@
 *                   text=auto
 
-/game/assets/**		linguist-vendored
+/calamity/vendor/**		linguist-vendored
 
 *.bash              text eol=lf
 *.bat               text eol=crlf
