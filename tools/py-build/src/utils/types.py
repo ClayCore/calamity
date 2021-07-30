@@ -359,7 +359,7 @@ class Builder(Config):
 
         # Prepare vars for final build
         objs = ' '.join(objs)
-        build_flags = ' '.join(self.build_flags[target.name])
+        build_flags = ' '.join(self.build_flags[target])
         libs = ' '.join(self.libraries)
         args = ' '.join(self.libargs)
 
@@ -370,13 +370,13 @@ class Builder(Config):
         # Run and capture output
         process = sp.run(cmd_build_bin, capture_output=True)
         if process.returncode == 0:
-            log.info(f'Final \"{target.name}\" build complete')
+            log.info(f'Final \"{target}\" build complete')
 
             if process.stderr:
                 log.info('Captured output: ')
                 log.info(process.stderr.decode('utf-8'))
         else:
-            log.error(f'Final \"{target.name}\" build did not succeed')
+            log.error(f'Final \"{target}\" build did not succeed')
             log.error(process.stderr.decode('utf-8'))
 
 
