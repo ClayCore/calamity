@@ -152,6 +152,16 @@ class Config(object):
         self.cleanup_dirs = [self.dirs['build'], self.dirs['target']]
 
 
+    # Selects a specific target from the parsed configuration file
+    # using the command-line arguments
+    def set_target(self, target: str):
+        if target in list(self.profiles):
+            self.selected_target = target
+        else:
+            log.error('Target \"{target}\" not present in config')
+            log.error('Defaulting to first target defined in the config file')
+            self.selected_target = list(self.profiles)[0]
+
     # Resolve source and header files according to root directories
     def process_files(self):
         log.info('Resolving source and header files...')
@@ -288,74 +298,89 @@ class Builder(Config):
                 path.mkdir(parents=True)
 
 
+    # Performs a simple clean up
     def clean_up(self):
         for path in self.cleanup_dirs:
             delete_dir(path)
 
 
-    # TODO: Separate out some methods
-    def build(self):
-        # Start building all targets.
-        # TODO: Support changing the target via arguments
-        # instead of compiling all of them.
-        for index, target in enumerate(self.dirs['target']):
-            log.info(f'Starting \"{target.name}\" build...')
-            
-            # Gather all source files and compile them into object files
-            for source in self.build_files['sources']:
-                src = source.name
+    # Compiles all the source files into object files.
+    def compile_sources(self):
+        # Use the selected target from the commandline args
+        target = self.selected_target
+        log.info(f'Starting \"{target}\" build...')
 
-                # Convert source file into object file
-                obj = self.dirs['build'] / f"{src.split('.')[0]}.o"
+        # Gather all the source files
+        for source in self.build_files['sources']:
+            src = source.name
 
-                # Prepare vars for object file compilation
-                includes = ' '.join(self.includes)
-                build_flags = ' '.join(self.build_flags[target.name])
+            # Get destination file path
+            obj = self.dirs['build'] / f"{src.split('.')[0]}.o"
 
-                # Build the command and split for compiler arguments
-                cmd_build_obj = f"{self.compiler} -c -o \"{obj}\" \"{source}\" {includes} {build_flags}"
-                cmd_build_obj = shlex.split(cmd_build_obj)
+            # Prepare vars for compiling
+            includes = ' '.join(self.includes)
+            build_flags = ' '.join(self.build_flags[target])
 
-                # Run and capture output
-                process = sp.run(cmd_build_obj, capture_output=True)
-                if process.returncode == 0:
-                    log.info(f'\"{target.name}\" intermediate build complete')
-
-                    if process.stderr:
-                        log.info('Captured output: ')
-                        log.info(process.stderr.decode('utf-8'))
-                else:
-                    log.error(f'\"{target.name}\" build did not succeed')
-                    log.error(process.stderr.decode('utf-8'))
-                
-            # Link all object files and third-party libraries together
-            objs = get_file_list(self.dirs['build'], '*.o')
-            objs = [f'\"{path}\"' for path in objs]
-
-            # Change file extension based on config
-            # and resolve its path
-            bin_name = self.dirs['target'][index] / f'{self.name}.{self.build_type}'
-
-            # Prepare vars for final build
-            objs = ' '.join(objs)
-            build_flags = ' '.join(self.build_flags[target.name])
-            libs = ' '.join(self.libraries)
-            args = ' '.join(self.libargs)
-
-            # Build command and split
-            cmd_build_bin = f"{self.compiler} -o \"{bin_name}\" {objs} {build_flags} {libs} {args}"
-            cmd_build_bin = shlex.split(cmd_build_bin)
+            # Build the command and split for compiler arguments
+            cmd_build_obj = f"{self.compiler} -c -o \"{obj}\" \"{source}\" {includes} {build_flags}"
+            cmd_build_obj = shlex.split(cmd_build_obj)
 
             # Run and capture output
-            process = sp.run(cmd_build_bin, capture_output=True)
+            process = sp.run(cmd_build_obj, capture_output=True)
             if process.returncode == 0:
-                log.info(f'Final \"{target.name}\" build complete')
+                log.info(f'\"{target}\" intermediate build complete')
 
                 if process.stderr:
                     log.info('Captured output: ')
                     log.info(process.stderr.decode('utf-8'))
             else:
-                log.error(f'Final \"{target.name}\" build did not succeed')
+                log.error(f'\"{target}\" build did not succeed')
                 log.error(process.stderr.decode('utf-8'))
 
-            print('\n\n')
+
+    # Builds and links all object files together
+    def build_objs(self):
+        # Use the selected target from the commandline args
+        target = self.selected_target
+        log.info(f'Starting final \"{target}\" build...')
+
+        # Collect all object files
+        objs = get_file_list(self.dirs['build'], '*.o')
+        objs = [f'\"{path}\"' for path in objs]
+
+        # Ugly hack to use the selected target as the index for
+        # the list of targets which are already stored as paths
+        # TODO: Figure out a better way to do this
+        tgt_path = self.root / 'target' / target
+        tgt_idx = self.dirs['target'].index(tgt_path)
+        
+        # Change file extension based on target build type
+        bin_name = self.dirs['target'][tgt_idx] / f'{self.name}.{self.build_type}'
+
+        # Prepare vars for final build
+        objs = ' '.join(objs)
+        build_flags = ' '.join(self.build_flags[target.name])
+        libs = ' '.join(self.libraries)
+        args = ' '.join(self.libargs)
+
+        # Build command and split
+        cmd_build_bin = f"{self.compiler} -o \"{bin_name}\" {objs} {build_flags} {libs} {args}"
+        cmd_build_bin = shlex.split(cmd_build_bin)
+
+        # Run and capture output
+        process = sp.run(cmd_build_bin, capture_output=True)
+        if process.returncode == 0:
+            log.info(f'Final \"{target.name}\" build complete')
+
+            if process.stderr:
+                log.info('Captured output: ')
+                log.info(process.stderr.decode('utf-8'))
+        else:
+            log.error(f'Final \"{target.name}\" build did not succeed')
+            log.error(process.stderr.decode('utf-8'))
+
+
+    # Builds selected targets
+    def build(self):
+        self.compile_sources()
+        self.build_objs()
