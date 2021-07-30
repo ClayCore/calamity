@@ -11,7 +11,7 @@ project:
     language: 'c'
 
     dirs:
-        # Target destionation path for the binary/library
+        # Target destination path for the binary/library
         # NOTE: if any profiles are specified
         # their names will be appended to this path
         # like 'target/debug' and 'target/release'
