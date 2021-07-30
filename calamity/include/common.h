@@ -27,10 +27,11 @@ typedef uint16_t u16;
 typedef uint8_t  u8;
 typedef size_t   usize;
 
-typedef int64_t i64;
-typedef int32_t i32;
-typedef int16_t i16;
-typedef int8_t  i8;
+typedef int64_t   i64;
+typedef int32_t   i32;
+typedef int16_t   i16;
+typedef int8_t    i8;
+typedef long long isize;
 
 typedef float  f32;
 typedef double f64;
