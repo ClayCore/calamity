@@ -1,11 +1,20 @@
+# Do not include the build targets or dependencies
 build/
 target/
 
+# Do not include any docs, examples or sources
+# for vendor libs
 vendor/*/docs
 vendor/*/doc
 vendor/*/examples
 vendor/*/source
 vendor/*/share
 
+# Include all include and lib dirs
 !vendor/*/lib
 !vendor/*/lib/*
+!vendor/*/include
+!vendor/*/include/*
+
+# Do not include assets from the game.
+assets/
