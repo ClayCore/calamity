@@ -1,0 +1,55 @@
+@use '../global/variables' as *;
+@use '../global/utils' as *;
+
+div#topbar {
+    @extend %center-container;
+
+    position: relative;
+
+    flex-direction: row;
+
+    width: 100%;
+    height: $topbar-height;
+
+    background: $main-bg;
+    color: $main-fg;
+
+    border-bottom: 2px solid $accent-bg;
+
+    nav.main-menu {
+        @extend %center-container;
+
+        position: relative;
+
+        flex-direction: row;
+        justify-content: flex-start;
+
+        width: 50%;
+        height: 100%;
+
+        .button {
+            @extend %center-container;
+
+            width: auto;
+            height: 100%;
+
+            padding-left: 1vmax;
+            padding-right: 1vmax;
+
+            text-shadow: 2px 2px 2px $hard-shadow;
+
+            border: 2px solid rgba(0, 0, 0, 0);
+            border-radius: 3px;
+
+            &:hover {
+                cursor: pointer;
+
+                border: 2px solid $accent;
+                border-radius: 3px;
+
+                color: rgb(255, 255, 255);
+                background-color: rgba($accent-fg, 0.3);
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+@use '../global/variables' as *;
+@use '../global/utils' as *;
+
+div#status {
+    @extend %center-container;
+
+    position: relative;
+
+    flex-direction: column;
+
+    width: 100%;
+    height: $status-height;
+
+    background: $main-bg;
+    color: $main-fg;
+
+    border-top: 2px solid $accent-bg;
+
+    z-index: 1;
+}
