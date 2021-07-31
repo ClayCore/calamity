@@ -6,6 +6,12 @@
 @use 'global/utils' as *;
 @use 'global/fonts';
 
+// =======================
+// = Component styles ====
+// =======================
+@use 'partials/topbar.scss';
+@use 'partials/status.scss';
+
 // ===========================
 // = Main page stylesheet ====
 // ===========================

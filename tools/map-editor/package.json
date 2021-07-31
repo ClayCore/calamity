@@ -11,19 +11,19 @@
         "last 3 versions"
     ],
     "scripts": {
-        "build:sass": "sass src/public/styles/base.scss dist/styles/base.css",
+        "build:sass": "sass src/public/styles/master.scss dist/styles/master.css",
         "build:ts": "tsc",
         "build": "yarn build:sass && yarn build:ts && yarn copy:assets",
         "copy:assets": "ts-node copyStaticAssets.ts",
         "watch:node": "nodemon dist/server.js",
-        "watch:sass": "sass --watch src/public/styles/base.scss dist/styles/base.css",
+        "watch:sass": "sass --watch src/public/styles/master.scss dist/styles/master.css",
         "watch:ts": "tsc -w",
         "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch:sass\" \"yarn watch:ts\" \"yarn watch:node\"",
         "start": "node dist/server.js"
     },
     "dependencies": {
-        "bluebird": "3.7.2",
         "body-parser": "1.19.0",
+        "bluebird": "3.7.2",
         "compression": "1.7.4",
         "concurrently": "^6.2.0",
         "express": "^4.17.1",

@@ -20,8 +20,11 @@ html(lang='en')
             noscript
                 h1 This map editor will not function without JavaScript support!
 
-            //- Main render viewport.
+            include partials/topbar
+
             #base
                 block viewport
+
+            include  partials/status
 
         script(src='/scripts/main.js', type='module')
