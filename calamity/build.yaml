@@ -15,8 +15,9 @@ project:
         files:
             sources:
                 - 'calamity.c'
-                - 'utils/log.c'
+                - 'utils/console.c'
                 - 'utils/file.c'
+                - 'utils/log.c'
             include:
                 - 'common.h'
 
@@ -46,21 +47,7 @@ project:
             release:
                 - '-O3'
                 - '-std=c17'
-                - '-Wall'
-                - '-Wextra'
-                - '-Wshadow'
-                - '-Wcast-align'
-                - '-Wunused'
-                - '-Wpedantic'
-                - '-Wconversion'
-                - '-Wsign-conversion'
-                - '-Wnull-dereference'
-                - '-Wdouble-promotion'
-                - '-Wformat=2'
-                - '-Wmisleading-indentation'
-                - '-Wduplicated-cond'
-                - '-Wduplicated-branches'
-                - '-Wlogical-op'
+                - '-flto'
                 - '-march=native'
                 - '-DLOG_USE_COLOR'
 
