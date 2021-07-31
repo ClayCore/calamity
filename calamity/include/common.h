@@ -35,3 +35,6 @@ typedef long long isize;
 
 typedef float  f32;
 typedef double f64;
+
+// TODO: Custom string type
+typedef char* string_t;
