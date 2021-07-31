@@ -1,0 +1,12 @@
+mixin label_button(label)
+    .button.text= label
+
+#topbar
+    nav.main-menu
+        +label_button('File')
+        +label_button('Edit')
+        +label_button('View')
+        +label_button('Mode')
+        +label_button('Prefabs')
+        +label_button('Tools')
+        +label_button('Help')
