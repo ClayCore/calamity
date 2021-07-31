@@ -2,7 +2,7 @@
 #include "log.h"
 
 // Returns the filename without the path
-const char* F_Basename(const char file_path[static 1]) {
+const string_t F_Basename(const char file_path[static 1]) {
     const char* basename =
         (basename = strrchr(file_path, '\\')) ? ++basename : (basename = file_path);
 
@@ -24,9 +24,8 @@ isize F_Exists(const char file_path[static 1]) {
     }
 }
 
-// Loads the file and logs it.
-// TODO: Return the read file contents into a buffer
-usize F_LoadFile(const char file_path[static 1], char*** output_buffer) {
+// Loads a file line-by-line into the output_buffer
+usize F_LoadFile(const char file_path[static 1], string_t* output_buffer) {
     log_trace("F_LoadFile(): Opening \"%s\"", file_path);
 
     usize MAX_LEN   = 512;
