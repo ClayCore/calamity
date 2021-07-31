@@ -1,115 +1,115 @@
 project:
-    name: 'calamity'
-    authors: ['claymore <marekczjk@gmail.com>']
-    version: '0.1.0'
-    language: 'c'
+  name: 'calamity'
+  authors: ['claymore <marekczjk@gmail.com>']
+  version: '0.1.0'
+  language: 'c'
 
-    dirs:
-        target: 'target'
-        build: 'build'
+  dirs:
+    target: 'target'
+    build: 'build'
+    include: 'include'
+    source: 'src'
+    deps: 'vendor'
+
+  setup:
+    files:
+      sources:
+        - 'calamity.c'
+        - 'utils/console.c'
+        - 'utils/file.c'
+        - 'utils/log.c'
+      include:
+        - 'common.h'
+
+    type: 'exe'
+    compiler: 'gcc'
+    profiles:
+      debug:
+        - '-Og'
+        - '-std=c17'
+        - '-Wall'
+        - '-Wextra'
+        - '-Wshadow'
+        - '-Wcast-align'
+        - '-Wunused'
+        - '-Wpedantic'
+        - '-Wconversion'
+        - '-Wsign-conversion'
+        - '-Wnull-dereference'
+        - '-Wdouble-promotion'
+        - '-Wformat=2'
+        - '-Wmisleading-indentation'
+        - '-Wduplicated-cond'
+        - '-Wduplicated-branches'
+        - '-Wlogical-op'
+        - '-march=native'
+        - '-DLOG_USE_COLOR'
+      release:
+        - '-O3'
+        - '-std=c17'
+        - '-flto'
+        - '-march=native'
+        - '-DLOG_USE_COLOR'
+
+  dependencies:
+    sfml:
+      enabled: false
+      paths:
         include: 'include'
-        source: 'src'
-        deps: 'vendor'
+        lib: 'lib'
 
-    setup:
-        files:
-            sources:
-                - 'calamity.c'
-                - 'utils/console.c'
-                - 'utils/file.c'
-                - 'utils/log.c'
-            include:
-                - 'common.h'
+      header_only: false
+      libs:
+        - 'libsfml-graphics.a'
+        - 'libsfml-window.a'
+        - 'libsfml-system.a'
+      args:
+        - '-lsfml-graphics'
+        - '-lsfml-window'
+        - '-lsfml-system'
+    sdl2:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
 
-        type: 'exe'
-        compiler: 'gcc'
-        profiles:
-            debug:
-                - '-Og'
-                - '-std=c17'
-                - '-Wall'
-                - '-Wextra'
-                - '-Wshadow'
-                - '-Wcast-align'
-                - '-Wunused'
-                - '-Wpedantic'
-                - '-Wconversion'
-                - '-Wsign-conversion'
-                - '-Wnull-dereference'
-                - '-Wdouble-promotion'
-                - '-Wformat=2'
-                - '-Wmisleading-indentation'
-                - '-Wduplicated-cond'
-                - '-Wduplicated-branches'
-                - '-Wlogical-op'
-                - '-march=native'
-                - '-DLOG_USE_COLOR'
-            release:
-                - '-O3'
-                - '-std=c17'
-                - '-flto'
-                - '-march=native'
-                - '-DLOG_USE_COLOR'
+      header_only: false
+      libs:
+        - 'libSDL2.a'
+      args:
+        - '-lSDL2'
+    glad:
+      enabled: true
+      paths:
+        include: 'include'
 
-    dependencies:
-        sfml:
-            enabled: false
-            paths:
-                include: 'include'
-                lib: 'lib'
+      header_only: true
+    glew:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
 
-            header_only: false
-            libs:
-                - 'libsfml-graphics.a'
-                - 'libsfml-window.a'
-                - 'libsfml-system.a'
-            args:
-                - '-lsfml-graphics'
-                - '-lsfml-window'
-                - '-lsfml-system'
-        sdl2:
-            enabled: true
-            paths:
-                include: 'include'
-                lib: 'lib'
+      header_only: false
+      libs:
+        - 'glew32.lib'
+      args:
+        - '-lglew32'
+    glfw3:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
 
-            header_only: false
-            libs:
-                - 'libSDL2.a'
-            args:
-                - '-lSDL2'
-        glad:
-            enabled: true
-            paths:
-                include: 'include'
+      header_only: false
+      libs:
+        - 'glfw3.dll'
+      args:
+        - '-lopengl32'
+        - '-lglfw3'
+    glm:
+      enabled: true
+      paths:
+        include: 'include'
 
-            header_only: true
-        glew:
-            enabled: true
-            paths:
-                include: 'include'
-                lib: 'lib'
-
-            header_only: false
-            libs:
-                - 'glew32.lib'
-            args:
-                - '-lglew32'
-        glfw3:
-            enabled: true
-            paths:
-                include: 'include'
-                lib: 'lib'
-
-            header_only: false
-            libs:
-                - 'glfw3.dll'
-            args:
-                - '-lopengl32'
-                - '-lglfw3'
-        glm:
-            enabled: true
-            paths:
-                include: 'include'
-
-            header_only: true
+      header_only: true
