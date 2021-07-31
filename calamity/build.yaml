@@ -113,3 +113,14 @@ project:
         include: 'include'
 
       header_only: true
+    yaml:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      header_only: false
+      libs:
+        - 'yaml.dll'
+      args:
+        - '-lyaml'
