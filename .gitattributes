@@ -13,6 +13,8 @@ vendor/*.c          text linguist-vendored
 
 vendor/**           linguist-vendored, linguist-detectable=false
 
+src/opengl/*        linguist-vendored, linguist-detectable=false
+
 *.bash              text eol=lf
 *.bat               text eol=crlf
 *.cmd               text eol=crlf
