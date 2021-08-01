@@ -16,6 +16,7 @@ project:
       sources:
         - 'calamity.cpp'
         - 'utils/file.cpp'
+        - 'yaml/parser.cpp'
       include:
         - 'zcommon.hpp'
 
@@ -116,7 +117,7 @@ project:
 
       header_only: true
     yaml:
-      enabled: true
+      enabled: false
       paths:
         include: 'include'
         lib: 'lib'
