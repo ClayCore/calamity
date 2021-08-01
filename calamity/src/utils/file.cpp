@@ -1,11 +1,11 @@
 #include "file.hpp"
 
 namespace File {
-    auto load_file(std::string file_path) -> std::vector<std::string> {
+    auto load_file(std::string file_path) -> std::optional<std::vector<std::string>> {
         std::ifstream file(file_path);
         if (file.bad()) {
             std::fprintf(stderr, "File or path invalid.\n");
-            return;
+            return std::nullopt;
         }
 
         // Read into vector

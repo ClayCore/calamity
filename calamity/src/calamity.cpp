@@ -5,7 +5,10 @@
 auto main() -> i32 {
     std::string path =
         "S:\\wplace\\cpp\\stream_dev\\gamedev_project\\calamity\\assets\\maps\\e1m1.yaml";
-    auto file = File::load_file(path);
+
+    if (auto data = File::load_file(path)) {
+        YAML::parse(*data);
+    }
 
     return EXIT_SUCCESS;
 }
