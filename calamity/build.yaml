@@ -2,7 +2,7 @@ project:
   name: 'calamity'
   authors: ['claymore <marekczjk@gmail.com>']
   version: '0.1.0'
-  language: 'c'
+  language: 'cpp'
 
   dirs:
     target: 'target'
@@ -14,39 +14,40 @@ project:
   setup:
     files:
       sources:
-        - 'calamity.c'
-        - 'utils/console.c'
-        - 'utils/file.c'
-        - 'utils/log.c'
+        - 'calamity.cpp'
       include:
-        - 'common.h'
+        - 'common.hpp'
 
     type: 'exe'
-    compiler: 'gcc'
+    compiler: 'g++'
     profiles:
       debug:
         - '-Og'
-        - '-std=c17'
+        - '-std=c++17'
         - '-Wall'
         - '-Wextra'
-        - '-Wshadow'
         - '-Wcast-align'
-        - '-Wunused'
-        - '-Wpedantic'
         - '-Wconversion'
-        - '-Wsign-conversion'
-        - '-Wnull-dereference'
         - '-Wdouble-promotion'
-        - '-Wformat=2'
-        - '-Wmisleading-indentation'
-        - '-Wduplicated-cond'
         - '-Wduplicated-branches'
+        - '-Wduplicated-cond'
+        - '-Wformat=2'
         - '-Wlogical-op'
+        - '-Wmisleading-indentation'
+        - '-Wnon-virtual-dtor'
+        - '-Wnull-dereference'
+        - '-Wold-style-cast'
+        - '-Woverloaded-virtual'
+        - '-Wpedantic'
+        - '-Wshadow'
+        - '-Wsign-conversion'
+        - '-Wunused'
+        - '-Wuseless-cast'
         - '-march=native'
         - '-DLOG_USE_COLOR'
       release:
         - '-O3'
-        - '-std=c17'
+        - '-std=c++17'
         - '-flto'
         - '-march=native'
         - '-DLOG_USE_COLOR'
