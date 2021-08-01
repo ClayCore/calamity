@@ -15,8 +15,9 @@ project:
     files:
       sources:
         - 'calamity.cpp'
+        - 'utils/file.cpp'
       include:
-        - 'common.hpp'
+        - 'zcommon.hpp'
 
     type: 'exe'
     compiler: 'g++'

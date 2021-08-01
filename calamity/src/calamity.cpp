@@ -1,5 +1,5 @@
-#include "common.hpp"
+#include "zcommon.hpp"
 
-i32 main() {
+auto main() -> i32 {
     return EXIT_SUCCESS;
 }
