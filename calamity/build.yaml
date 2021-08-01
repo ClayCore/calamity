@@ -15,8 +15,10 @@ project:
     files:
       sources:
         - 'calamity.cpp'
-        - 'utils/file.cpp'
-        - 'yaml/parser.cpp'
+        - 'opengl/glad/glad.c'
+        # - 'utils/file.cpp'
+        # - 'render/graphics.cpp'
+        # - 'yaml/parser.cpp'
       include:
         - 'zcommon.hpp'
 
@@ -81,12 +83,6 @@ project:
         - 'libSDL2.a'
       args:
         - '-lSDL2'
-    glad:
-      enabled: true
-      paths:
-        include: 'include'
-
-      header_only: true
     glew:
       enabled: true
       paths:
@@ -110,6 +106,7 @@ project:
       args:
         - '-lopengl32'
         - '-lglfw3'
+        - '-lgdi32'
     glm:
       enabled: true
       paths:
