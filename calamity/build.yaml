@@ -15,8 +15,10 @@ project:
     files:
       sources:
         - 'calamity.cpp'
+        - 'utils/file.cpp'
+        - 'yaml/parser.cpp'
       include:
-        - 'common.hpp'
+        - 'zcommon.hpp'
 
     type: 'exe'
     compiler: 'g++'
@@ -115,7 +117,7 @@ project:
 
       header_only: true
     yaml:
-      enabled: true
+      enabled: false
       paths:
         include: 'include'
         lib: 'lib'
