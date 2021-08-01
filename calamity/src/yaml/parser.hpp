@@ -3,5 +3,5 @@
 #include "zcommon.hpp"
 
 namespace YAML {
-    auto parse(const std::string& data) -> void;
+    auto parse(const std::vector<std::string>& data) -> void;
 }
