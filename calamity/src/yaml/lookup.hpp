@@ -51,15 +51,15 @@ namespace Types {
         using RetVal  = std::vector<T>;
         using Functor = std::function<RetVal(const std::vector<std::string>&, usize)>;
 
-        u32     m_hash;
+        u64     m_hash;
         Functor m_functor;
 
-        ParseObject(u32 hash, Functor functor) {
+        ParseObject(u64 hash, Functor functor) {
             this->m_hash    = hash;
             this->m_functor = functor;
         }
 
-        auto get_hash() -> u32 {
+        auto get_hash() -> u64 {
             return this->m_hash;
         }
 
@@ -146,15 +146,48 @@ namespace Tables {
     using namespace Types;
     using namespace Funcs;
 
+    constexpr auto gen_hash(usize key) noexcept -> const u64 {
+        switch (key) {
+            // ENTITIES
+            case 0: {
+                return std::hash<std::string>()("ents:");
+                break;
+            }
+            // VERTICES
+            case 1: {
+                return std::hash<std::string>()("verts:");
+                break;
+            }
+            // LINES
+            case 2: {
+                return std::hash<std::string>()("lines:");
+                break;
+            }
+            // SIDES
+            case 3: {
+                return std::hash<std::string>()("sides:");
+                break;
+            }
+            // SECTORS
+            case 4: {
+                return std::hash<std::string>()("sectors:");
+                break;
+            }
+            default: {
+                return 0;
+            }
+        }
+    };
+
     using ParseVariant = std::variant<ParseObject<Entity>, ParseObject<Vec2>, ParseObject<Line>,
                                       ParseObject<Side>, ParseObject<Sector>>;
 
     const std::unordered_map<std::string, ParseVariant> PARSING_ACTIONS = {
-        // Identification key     Type    Hash        Parsing function
-        { "ENTITIES", ParseObject<Entity>(0xf60f939, parse_ents) },
-        { "VERTICES", ParseObject<Vec2>(0x2283e993, parse_verts) },
-        { "LINES", ParseObject<Line>(0xb7643fa, parse_lines) },
-        { "SIDES", ParseObject<Side>(0x1bc4e497, parse_sides) },
-        { "SECTORS", ParseObject<Sector>(0xeb608602, parse_sectors) },
+        // Id key     Type                Hash         Parsing functor
+        { "ENTITIES", ParseObject<Entity>(gen_hash(0), parse_ents) },
+        { "VERTICES", ParseObject<Vec2>(gen_hash(1), parse_verts) },
+        { "LINES", ParseObject<Line>(gen_hash(2), parse_lines) },
+        { "SIDES", ParseObject<Side>(gen_hash(3), parse_sides) },
+        { "SECTORS", ParseObject<Sector>(gen_hash(4), parse_sectors) },
     };
 } // namespace Tables
