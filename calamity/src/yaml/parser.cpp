@@ -15,7 +15,7 @@ namespace YAML {
         }
 
         // Iterate over all possible parsing actions.
-        for (auto&& [key, type] : Tables::PARSING_ACTIONS) {
+        for (auto&& [key, type] : LookupTables::LEVEL_PARSER) {
             // Iterate through the entire file line by line
             for (auto it = data_copy.begin(); it < data_copy.end(); ++it) {
                 // Get the identification of a given line, using a hash function
@@ -32,10 +32,10 @@ namespace YAML {
                     [&](auto val) {
                         if (key_ident == val.get_hash()) {
                             // Call the functor responsible for parsing
-                            auto index = it - data_copy.begin();
-                            auto func  = val.get_func();
+                            usize index = (it - data_copy.begin()) + 1;
 
-                            auto parsed = func(data_copy, index + 1);
+                            std::printf("\"%-10s\": \n", key.c_str());
+                            auto parsed_data = val.get_parser({ data_copy, index });
                         }
                     },
                     type);
