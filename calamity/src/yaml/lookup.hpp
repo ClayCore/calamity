@@ -5,7 +5,7 @@
 namespace YAML::LUTs {
     using namespace Types;
     using Functor = std::function<void(const FuncArgs& args)>;
-
+    
     // ===========================
     // = Functor lookup table ====
     // ===========================
