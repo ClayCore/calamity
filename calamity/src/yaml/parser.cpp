@@ -19,7 +19,7 @@ namespace YAML {
             usize index = (it - data.begin()) + 1;
 
             if (current_line.rfind("ents", 0) == 0) {
-                using Functor = std::function<std::vector<Entity>(const Types::FuncArgs& args)>;
+                using Functor = LUTs::LambdaEnt;
 
                 std::cout << "ENTITIES" << std::endl;
 
@@ -32,7 +32,7 @@ namespace YAML {
                 // acquire the result
                 std::vector<Entity> result = functor(Types::FuncArgs{ data, index });
             } else if (current_line.rfind("verts", 0) == 0) {
-                using Functor = std::function<std::vector<Vec2>(const Types::FuncArgs& args)>;
+                using Functor = LUTs::LambdaVert;
 
                 std::cout << "VERTICES" << std::endl;
 
@@ -41,7 +41,7 @@ namespace YAML {
 
                 std::vector<Vec2> result = functor(Types::FuncArgs{ data, index });
             } else if (current_line.rfind("lines", 0) == 0) {
-                using Functor = std::function<std::vector<Line>(const Types::FuncArgs& args)>;
+                using Functor = LUTs::LambdaLine;
 
                 std::cout << "LINES" << std::endl;
 
@@ -50,7 +50,7 @@ namespace YAML {
 
                 std::vector<Line> result = functor(Types::FuncArgs{ data, index });
             } else if (current_line.rfind("sides", 0) == 0) {
-                using Functor = std::function<std::vector<Side>(const Types::FuncArgs& args)>;
+                using Functor = LUTs::LambdaSide;
 
                 std::cout << "SIDES" << std::endl;
 
@@ -59,7 +59,7 @@ namespace YAML {
 
                 std::vector<Side> result = functor(Types::FuncArgs{ data, index });
             } else if (current_line.rfind("sectors", 0) == 0) {
-                using Functor = std::function<std::vector<Sector>(const Types::FuncArgs& args)>;
+                using Functor = LUTs::LambdaSector;
 
                 std::cout << "SECTORS" << std::endl;
 
