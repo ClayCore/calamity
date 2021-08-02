@@ -1,44 +1,37 @@
 #include "parser.hpp"
 #include "lookup.hpp"
+#include "types.hpp"
 
 namespace YAML {
-    auto parse(const std::vector<std::string>& data) -> void {
-        auto data_copy = data;
-
-        // Strip all keys and values of their single quotes
-        for (auto& it : data_copy) {
-            it.erase(std::remove_if(it.begin(), it.end(), [](char x) { return '\'' == x; }),
-                     it.end());
-
-            // std::printf("\"%-25s\": [0x%" PRIxPTR "]\n", it.c_str(),
-            // std::hash<std::string>()(it));
+    auto parse(std::vector<std::string>& data) -> void {
+        // Strip all single quotes and spaces
+        for (auto& it : data) {
+            it.erase(std::remove_if(it.begin(), it.end(), [](char x) { return '\'' == x; }), it.end());
+            it.erase(std::remove_if(it.begin(), it.end(), [](char x) { return ' ' == x; }), it.end());
         }
 
-        // Iterate over all possible parsing actions.
-        for (auto&& [key, type] : Tables::PARSING_ACTIONS) {
-            // Iterate through the entire file line by line
-            for (auto it = data_copy.begin(); it < data_copy.end(); ++it) {
-                // Get the identification of a given line, using a hash function
-                auto key_ident = std::hash<std::string>()(*it);
+        for (auto it = data.begin(); it < data.end(); ++it) {
+            std::string current_line = *it;
 
-                // Check for the namespace id hash
-                if (key_ident == std::hash<std::string>()("namespace: calamity")) {
-                    continue;
-                }
+            // Index of the current line in the vector.
+            // prevents parsing backwards
+            usize index = (it - data.begin()) + 1;
 
-                // Catch any possible candidates for parsing, using the predefined
-                // key -> event lookup table
-                std::visit(
-                    [&](auto val) {
-                        if (key_ident == val.get_hash()) {
-                            // Call the functor responsible for parsing
-                            auto index = it - data_copy.begin();
-                            auto func  = val.get_func();
-
-                            auto parsed = func(data_copy, index + 1);
-                        }
-                    },
-                    type);
+            if (current_line.rfind("ents", 0) == 0) {
+                std::cout << "ENTITIES" << std::endl;
+                LUTs::PARSER_FUNCTORS["PARSE_ENTS"](Types::FuncArgs{ data, index });
+            } else if (current_line.rfind("verts", 0) == 0) {
+                std::cout << "VERTICES" << std::endl;
+                LUTs::PARSER_FUNCTORS["PARSE_VERTS"](Types::FuncArgs{ data, index });
+            } else if (current_line.rfind("lines", 0) == 0) {
+                std::cout << "LINES" << std::endl;
+                LUTs::PARSER_FUNCTORS["PARSE_LINES"](Types::FuncArgs{ data, index });
+            } else if (current_line.rfind("sides", 0) == 0) {
+                std::cout << "SIDES" << std::endl;
+                LUTs::PARSER_FUNCTORS["PARSE_SIDES"](Types::FuncArgs{ data, index });
+            } else if (current_line.rfind("sectors", 0) == 0) {
+                std::cout << "SECTORS" << std::endl;
+                LUTs::PARSER_FUNCTORS["PARSE_SECTORS"](Types::FuncArgs{ data, index });
             }
         }
     }

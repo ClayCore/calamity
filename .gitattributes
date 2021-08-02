@@ -11,7 +11,9 @@ vendor/*.cpp        text linguist-vendored
 vendor/*.h          text linguist-vendored
 vendor/*.c          text linguist-vendored
 
-vendor/**           linguist-vendored, linguist-detectable=false
+vendor/**           linguist-detectable=false
+src/opengl/**/      linguist-detectable=false
+src/opengl/glad/*   linguist-detectable=false
 
 src/opengl/*        linguist-vendored, linguist-detectable=false
 
