@@ -16,9 +16,10 @@ project:
       sources:
         - 'calamity.cpp'
         - 'opengl/glad/glad.c'
-        - 'utils/file.cpp'
         - 'render/graphics.cpp'
+        - 'utils/file.cpp'
         - 'yaml/parser.cpp'
+        # - 'yaml/table.cpp'
         - 'yaml/types.cpp'
       include:
         - 'zcommon.hpp'

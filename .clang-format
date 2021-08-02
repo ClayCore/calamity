@@ -5,7 +5,6 @@
 # AllowShortBlocksOnASingleLine: Empty
 # AllowShortIfStatementsOnASingleLine: Always
 # AllowShortLambdasOnASingleLine: All
-# AlwaysBreakTemplateDeclarations: Yes
 # BreakInheritanceList: BeforeColon
 # IndentGotoLabels: false
 # SpaceAfterLogicalNot: false
@@ -28,6 +27,7 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: true
 BinPackParameters: true
 BreakBeforeBinaryOperators: NonAssignment

@@ -58,7 +58,8 @@ namespace YAML::Types {
         };
 
         // This structure lets us parse any level data
-        template <typename T> struct Parser {
+        template <typename T>
+        struct Parser {
           public:
             // Utility structure for holding arguments to functors
             struct Args {
