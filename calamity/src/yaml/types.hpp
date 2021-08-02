@@ -61,22 +61,21 @@ namespace YAML::Types {
     // = Parser functors with specialization ====
     // ==========================================
     template <class T>
-    auto parse_functor(const FuncArgs& args) -> void;
-
-    // TODO: Make all parsing functions and move them to a source file
-    template <>
-    auto parse_functor<Level::Entity>(const FuncArgs& args) -> void;
+    auto parse_functor(const FuncArgs& args) -> std::vector<T>;
 
     template <>
-    auto parse_functor<Level::Vec2>(const FuncArgs& args) -> void;
+    auto parse_functor<Level::Entity>(const FuncArgs& args) -> std::vector<Level::Entity>;
 
     template <>
-    auto parse_functor<Level::Line>(const FuncArgs& args) -> void;
+    auto parse_functor<Level::Vec2>(const FuncArgs& args) -> std::vector<Level::Vec2>;
 
     template <>
-    auto parse_functor<Level::Side>(const FuncArgs& args) -> void;
+    auto parse_functor<Level::Line>(const FuncArgs& args) -> std::vector<Level::Line>;
 
     template <>
-    auto parse_functor<Level::Sector>(const FuncArgs& args) -> void;
+    auto parse_functor<Level::Side>(const FuncArgs& args) -> std::vector<Level::Side>;
+
+    template <>
+    auto parse_functor<Level::Sector>(const FuncArgs& args) -> std::vector<Level::Sector>;
 
 } // namespace YAML::Types
