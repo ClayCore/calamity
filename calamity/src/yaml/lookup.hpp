@@ -2,19 +2,20 @@
 
 #include "types.hpp"
 
-namespace LookupTables {
-    using namespace YAML::Types::Level;
-    using namespace YAML::Types::Funcs;
+namespace YAML::LUTs {
+    using namespace Types;
+    using Functor = std::function<void(const FuncArgs& args)>;
 
-    using ParserVariant =
-        std::variant<Parser<Entity>, Parser<Vec2>, Parser<Line>, Parser<Side>, Parser<Sector>>;
+    // ===========================
+    // = Functor lookup table ====
+    // ===========================
 
-    const std::unordered_map<std::string, ParserVariant> LEVEL_PARSER = {
-        // KEY        // TYPE        // HASH                          // TYPE
-        { "ENTITIES", Parser<Entity>(gen_hash(0), Object::entity) },
-        { "VERTICES", Parser<Entity>(gen_hash(1), Object::vert) },
-        { "LINES", Parser<Entity>(gen_hash(2), Object::line) },
-        { "SIDES", Parser<Entity>(gen_hash(3), Object::side) },
-        { "SECTORS", Parser<Entity>(gen_hash(4), Object::sector) },
+    // Used for parsing different types of level objects from map files
+    static std::map<std::string, Functor> PARSER_FUNCTORS = {
+        { "PARSE_ENTS", [&](const FuncArgs& args) { return parse_functor<Level::Entity>(args); } },
+        { "PARSE_VERTS", [&](const FuncArgs& args) { return parse_functor<Level::Vec2>(args); } },
+        { "PARSE_LINES", [&](const FuncArgs& args) { return parse_functor<Level::Line>(args); } },
+        { "PARSE_SIDES", [&](const FuncArgs& args) { return parse_functor<Level::Side>(args); } },
+        { "PARSE_SECTORS", [&](const FuncArgs& args) { return parse_functor<Level::Sector>(args); } },
     };
-} // namespace LookupTables
+} // namespace YAML::LUTs
