@@ -9,8 +9,14 @@
 #include "zcommon.hpp"
 
 namespace Renderer {
-    auto framebuffer_size_callback(GLFWwindow* window, int width, int height) -> void {
+    auto R_FrameBufferCallback(GLFWwindow* window, int width, int height) -> void {
         glViewport(0, 0, width, height);
+    }
+
+    auto R_ProcessInput(GLFWwindow* window) -> void {
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE)) {
+            glfwSetWindowShouldClose(window, true);
+        }
     }
 
     auto R_Init() -> void {
@@ -34,9 +40,14 @@ namespace Renderer {
         }
 
         glViewport(0, 0, 800, 600);
-        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+        glfwSetFramebufferSizeCallback(window, R_FrameBufferCallback);
 
         while (!glfwWindowShouldClose(window)) {
+            R_ProcessInput(window);
+
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
