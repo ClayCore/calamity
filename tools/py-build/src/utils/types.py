@@ -336,7 +336,6 @@ class Builder(Config):
             else:
                 log.error(f'\"{target}\" build did not succeed')
                 log.error(process.stderr.decode('utf-8'))
-                return False;
 
 
     # Builds and links all object files together
@@ -379,10 +378,9 @@ class Builder(Config):
         else:
             log.error(f'Final \"{target}\" build did not succeed')
             log.error(process.stderr.decode('utf-8'))
-            return False;
 
 
     # Builds selected targets
     def build(self):
-        if self.compile_sources():
-            self.build_objs()
+        self.compile_sources()
+        self.build_objs()
