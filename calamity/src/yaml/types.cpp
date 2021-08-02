@@ -9,7 +9,6 @@ namespace YAML::Types {
 
     template <>
     auto parse_functor<Level::Entity>(const FuncArgs& args) -> void {
-        usize cur_idx = 0;
         for (auto it = args.data.begin() + args.index; it < args.data.end(); ++it) {
             // Get the current index (which line) from the iterator
             usize       cur_idx = it - args.data.begin();
