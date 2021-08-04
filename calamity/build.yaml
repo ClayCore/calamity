@@ -19,8 +19,6 @@ project:
         - 'render/graphics.cpp'
         - 'utils/file.cpp'
         - 'yaml/parser.cpp'
-        # - 'yaml/table.cpp'
-        - 'yaml/types.cpp'
       include:
         - 'zcommon.hpp'
 

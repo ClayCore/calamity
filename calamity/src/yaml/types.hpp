@@ -193,10 +193,47 @@ namespace YAML::Types {
             std::vector<Sector> sectors;
         };
 
+        // ============================
+        // = Map tags lookup table ====
+        // ============================
+
+        // Used for parsing different types of level objects from map files
+        constexpr const usize NUM_MAP_TAGS = 5;
+
+        const std::array<std::shared_ptr<MapObject>, NUM_MAP_TAGS> MAP_OBJECTS = {
+            std::make_shared<Entity>(), std::make_shared<Vec2>(),   std::make_shared<Line>(),
+            std::make_shared<Side>(),   std::make_shared<Sector>(),
+        };
+
         // Goes through all map objects
         // and parses them one by one.
         // Then puts back the parsed and well-defined
         // map objects, into the LevelData structure.
-        auto parse_level(const ParseFuncArgs& args) -> LevelData;
+        template <class T>
+        auto get_level_object(const ParseFuncArgs& args, usize index) -> std::vector<T> {
+            auto& map_objs = MAP_OBJECTS;
+
+            std::vector<T> objects = {};
+            auto           ptrs    = map_objs[index]->parse_object({ args.data, args.offset });
+            for (usize i = 0; i < ptrs.size(); ++i) {
+                auto object = std::dynamic_pointer_cast<T>(ptrs[i]);
+
+                objects.push_back(*object);
+            }
+
+            return objects;
+        }
+
+        auto parse_level(const ParseFuncArgs& args) -> LevelData {
+            LevelData level = {};
+
+            level.entities = get_level_object<Entity>(args, 0);
+            level.verts    = get_level_object<Vec2>(args, 1);
+            level.lines    = get_level_object<Line>(args, 2);
+            level.sides    = get_level_object<Side>(args, 3);
+            level.sectors  = get_level_object<Sector>(args, 4);
+
+            return level;
+        }
     } // namespace Level
 } // namespace YAML::Types

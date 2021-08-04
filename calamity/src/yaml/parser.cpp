@@ -1,5 +1,4 @@
 #include "parser.hpp"
-#include "lookup.hpp"
 #include "types.hpp"
 
 namespace YAML {
