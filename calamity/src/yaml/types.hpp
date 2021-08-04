@@ -66,10 +66,10 @@ namespace YAML::Types {
         };
 
         class Vec2 : public MapObject {
+          public:
             f32 m_xpos;
             f32 m_ypos;
 
-          public:
             virtual auto parse_line(const std::string& key, const std::string& val) -> std::shared_ptr<MapObject> {
                 auto object = std::make_shared<Vec2>();
                 switch (get_hash(key)) {
@@ -88,12 +88,12 @@ namespace YAML::Types {
         };
 
         class Entity : public MapObject {
+          public:
             f32 m_xpos;
             f32 m_ypos;
             u16 m_angle;
             u16 m_type;
 
-          public:
             virtual auto parse_line(const std::string& key, const std::string& val) -> std::shared_ptr<MapObject> {
                 auto object = std::make_shared<Entity>();
                 switch (get_hash(key)) {
@@ -116,10 +116,10 @@ namespace YAML::Types {
         };
 
         class Line : public MapObject {
+          public:
             u16 m_start;
             u16 m_end;
 
-          public:
             virtual auto parse_line(const std::string& key, const std::string& val) -> std::shared_ptr<MapObject> {
                 auto object = std::make_shared<Line>();
                 switch (get_hash(key)) {
@@ -136,9 +136,9 @@ namespace YAML::Types {
         };
 
         class Side : public MapObject {
+          public:
             u16 m_sector_index;
 
-          public:
             virtual auto parse_line(const std::string& key, const std::string& val) -> std::shared_ptr<MapObject> {
                 auto object = std::make_shared<Side>();
                 switch (get_hash(key)) {
@@ -152,6 +152,7 @@ namespace YAML::Types {
         };
 
         class Sector : public MapObject {
+          public:
             i16 m_floor_height;
             i16 m_ceiling_height;
 
@@ -160,7 +161,6 @@ namespace YAML::Types {
 
             u8 m_light_level;
 
-          public:
             virtual auto parse_line(const std::string& key, const std::string& val) -> std::shared_ptr<MapObject> {
                 auto object = std::make_shared<Sector>();
                 switch (get_hash(key)) {
@@ -232,6 +232,26 @@ namespace YAML::Types {
             level.lines    = get_level_object<Line>(args, 2);
             level.sides    = get_level_object<Side>(args, 3);
             level.sectors  = get_level_object<Sector>(args, 4);
+
+            std::cout << "Vertices\n";
+            for (auto& v : level.verts) {
+                std::printf("\t[%f]:[%f]\n", v.m_xpos, v.m_ypos);
+            }
+
+            std::cout << "\nEntities\n";
+            for (auto& v : level.entities) {
+                std::printf("\t(%d @ %d) [%f]:[%f]\n", v.m_type, v.m_angle, v.m_xpos, v.m_ypos);
+            }
+
+            std::cout << "\nLines\n";
+            for (auto& v : level.lines) {
+                std::printf("\t[%d]:[%d]\n", v.m_start, v.m_end);
+            }
+
+            std::cout << "\nSides\n";
+            for (auto& v : level.sides) {
+                std::printf("\t[%d]\n", v.m_sector_index);
+            }
 
             return level;
         }
