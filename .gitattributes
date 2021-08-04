@@ -11,11 +11,13 @@ vendor/*.cpp        text linguist-vendored
 vendor/*.h          text linguist-vendored
 vendor/*.c          text linguist-vendored
 
-vendor/**           linguist-detectable=false
-src/opengl/**/      linguist-detectable=false
-src/opengl/glad/*   linguist-detectable=false
+vendor/**           text linguist-vendored
+src/opengl/**/      text linguist-vendored
+src/opengl/glad/*   text linguist-vendored
 
-src/opengl/*        linguist-vendored linguist-detectable=false
+src/opengl/**/*     text linguist-vendored
+
+src/opengl/*        text linguist-vendored
 
 *.bash              text eol=lf
 *.bat               text eol=crlf
