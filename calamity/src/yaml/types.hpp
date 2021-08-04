@@ -3,8 +3,67 @@
 #include "zcommon.hpp"
 
 namespace YAML::Types {
-    // Utility types for level structures
+    // ===========================
+    // = Utility types        ====
+    // = for level structures ====
+    // ===========================
     namespace Level {
+        // Used for passing arguments
+        // to specific parsing functions
+        // without repeating code too much
+        struct ParseFuncArgs {
+            // Processed config file.
+            const std::vector<std::string>& data;
+
+            // Offset from the start of the file.
+            usize offset;
+        };
+
+        // Virtual class that gets derived
+        // by every map object, for parsing
+        // and deserializing.
+        template <class Tag>
+        class MapObject {
+          public:
+            // Parse a single line from the config file.
+            virtual auto parse_line(const std::string& key, const std::string& val) -> Tag {
+                Tag result = {};
+
+                return result;
+            }
+
+            // Parse an entire object, this is what actually gets called.
+            auto parse_object(const ParseFuncArgs& args) -> std::vector<Tag> {
+                std::vector<Tag> result = {};
+                Tag              object = {};
+
+                for (auto it = args.data.begin() + args.offset; it < args.data.end(); ++it) {
+                    std::string line = *it;
+
+                    // End of parsing block
+                    // for the specific object
+                    if (line == "\n" || line == " ") {
+                        break;
+                    }
+
+                    if (line.rfind('-', 0)) {
+                        // Split the string into a key-value pair
+                        auto        pos = line.find(':', 0);
+                        std::string key = line.substr(0, pos);
+                        std::string val = line.substr(pos + 1);
+
+                        // Parse a specific object
+                        object = this->parse_line(key, val);
+                    } else {
+                        continue;
+                    }
+
+                    result.push_back(object);
+                }
+
+                return result;
+            }
+        };
 
         struct Vec2 {
             double x;
