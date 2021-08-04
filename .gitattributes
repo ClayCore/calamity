@@ -15,7 +15,7 @@ vendor/**           linguist-detectable=false
 src/opengl/**/      linguist-detectable=false
 src/opengl/glad/*   linguist-detectable=false
 
-src/opengl/*        linguist-vendored, linguist-detectable=false
+src/opengl/*        linguist-vendored linguist-detectable=false
 
 *.bash              text eol=lf
 *.bat               text eol=crlf
