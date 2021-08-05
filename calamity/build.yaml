@@ -16,9 +16,9 @@ project:
       sources:
         - 'calamity.cpp'
         - 'opengl/glad/glad.c'
-        - 'render/graphics.cpp'
+        - 'graphics/manager.cpp'
         - 'utils/file.cpp'
-        - 'yaml/manager.cpp'
+        # - 'yaml/manager.cpp'
       include:
         - 'zcommon.hpp'
 
