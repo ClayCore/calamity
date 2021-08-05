@@ -14,12 +14,18 @@ namespace GFX {
     auto R_Init() -> void {
         std::cout << "Initializing graphics manager" << std::endl;
 
+        // Initialize and configure glfw
+        // =============================
         glfwInit();
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+        // Window creation
+        // TODO: move to a separate function, maybe class
+        // and isolate the arguments (constants)
+        // ==============================================
         GLFWwindow* window = glfwCreateWindow(800, 600, "Calamity v0.1.0", NULL, NULL);
         if (window == NULL) {
             std::cerr << "Failed to create GLFW window" << std::endl;
@@ -27,29 +33,33 @@ namespace GFX {
             return;
         }
         glfwMakeContextCurrent(window);
+        glfwSetFramebufferSizeCallback(window, R_FrameBufferCallback);
 
+        // Loads all OpenGL function pointers
+        // ==================================
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
             std::cerr << "Failed to initialize GLAD" << std::endl;
             return;
         }
 
-        glViewport(0, 0, 800, 600);
-        glfwSetFramebufferSizeCallback(window, R_FrameBufferCallback);
-
-        f32 vertices[] = {
-            -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f,
-        };
-
-        u32 vbo;
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
+        // Render loop
+        // TODO: create a better draw function
+        // and add event polling
+        // ===================================
         while (!glfwWindowShouldClose(window)) {
+            // Input processing
+            // ================
             R_ProcessInput(window);
 
+            // Do rendering
+            // ============
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            // Swap buffers and poll I/O events
+            // ================================
+            glfwSwapBuffers(window);
+            glfwPollEvents();
         }
 
         glfwTerminate();
