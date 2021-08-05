@@ -36,6 +36,15 @@ namespace GFX {
         glViewport(0, 0, 800, 600);
         glfwSetFramebufferSizeCallback(window, R_FrameBufferCallback);
 
+        f32 vertices[] = {
+            -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f,
+        };
+
+        u32 vbo;
+        glGenBuffers(1, &vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
         while (!glfwWindowShouldClose(window)) {
             R_ProcessInput(window);
 
