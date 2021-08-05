@@ -18,7 +18,7 @@ project:
         - 'opengl/glad/glad.c'
         - 'render/graphics.cpp'
         - 'utils/file.cpp'
-        - 'yaml/parser.cpp'
+        - 'yaml/manager.cpp'
       include:
         - 'zcommon.hpp'
 

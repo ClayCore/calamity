@@ -12,6 +12,6 @@ constexpr auto operator"" _hash(char const* s, usize count) -> u32 {
     return Detail::fnv1a_32(s, count);
 }
 
-auto get_hash(const std::string& key) -> u32 {
+auto H_GetHash(const std::string& key) -> u32 {
     return Detail::fnv1a_32(key.c_str(), key.size());
 }
