@@ -1,0 +1,47 @@
+// ====================
+// = Global styles ====
+// ====================
+@use 'global/reset';
+@use 'global/variables' as *;
+@use 'global/utils' as *;
+@use 'global/fonts';
+
+// =======================
+// = Component styles ====
+// =======================
+
+// ===========================
+// = Main page stylesheet ====
+// ===========================
+div#wrapper,
+body,
+html {
+    @extend %root-container;
+
+    position: relative;
+
+    flex-direction: row;
+
+    width: 100%;
+    height: 100%;
+
+    background: $main-bg;
+    color: $main-fg;
+
+    font-family: $stylish-font;
+
+    div#base {
+        @extend %center-container;
+
+        position: relative;
+
+        flex-direction: row;
+        justify-content: flex-start;
+
+        width: 100%;
+        height: calc(100% - #{$topbar-height} - #{$status-height});
+
+        background: $secondary-bg;
+        color: $secondary-fg;
+    }
+}

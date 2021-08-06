@@ -14,7 +14,7 @@
 # SpaceBeforeRangeBasedForLoopColon: true
 # SpaceInEmptyBlock: false
 Standard: Latest
-AccessModifierOffset: -2
+AccessModifierOffset: 0
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
@@ -25,13 +25,13 @@ AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: true
-AlwaysBreakAfterReturnType: None
+AlwaysBreakAfterReturnType: All
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: true
 BinPackParameters: true
 BreakBeforeBinaryOperators: NonAssignment
-BreakBeforeBraces: Attach
+BreakBeforeBraces: Linux
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakStringLiterals: false
@@ -55,7 +55,7 @@ IncludeCategories:
 IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
-IndentWrappedFunctionNames: true
+IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All

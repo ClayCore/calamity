@@ -1,0 +1,52 @@
+@use 'variables' as *;
+
+// =====================
+// = Utility mixins ====
+// =====================
+@mixin horizontal-shadow {
+    box-shadow: 0rem 0.5rem 0.5rem 0rem $shadow-color;
+}
+
+@mixin rev-horizontal-shadow {
+    box-shadow: 0rem -0.5rem 0.5rem 0rem $shadow-color;
+}
+
+@mixin vertical-shadow {
+    box-shadow: 0.5rem 0rem 0.5rem 0rem $shadow-color;
+}
+
+@mixin rev-vertical-shadow {
+    box-shadow: -0.5rem 0rem 0.5rem 0rem $shadow-color;
+}
+
+@mixin default-animation {
+    transition: all 0.08s linear;
+}
+
+@mixin apply-animation {
+    * {
+        @include default-animation;
+    }
+}
+
+// ================================
+// = Common virtual components ====
+// ================================
+%root-container {
+    width: 100%;
+    height: 100%;
+    font-family: $main-font;
+    color: $main-fg;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+}
+
+%center-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
