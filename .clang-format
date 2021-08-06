@@ -14,7 +14,7 @@
 # SpaceBeforeRangeBasedForLoopColon: true
 # SpaceInEmptyBlock: false
 Standard: Latest
-AccessModifierOffset: -2
+AccessModifierOffset: 0
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
