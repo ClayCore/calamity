@@ -1,0 +1,35 @@
+// =============
+// = Colors ====
+// =============
+$main-bg: rgb(32, 35, 37);
+$main-fg: rgb(212, 238, 255);
+$accent: rgb(65, 149, 228);
+
+$neutral-gray: hsl(204, 0%, 30%);
+
+$secondary-bg: rgb(193, 212, 229);
+$secondary-fg: rgb(30, 33, 35);
+
+$accent-bg: rgb(23, 55, 85);
+$accent-fg: rgb(131, 194, 255);
+
+$shadow-color: rgba(0, 0, 0, 0.102);
+$hard-shadow: rgba(0, 0, 0, 0.749);
+
+// ============
+// = Fonts ====
+// ============
+$main-font: 'Roboto', sans-serif;
+$secondary-font: 'Roboto Slab', serif;
+
+$stylish-font: 'Titillium Web', sans-serif;
+
+// =================
+// = Dimensions ====
+// =================
+$common-icon-size: 16px;
+
+$topbar-height: calc(#{$common-icon-size} * 2);
+$status-height: calc(#{$common-icon-size} * 2);
+$toolbar-width: calc(#{$common-icon-size} * 2);
+$sidebar-width: calc(#{$common-icon-size} * 2);
