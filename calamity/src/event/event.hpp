@@ -95,6 +95,9 @@ namespace EventSystem
         virtual void
         on_event(const EvPtr& event);
 
+        // Accessor methods
+        // ================
+
         private:
         Dispatch m_dispatcher;
     };
@@ -109,18 +112,20 @@ namespace EventSystem
         private:
         // Handy typedef
         using EvPtr   = std::shared_ptr<BaseEvent>;
-        using DispPtr = std::unique_ptr<BaseDispatcher>;
+        using DispPtr = std::shared_ptr<BaseDispatcher>;
 
         public:
+        // Emits a specific event to a distinct dispatcher
+        // ===============================================
+        virtual void
+        emit(const EvPtr& event, DispPtr& dispatcher);
+
         // Accessor methods
         // ================
-        virtual void
-        emit();
-
         virtual DispPtr
         get_dispatcher()
         {
-            return std::move(this->m_dispatcher);
+            return this->m_dispatcher;
         }
 
         virtual std::string
