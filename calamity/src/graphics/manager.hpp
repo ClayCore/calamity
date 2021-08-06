@@ -7,10 +7,14 @@
 // Then glfw
 #include "GLFW/glfw3.h"
 
-namespace GFX {
-    auto R_FrameBufferCallback(GLFWwindow* window, i32 width, i32 height) -> void;
+namespace GFX
+{
+    void
+    R_FrameBufferCallback(GLFWwindow* window, i32 width, i32 height);
 
-    auto R_ProcessInput(GLFWwindow* window) -> void;
+    void
+    R_ProcessInput(GLFWwindow* window);
 
-    auto R_Init() -> void;
+    void
+    R_Init();
 } // namespace GFX

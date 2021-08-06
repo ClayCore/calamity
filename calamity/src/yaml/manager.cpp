@@ -1,7 +1,8 @@
 #include "manager.hpp"
 #include "utils/file.hpp"
 
-namespace Yaml {
+namespace Yaml
+{
     struct DataOffset {
         const std::vector<std::string>& data;
 
@@ -15,7 +16,9 @@ namespace Yaml {
     ** There needs to be a better way. I need to think of one.     = **
     ** For now this code does not work, so don't bother            = **
     ** Ignore and move on                                          = **/
-    static auto M_ParseYaml(const DataOffset& args) {
+    static void
+    M_ParseYaml(const DataOffset& args)
+    {
         for (auto it = args.data.begin() + args.offset; it < args.data.end(); ++it) {
             std::string line = *it;
 
@@ -42,7 +45,9 @@ namespace Yaml {
 
     // Parse and deserialize all map files, stored in
     // /calamity/src/assets/maps/*
-    static auto M_ParseLevel(std::vector<std::string>& raw_data) -> void {
+    static void
+    M_ParseLevel(std::vector<std::string>& raw_data)
+    {
         for (auto& it : raw_data) {
             // Removes any single quotes and spaces
             auto strip = [](char x) { return x == '\'' || x == ' '; };
@@ -62,7 +67,9 @@ namespace Yaml {
     }
 
     // TODO: change to `std::vector<std::string>`
-    auto M_Init(const std::string& path) -> void {
+    void
+    M_Init(const std::string& path)
+    {
         std::cout << "Initialized YAML parsing manager" << std::endl;
 
         // Parse all the maps and levels

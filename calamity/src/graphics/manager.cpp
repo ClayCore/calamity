@@ -1,17 +1,24 @@
 #include "manager.hpp"
 
-namespace GFX {
-    auto R_FrameBufferCallback(GLFWwindow* window, i32 width, i32 height) -> void {
+namespace GFX
+{
+    void
+    R_FrameBufferCallback(GLFWwindow* window, i32 width, i32 height)
+    {
         glViewport(0, 0, width, height);
     }
 
-    auto R_ProcessInput(GLFWwindow* window) -> void {
+    void
+    R_ProcessInput(GLFWwindow* window)
+    {
         if (glfwGetKey(window, GLFW_KEY_ESCAPE)) {
             glfwSetWindowShouldClose(window, true);
         }
     }
 
-    auto R_Init() -> void {
+    void
+    R_Init()
+    {
         std::cout << "Initializing graphics manager" << std::endl;
 
         // Initialize and configure glfw
