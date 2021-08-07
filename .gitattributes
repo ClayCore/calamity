@@ -1,5 +1,7 @@
 *                   text=auto
 
+vendor/**           text linguist-vendored
+
 vendor/*/lib/*      binary linguist-vendored
 vendor/*.lib        binary linguist-vendored
 vendor/*.dll        binary linguist-vendored
@@ -11,13 +13,9 @@ vendor/*.cpp        text linguist-vendored
 vendor/*.h          text linguist-vendored
 vendor/*.c          text linguist-vendored
 
-vendor/**           text linguist-vendored
-src/opengl/**/      text linguist-vendored
-src/opengl/glad/*   text linguist-vendored
-
-src/opengl/**/*     text linguist-vendored
-
-src/opengl/*        text linguist-vendored
+opengl/glad/glad.h  text linguist-vendored
+opengl/glad/glad.c  text linguist-vendored
+opengl/KHR/*.h      text lignuist-vendored
 
 *.bash              text eol=lf
 *.bat               text eol=crlf
