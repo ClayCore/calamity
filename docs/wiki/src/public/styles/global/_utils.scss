@@ -4,19 +4,19 @@
 // = Utility mixins ====
 // =====================
 @mixin horizontal-shadow {
-    box-shadow: 0rem 0.5rem 0.5rem 0rem $shadow-color;
+    box-shadow: 0rem 0.1rem 1rem 0rem $hard-shadow;
 }
 
 @mixin rev-horizontal-shadow {
-    box-shadow: 0rem -0.5rem 0.5rem 0rem $shadow-color;
+    box-shadow: 0rem -0.1rem 1rem 0rem $hard-shadow;
 }
 
 @mixin vertical-shadow {
-    box-shadow: 0.5rem 0rem 0.5rem 0rem $shadow-color;
+    box-shadow: 0.1rem 0rem 1rem 0rem $hard-shadow;
 }
 
 @mixin rev-vertical-shadow {
-    box-shadow: -0.5rem 0rem 0.5rem 0rem $shadow-color;
+    box-shadow: -0.1rem 0rem 1rem 0rem $hard-shadow;
 }
 
 @mixin default-animation {

@@ -1,0 +1,20 @@
+@use '../global/variables' as *;
+@use '../global/utils' as *;
+
+div#sidebar {
+    @extend %center-container;
+
+    position: fixed;
+
+    flex-direction: column;
+
+    width: $sidebar-width;
+    height: 100%;
+
+    background: $secondary-bg;
+    color: $secondary-fg;
+
+    @include vertical-shadow;
+
+    z-index: 5;
+}

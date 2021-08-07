@@ -9,10 +9,17 @@
 // =======================
 // = Component styles ====
 // =======================
+@use 'partials/sidebar.scss';
+@use 'partials/article.scss';
 
 // ===========================
 // = Main page stylesheet ====
 // ===========================
+* {
+    scrollbar-color: $accent $main-bg;
+    scrollbar-width: thin;
+}
+
 div#wrapper,
 body,
 html {
@@ -38,10 +45,12 @@ html {
         flex-direction: row;
         justify-content: flex-start;
 
-        width: 100%;
-        height: calc(100% - #{$topbar-height} - #{$status-height});
+        width: calc(100% - #{$sidebar-width});
+        height: 100%;
 
-        background: $secondary-bg;
-        color: $secondary-fg;
+        background: $main-bg;
+        color: $main-fg;
+
+        @extend %page-content;
     }
 }
