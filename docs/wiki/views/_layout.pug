@@ -17,10 +17,12 @@ html(lang='en')
 
     body
         #wrapper
+            include partials/sidebar
+
             noscript
                 h1 This page will not function without JavaScript support!
 
             #base
-                block viewport
+                block content
 
         script(src='/scripts/main.js', type='module')
