@@ -6,6 +6,7 @@ dist/
 
 target/
 calamity/vendor/
+calamity/src/opengl/
 node_modules/
 
 *.lock
