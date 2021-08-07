@@ -4,6 +4,8 @@
 
 namespace EventSystem
 {
+    // List of predefined internal events
+    // ==================================
     enum class EventType : u16 {
         None = 0,
         // Window handling events
@@ -14,13 +16,13 @@ namespace EventSystem
         WindowLostFocus,
         WindowMoved,
 
-        // Resource handling
+        // Resource management
         // =================
         LoadResource,
         FreeResource,
 
-        // Engine internals related
-        // ========================
+        // Engine internals
+        // ================
         EngineTick,
         EngineUpdate,
         EngineRender,
@@ -37,187 +39,235 @@ namespace EventSystem
 
     // Base event class
     // Derive for specialized events
-    // ==================================
+    // =============================
     class BaseEvent
     {
+        // Constructors
+        // ============
+
+        // NOTE: It's worth pointing out
+        // that to use a predefined event type
+        // the event has to be derived
+        // and constructed with the type info
+        // ===================================
+
         public:
-        // TODO: Test whether `this->m_type` has to be
-        // a ref or a const ref or just a value.
+        BaseEvent() : m_type(EventType::None) {}
         BaseEvent(const EventType& type) : m_type(type) {}
-
-        // Accessor methods
-        // ================
-        virtual const char*
-        get_name() const = 0;
-
-        virtual EventType
-        get_type() const = 0;
-
-        virtual std::string
-        to_string() const
+        BaseEvent(std::string& name) : m_type(EventType::None), m_name(name) {}
+        BaseEvent(const char* name) : m_type(EventType::None)
         {
-            return this->get_name();
+            this->m_name = std::string(name);
         }
 
-        // Overloads
-        // =========
+        private:
+        // Accessor and mutator methods
+        // ============================
+        virtual const char*
+        get_name() const
+        {
+            if (!this->m_name.empty()) {
+                return this->m_name.c_str();
+            } else {
+                return this->get_name_from_type();
+            }
+        };
+
+        virtual EventType
+        get_type() const
+        {
+            return this->m_type;
+        };
+
+        virtual void
+        set_name(const std::string& name)
+        {
+            this->m_name = name;
+        }
+
+        // Retrieves name from the predefined types
+        const char*
+        get_name_from_type() const
+        {
+            // clang-format off
+            switch (this->m_type) {
+                case EventType::None:                   { return "None"; };
+                // Window handling events
+                // =======================================================================
+                case EventType::WindowClose:            { return "WindowClose";         };
+                case EventType::WindowResize:           { return "WindowResize";        };
+                case EventType::WindowFocus:            { return "WindowFocus";         };
+                case EventType::WindowLostFocus:        { return "WindowLostFocus";     };
+                case EventType::WindowMoved:            { return "WindowMoved";         };
+                // Resource management
+                // =======================================================================
+                case EventType::LoadResource:           { return "LoadResource";        };
+                case EventType::FreeResource:           { return "FreeResource";        };
+                // Engine internals
+                // =======================================================================
+                case EventType::EngineTick:             { return "EngineTick";          };
+                case EventType::EngineUpdate:           { return "EngineUpdate";        };
+                case EventType::EngineRender:           { return "EngineRender";        };
+                // Input handling
+                // =======================================================================
+                case EventType::KeyPressed:             { return "KeyPressed";          };
+                case EventType::KeyReleased:            { return "KeyReleased";         };
+                case EventType::MouseButtonPressed:     { return "MouseButtonPressed";  };
+                case EventType::MouseButtonReleased:    { return "MouseButtonReleased"; };
+                case EventType::MouseMoved:             { return "MouseMoved";          };
+                case EventType::MouseScrolled:          { return "MouseScrolled";       };
+                // Unimplemented
+                // =======================================================================
+                default:                                { return "Unknown event";       };
+            }
+            // clang-format on
+        }
+
+        // Methods for debugging
+        // =====================
+        public:
+        std::string
+        to_string() const
+        {
+            if (!this->m_name.empty())
+                return this->get_name();
+            else
+                return this->get_name_from_type();
+        }
+
         friend inline std::ostream&
         operator<<(std::ostream& os, const BaseEvent& e)
         {
             return os << e.to_string();
         }
 
+        // Bound methods and variables
+        // ===========================
         private:
-        // Type of the event
-        // =================
         const EventType& m_type;
-    };
-
-    // Base dispatcher
-    // Derive to send and release distinct events
-    class BaseDispatcher
-    {
-        public:
-        using EvPtr    = std::shared_ptr<BaseEvent>;
-        using Listener = std::shared_ptr<BaseListener>;
-
-        // TODO: Test whether this has to be const ref
-        BaseDispatcher(const std::vector<EvPtr>& events) : m_events(events) {}
-
-        // Dispatch method
-        // ===============
-        virtual void
-        dispatch(const Listener& listener) = 0;
-
-        // Add an event
-        virtual void
-        add_event(const EvPtr& event);
-
-        // Accessor methods
-        // ================
-        virtual const char*
-        get_event_name(usize index) const = 0;
-
-        virtual const EventType
-        get_type(usize index) const = 0;
-
-        virtual const std::string
-        to_string(usize index) const = 0;
-
-        std::vector<EvPtr> m_events;
-    };
-
-    // Base listener
-    // Derive to listen to specific events
-    // ===================================
-    class BaseListener
-    {
-        public:
-        using EvPtr    = std::shared_ptr<BaseEvent>;
-        using Dispatch = std::unique_ptr<BaseDispatcher>;
-        using Callback = std::function<void()>;
-
-        // Handles a distinct event
-        // sent by a released dispatch
-        virtual void
-        on_event(const EvPtr& event);
-
-        // Accessor and mutator methods
-        // ================
-        virtual void
-        add_callback(const EventType& type, const Callback& cb)
-        {
-            this->m_callbacks.insert(std::pair<EventType, Callback>(type, cb));
-        }
-
-        virtual void
-        call_func(const EventType& type)
-        {
-            this->m_callbacks[type]();
-        }
-
-        private:
-        // List of callbacks for specific events
-        std::map<EventType, Callback> m_callbacks;
+        std::string      m_name;
     };
 
     // Base emitter
-    // Derive to be able to emit
-    // specific events, to be captured by distinct dispatchers
-    // and listeners.
-    // =======================================================
+    // Sends events to distinct dispatchers
+    // ====================================
     class BaseEmitter
     {
-        public:
-        // Handy typedef
-        using EvPtr   = std::shared_ptr<BaseEvent>;
-        using DispPtr = std::shared_ptr<BaseDispatcher>;
-
-        public:
-        // Emits a specific event to a distinct dispatcher
-        // ===============================================
-        virtual void
-        emit(const EvPtr& event, DispPtr& dispatcher);
-
-        // Accessor methods
+        // Utility typedefs
         // ================
-        virtual DispPtr
-        get_dispatcher()
+        using Event      = std::shared_ptr<BaseEvent>;
+        using Dispatcher = std::shared_ptr<BaseDispatcher>;
+
+        // Constructors
+        // ============
+        public:
+        BaseEmitter() : m_dispatcher(std::make_shared<BaseDispatcher>()) {}
+        BaseEmitter(Dispatcher& dispatcher) : m_dispatcher(dispatcher) {}
+        BaseEmitter(const std::vector<Event>& events) : m_dispatcher(std::make_shared<BaseDispatcher>())
         {
-            return this->m_dispatcher;
+            this->m_events = events;
         }
 
-        virtual std::string
-        to_string() const
-        {
-            std::vector<std::string> buffer;
-            for (auto it = this->m_events.begin(); it < this->m_events.end(); ++it) {
-                // Extract the event from the array
-                EvPtr event = *it;
-
-                // Acquire the string from the event
-                std::string event_str = event->to_string().c_str();
-
-                // Get the index of the current iteration
-                // from the iterator
-                usize index = static_cast<usize>(it - this->m_events.begin());
-
-                // Start formatting into the string
-                auto        format = "%u: [%s]\n";
-                auto        size   = std::snprintf(nullptr, 0, format);
-                std::string output(size + 1, '\0');
-                std::sprintf(&output[0], format, index, event_str);
-
-                // Add it to the vector
-                buffer.push_back(output);
-            }
-
-            // Implode the buffer into a single string
-            std::ostringstream implode;
-            std::copy(buffer.begin(), buffer.end(), std::ostream_iterator<std::string>(implode, "\n"));
-
-            return implode.str();
-        }
-
-        // Overloads
-        // =========
-        friend inline std::ostream&
-        operator<<(std::ostream& os, const BaseEmitter& be)
-        {
-            return os << be.to_string();
-        }
-
+        // Accessor and mutator methods
+        // ============================
         private:
-        // Set of events to be released by this emitter
-        // TODO: maybe use a vec or a map?
-        // ============================================
-        std::vector<EvPtr> m_events;
+        virtual void
+        add_event(const Event& event)
+        {
+            this->m_events.push_back(event);
+        }
 
-        // The dispatcher this emitter connects to
-        // TODO: there could be multiple dispatchers
-        // for a single event. Implement this later.
-        // =========================================
-        DispPtr m_dispatcher;
+        virtual Event
+        get_event(usize index) const
+        {
+            if (index >= 0 && index < this->m_events.size()) {
+                return this->m_events[index];
+            }
+        }
+
+        virtual void
+        set_event(usize index, const Event& event)
+        {
+            if (index >= 0 && index < this->m_events.size()) {
+                auto it = index + this->m_events.begin();
+
+                this->m_events.insert(it, event);
+            }
+        }
+
+        // Emitter functions
+        // =================
+
+        // Used for emitting an event
+        // using the bound dispatcher
+        virtual void
+        emit(const Event& event)
+        {
+            this->m_dispatcher->add_event(event);
+        }
+
+        // Used for emitting an event
+        // -without- a bound dispatcher
+        virtual void
+        emit(const Event& event, const Dispatcher& dispatcher)
+        {
+            dispatcher->add_event(event);
+        }
+
+        // Allows us to bind
+        // a distinct dispatcher
+        // to our emitter object
+        virtual void
+        bind(const Dispatcher& dispatcher)
+        {
+            this->m_dispatcher = dispatcher;
+        }
+
+        // Methods for debugging
+        // =====================
+
+        // Bound methods and variables
+        // ===========================
+        private:
+        Dispatcher         m_dispatcher;
+        std::vector<Event> m_events;
     };
 
+    // Base dispatcher
+    // Captures, buffers and releases events
+    // to distinct listeners
+    // =====================================
+    class BaseDispatcher
+    {
+        // Utility typedefs
+        // ================
+        using Event = std::shared_ptr<BaseEvent>;
+        // using Listener = std::shared_ptr<BaseListener>;
+
+        // Constructors
+        // ============
+        public:
+        // Accessor and mutator methods
+        // ============================
+        private:
+        // Dispatcher functions
+        // ====================
+
+        // Release a buffered event
+        // through a bound listener
+        virtual void
+        dispatch(const Event& event);
+
+        // Release an event to
+        // a specific listener
+        virtual void
+        dispatch(const Event& event);
+
+        // Methods for debugging
+        // =====================
+        public:
+        // Bound methods and variables
+        // ===========================
+        private:
+    };
 } // namespace EventSystem
