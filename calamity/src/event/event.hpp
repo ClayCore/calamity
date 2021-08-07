@@ -77,6 +77,34 @@ namespace EventSystem
     // Derive to send and release distinct events
     class BaseDispatcher
     {
+        public:
+        using EvPtr    = std::shared_ptr<BaseEvent>;
+        using Listener = std::shared_ptr<BaseListener>;
+
+        // TODO: Test whether this has to be const ref
+        BaseDispatcher(const std::vector<EvPtr>& events) : m_events(events) {}
+
+        // Dispatch method
+        // ===============
+        virtual void
+        dispatch(const Listener& listener) = 0;
+
+        // Add an event
+        virtual void
+        add_event(const EvPtr& event);
+
+        // Accessor methods
+        // ================
+        virtual const char*
+        get_event_name(usize index) const = 0;
+
+        virtual const EventType
+        get_type(usize index) const = 0;
+
+        virtual const std::string
+        to_string(usize index) const = 0;
+
+        std::vector<EvPtr> m_events;
     };
 
     // Base listener
@@ -84,22 +112,33 @@ namespace EventSystem
     // ===================================
     class BaseListener
     {
-        private:
-        using EvPtr    = std::unique_ptr<BaseEvent>;
+        public:
+        using EvPtr    = std::shared_ptr<BaseEvent>;
         using Dispatch = std::unique_ptr<BaseDispatcher>;
         using Callback = std::function<void()>;
 
-        public:
         // Handles a distinct event
         // sent by a released dispatch
         virtual void
         on_event(const EvPtr& event);
 
-        // Accessor methods
+        // Accessor and mutator methods
         // ================
+        virtual void
+        add_callback(const EventType& type, const Callback& cb)
+        {
+            this->m_callbacks.insert(std::pair<EventType, Callback>(type, cb));
+        }
+
+        virtual void
+        call_func(const EventType& type)
+        {
+            this->m_callbacks[type]();
+        }
 
         private:
-        Dispatch m_dispatcher;
+        // List of callbacks for specific events
+        std::map<EventType, Callback> m_callbacks;
     };
 
     // Base emitter
@@ -109,7 +148,7 @@ namespace EventSystem
     // =======================================================
     class BaseEmitter
     {
-        private:
+        public:
         // Handy typedef
         using EvPtr   = std::shared_ptr<BaseEvent>;
         using DispPtr = std::shared_ptr<BaseDispatcher>;
