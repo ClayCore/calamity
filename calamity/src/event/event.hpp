@@ -241,6 +241,9 @@ namespace EventSystem
         to_string() const
         {
             std::vector<std::string> buffer;
+
+            buffer.push_back("Emitter: \n");
+
             for (auto it = this->m_events.begin(); it < this->m_events.end(); ++it) {
                 // Extract the event
                 Event event = *it;
@@ -249,10 +252,10 @@ namespace EventSystem
                 std::string event_name = event->to_string();
 
                 // Get the index of the current iterator
-                usize index = static_cast<usize>(it - this->m_events.begin());
+                usize index = std::distance(this->m_events.begin(), it);
 
                 // Format into a string
-                auto format = "ID: %u -- [%s]\n";
+                auto format = "\tEventID: %u -- [%s]\n";
                 auto size   = std::snprintf(nullptr, 0, format);
 
                 std::string output(size + 1, '\0');
@@ -346,6 +349,7 @@ namespace EventSystem
         virtual void
         dispatch(const Event& event)
         {
+            m_listener->on_event(event);
         }
 
         // Release an event to
@@ -353,6 +357,7 @@ namespace EventSystem
         virtual void
         dispatch(const Event& event, const Listener& listener)
         {
+            listener->on_event(event);
         }
 
         // Binds a distinct listener
@@ -365,6 +370,40 @@ namespace EventSystem
 
         // Methods for debugging
         // =====================
+        std::string
+        to_string() const
+        {
+            std::vector<std::string> buffer;
+
+            buffer.push_back("Dispatcher: \n");
+
+            for (auto it = this->m_events.begin(); it < this->m_events.end(); ++it) {
+                Event event = *it;
+
+                std::string event_name = event->to_string();
+
+                usize index = std::distance(this->m_events.begin(), it);
+
+                auto format = "\tEventID: %u -- [%s]\n";
+                auto size   = std::snprintf(nullptr, 0, format);
+
+                std::string output(size + 1, '\0');
+                std::sprintf(&output[0], format, index, event_name.c_str());
+
+                buffer.push_back(output);
+            }
+
+            std::ostringstream implode;
+            std::copy(buffer.begin(), buffer.end(), std::ostream_iterator<std::string>(implode, "\n"));
+
+            return implode.str();
+        }
+
+        friend inline std::ostream&
+        operator<<(std::ostream& os, const BaseDispatcher& ds)
+        {
+            return os << ds.to_string();
+        }
 
         // Bound methods and variables
         // ===========================
@@ -387,24 +426,118 @@ namespace EventSystem
 
         // Constructors
         // ============
+        public:
+        BaseListener()
+        {
+            this->m_dispatcher = std::make_shared<BaseDispatcher>();
+        }
 
+        BaseListener(Dispatcher& dispatcher)
+        {
+            this->m_dispatcher = dispatcher;
+        }
+
+        BaseListener(const std::map<Event, Callback>& actions)
+        {
+            this->m_dispatcher = std::make_shared<BaseDispatcher>();
+            this->m_actions    = actions;
+        }
         // Accessor and mutator methods
         // ============================
+
+        // Insert an event and a callback function
+        // that maps to it
+        virtual void
+        insert_event(const Event& event, const Callback& cb)
+        {
+            this->m_actions.emplace(event, cb);
+        }
+
+        // Sets or updates a callback functor
+        // for a given event
+        virtual void
+        set_callback(const Event& event, const Callback& cb)
+        {
+            this->m_actions[event] = cb;
+        }
+
+        // Acquire a callback functor
+        // based on the event structure
+        virtual Callback
+        get_callback(const Event& event)
+        {
+            return this->m_actions[event];
+        }
+
+        // Alternatively acquire it based
+        // on type or name
+        virtual Callback
+        get_callback(const std::string& name)
+        {
+            for (auto&& [event, callback] : this->m_actions) {
+                if (event->get_name() == name) {
+                    return callback;
+                }
+            }
+        }
 
         // Listener functions
         // ==================
 
-        // Handles a distinct event
+        // Handles an event
         // sent by a bound dispatcher
+        // NOTE: Must be overriden
         virtual void
-        on_event();
+        on_event(const Event& event) = 0;
+
+        // Handles an event
+        // sent by an external dispatcher
+        // NOTE: Must be overriden
+        virtual void
+        on_event(const Event& event, const Dispatcher& dispatcher) = 0;
 
         // Methods for debugging
         // =====================
+        std::string
+        to_string() const
+        {
+            std::vector<std::string> buffer;
+
+            buffer.push_back("Listener: \n");
+
+            for (auto it = this->m_actions.begin(); it != this->m_actions.end(); ++it) {
+                Event event = it->first;
+
+                std::string event_name = event->to_string();
+
+                usize index = std::distance(this->m_actions.begin(), it);
+
+                auto format = "\tEventID: %u -- [%s]\n";
+                auto size   = std::snprintf(nullptr, 0, format);
+
+                std::string output(size + 1, '\0');
+                std::sprintf(&output[0], format, index, event_name.c_str());
+
+                buffer.push_back(output);
+            }
+
+            std::ostringstream implode;
+            std::copy(buffer.begin(), buffer.end(), std::ostream_iterator<std::string>(implode, "\n"));
+
+            return implode.str();
+        }
+
+        friend inline std::ostream&
+        operator<<(std::ostream& os, const BaseListener& ls)
+        {
+            return os << ls.to_string();
+        }
 
         // Bound methods and variables
         // ===========================
         private:
         Dispatcher m_dispatcher;
+
+        std::map<Event, Callback> m_actions;
     };
 } // namespace EventSystem
