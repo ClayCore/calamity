@@ -90,7 +90,7 @@ namespace EventSystem
         {
             // clang-format off
             switch (this->m_type) {
-                case EventType::None:                   { return "None"; };
+                case EventType::None:                   { return "None";                };
                 // Window handling events
                 // =======================================================================
                 case EventType::WindowClose:            { return "WindowClose";         };
