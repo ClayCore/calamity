@@ -78,6 +78,8 @@ namespace EventSystem
         Event();
         Event(const EventType& type);
 
+        virtual ~Event() {}
+
         // ==== Accessors and mutators ==== //
         // ================================ //
         virtual const char*

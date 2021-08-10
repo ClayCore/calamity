@@ -19,6 +19,8 @@ namespace EventSystem
         BaseEmitter(Dispatcher& dispatcher);
         BaseEmitter(const std::vector<EventPtr>& events);
 
+        virtual ~BaseEmitter() {}
+
         // ==== Accessors and mutators ==== //
         // ================================ //
         virtual EventPtr

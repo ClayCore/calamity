@@ -1,10 +1,11 @@
 #pragma once
 
-#include "dispatcher.hpp"
 #include "event.hpp"
 
 namespace EventSystem
 {
+    class BaseDispatcher;
+
     class BaseListener
     {
         // ==== Utility typedefs ==== //
@@ -12,6 +13,8 @@ namespace EventSystem
         using EventPtr   = std::shared_ptr<Event>;
         using Dispatcher = std::shared_ptr<BaseDispatcher>;
         using Callback   = std::function<void()>;
+
+        virtual ~BaseListener() {}
 
         // ==== Constructors ==== //
         // ====================== //
@@ -50,7 +53,7 @@ namespace EventSystem
         friend inline std::ostream&
         operator<<(std::ostream& os, const BaseListener& ls)
         {
-            os << ls.to_string();
+            return os << ls.to_string();
         }
 
         // ==== Bound variables ==== //

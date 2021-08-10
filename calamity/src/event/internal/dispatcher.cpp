@@ -4,10 +4,7 @@ namespace EventSystem
 {
     // ==== Constructors ==== //
     // ====================== //
-    BaseDispatcher::BaseDispatcher()
-    {
-        this->m_listener = std::make_shared<BaseListener>();
-    }
+    BaseDispatcher::BaseDispatcher() {}
 
     BaseDispatcher::BaseDispatcher(Listener& listener)
     {
@@ -16,8 +13,7 @@ namespace EventSystem
 
     BaseDispatcher::BaseDispatcher(const std::vector<EventPtr>& events)
     {
-        this->m_listener = std::make_shared<BaseListener>();
-        this->m_events   = events;
+        this->m_events = events;
     }
 
     // ==== Accessors and mutators ==== //

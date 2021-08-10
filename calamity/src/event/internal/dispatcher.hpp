@@ -19,6 +19,8 @@ namespace EventSystem
         BaseDispatcher(Listener& listener);
         BaseDispatcher(const std::vector<EventPtr>& events);
 
+        virtual ~BaseDispatcher() {}
+
         // ==== Accessors and mutators ==== //
         // ================================ //
         virtual EventPtr
