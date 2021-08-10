@@ -5,6 +5,7 @@ import os
 import shlex
 import subprocess as sp
 import sys
+import hashlib
 
 from flatdict import FlatDict # type: ignore
 import yaml # type: ignore
@@ -314,8 +315,12 @@ class Builder(Config):
         for source in self.build_files['sources']:
             src = source.name
 
+            # Get hash of the file
+            src_hash_raw = str(source).encode('utf-8')
+            src_hash = hashlib.md5(src_hash_raw).hexdigest()[:8]
+
             # Get destination file path
-            obj = self.dirs['build'] / f"{src.split('.')[0]}.o"
+            obj = self.dirs['build'] / f"{src.split('.')[0]}-{src_hash}.o"
 
             # Prepare vars for compiling
             includes = ' '.join(self.includes)
