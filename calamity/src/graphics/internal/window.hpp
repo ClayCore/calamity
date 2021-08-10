@@ -10,47 +10,6 @@
 
 namespace GFX
 {
-    // ==== Main window structure ==== //
-    // =============================== //
-    struct Window {
-        // ==== Constructors ==== //
-        // ====================== //
-        Window(u32 width, u32 height);
-
-        ~Window();
-
-        // ==== Window functions ==== //
-        // ========================== //
-        void
-        init_glfw();
-
-        void
-        init_glad();
-
-        void
-        create_window();
-
-        bool
-        on_update();
-
-        void
-        draw();
-
-        bool
-        process_input();
-
-        static void
-        frame_buffer_callback(GLFWwindow* window, i32 width, i32 height);
-
-        // ==== Properties ==== //
-        // ==================== //
-        u32 m_width;
-        u32 m_height;
-
-        Handler::WindowHandler      m_handler;
-        std::unique_ptr<GLFWwindow> m_window;
-    };
-
     namespace Handler
     {
         using namespace EventSystem;
@@ -162,4 +121,45 @@ namespace GFX
             std::unique_ptr<Listener>   m_listener;
         };
     } // namespace Handler
+
+    // ==== Main window structure ==== //
+    // =============================== //
+    struct Window {
+        // ==== Constructors ==== //
+        // ====================== //
+        Window(u32 width, u32 height);
+
+        ~Window();
+
+        // ==== Window functions ==== //
+        // ========================== //
+        void
+        init_glfw();
+
+        void
+        init_glad();
+
+        void
+        create_window();
+
+        bool
+        on_update();
+
+        void
+        draw();
+
+        bool
+        process_input();
+
+        static void
+        frame_buffer_callback(GLFWwindow* window, i32 width, i32 height);
+
+        // ==== Properties ==== //
+        // ==================== //
+        u32 m_width;
+        u32 m_height;
+
+        Handler::WindowHandler      m_handler;
+        std::unique_ptr<GLFWwindow> m_window;
+    };
 } // namespace GFX

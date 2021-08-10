@@ -19,7 +19,7 @@ namespace EventSystem
     // ==== Accessors and mutators ==== //
     // ================================ //
     auto
-    BaseListener::get_callback(const EventPtr& event) const -> Callback
+    BaseListener::get_callback(const EventPtr& event) -> Callback
     {
         return this->m_actions[event];
     }

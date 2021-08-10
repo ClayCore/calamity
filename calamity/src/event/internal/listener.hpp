@@ -14,8 +14,6 @@ namespace EventSystem
         using Dispatcher = std::shared_ptr<BaseDispatcher>;
         using Callback   = std::function<void()>;
 
-        virtual ~BaseListener() {}
-
         // ==== Constructors ==== //
         // ====================== //
         public:
@@ -23,10 +21,12 @@ namespace EventSystem
         BaseListener(Dispatcher& dispatcher);
         BaseListener(const std::map<EventPtr, Callback>& actions);
 
+        virtual ~BaseListener() {}
+
         // ==== Accesors and mutators ==== //
         // =============================== //
         virtual Callback
-        get_callback(const EventPtr& event) const;
+        get_callback(const EventPtr& event);
 
         virtual Callback
         get_callback(const std::string& name) const;

@@ -4,6 +4,6 @@
 
 namespace GFX
 {
-    static void
+    void
     R_Init();
 } // namespace GFX
