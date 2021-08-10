@@ -122,6 +122,23 @@ namespace GFX
         };
     } // namespace Handler
 
+    // ==== Window utilities ==== //
+    // ========================== //
+    namespace Utils
+    {
+        /* =========================================== **
+        ** Supply the smart pointer to `GLFWwindow`    **
+        ** with a method to destroy itself             **
+        ** =========================================== */
+        struct DestroyWindowPtr {
+            void
+            operator()(GLFWwindow* ptr)
+            {
+                glfwDestroyWindow(ptr);
+            }
+        };
+    } // namespace Utils
+
     // ==== Main window structure ==== //
     // =============================== //
     struct Window {
@@ -159,7 +176,10 @@ namespace GFX
         u32 m_width;
         u32 m_height;
 
-        Handler::WindowHandler      m_handler;
-        std::unique_ptr<GLFWwindow> m_window;
+        // Main handler object
+        Handler::WindowHandler m_handler;
+
+        // Main glfw window
+        std::unique_ptr<GLFWwindow, Utils::DestroyWindowPtr> m_window;
     };
 } // namespace GFX

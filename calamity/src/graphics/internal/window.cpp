@@ -54,7 +54,7 @@ namespace GFX
             return;
         }
 
-        this->m_window = std::make_unique<GLFWwindow>(win_ptr);
+        this->m_window = std::make_unique<GLFWwindow, Utils::DestroyWindowPtr>(win_ptr);
 
         glfwMakeContextCurrent(this->m_window.get());
         glfwSetFramebufferSizeCallback(this->m_window.get(), frame_buffer_callback);
