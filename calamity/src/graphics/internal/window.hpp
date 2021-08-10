@@ -1,6 +1,6 @@
 #pragma once
 
-#include "event/event.hpp"
+#include "event/event_system.hpp"
 #include "zcommon.hpp"
 
 namespace GFX
@@ -21,8 +21,8 @@ namespace GFX
         void
         on_update()
         {
-            auto                       event        = std::make_unique<BaseEvent>(EventType::EngineUpdate);
-            std::shared_ptr<BaseEvent> shared_event = std::move(event);
+            auto                   event        = std::make_unique<Event>(EventType::EngineUpdate);
+            std::shared_ptr<Event> shared_event = std::move(event);
 
             m_handler.m_emitter->emit(shared_event);
         }
@@ -37,7 +37,7 @@ namespace GFX
     {
         // Utility typedefs
         // ================
-        using Event    = std::shared_ptr<BaseEvent>;
+        using EventPtr = std::shared_ptr<Event>;
         using DispPtr  = std::shared_ptr<BaseDispatcher>;
         using Callback = std::function<void()>;
 
@@ -47,7 +47,7 @@ namespace GFX
         // List of events to be handled
 
         // clang-format off
-        const BaseEvent m_EventList[7] { 
+        const Event m_EventList[7] { 
             { EventType::WindowClose        },
             { EventType::WindowFocus        },
             { EventType::WindowLostFocus    },
@@ -61,25 +61,25 @@ namespace GFX
         // Specialized emitter
         // for releasing window events
         // ===========================
-        class Emitter : BaseEmitter
+        class Emitter : public BaseEmitter
         {
         };
 
         // Specialized dispatcher
         // for processing emitted events
         // =============================
-        class Dispatcher : BaseDispatcher
+        class Dispatcher : public BaseDispatcher
         {
         };
 
         // Specialized listener
         // calls functions based on event
         // ==============================
-        class Listener : BaseListener
+        class Listener : public BaseListener
         {
             public:
             void
-            on_event(const WindowHandler::Event& event) override
+            on_event(const WindowHandler::EventPtr& event) override
             {
                 auto functor = this->m_actions[event];
 
@@ -87,7 +87,7 @@ namespace GFX
             }
 
             void
-            on_event(const WindowHandler::Event& event, const WindowHandler::DispPtr& dispatcher) override
+            on_event(const WindowHandler::EventPtr& event, const WindowHandler::DispPtr& dispatcher)
             {
                 // TODO: switch-case event
                 // and send event back into dispatcher.
@@ -95,7 +95,7 @@ namespace GFX
 
             WindowHandler::DispPtr m_dispatcher;
 
-            std::map<WindowHandler::Event, WindowHandler::Callback> m_actions;
+            std::map<WindowHandler::EventPtr, WindowHandler::Callback> m_actions;
         };
 
         // Constructors

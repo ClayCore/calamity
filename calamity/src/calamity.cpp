@@ -1,6 +1,4 @@
-#include "event/event.hpp"
 #include "graphics/manager.hpp"
-#include "yaml/manager.hpp"
 #include "zcommon.hpp"
 
 static void
