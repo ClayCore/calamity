@@ -98,7 +98,8 @@ namespace EventSystem
 
         // Implode the buffer into a single string
         std::ostringstream implode;
-        std::copy(buffer.begin(), buffer.end(), std::ostream_iterator<std::string>(implode, "\n"));
+        std::copy(buffer.begin(), buffer.end(),
+                  std::ostream_iterator<std::string>(implode, "\n"));
 
         return implode.str();
     }

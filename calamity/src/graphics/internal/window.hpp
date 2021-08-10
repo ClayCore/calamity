@@ -82,7 +82,8 @@ namespace GFX
                 on_event(const WindowHandler::EventPtr& event) override;
 
                 void
-                on_event(const WindowHandler::EventPtr& event, const WindowHandler::DispPtr& dispatcher) override;
+                on_event(const WindowHandler::EventPtr& event,
+                         const WindowHandler::DispPtr&  dispatcher) override;
 
                 // ==== Bound variables ==== //
                 // ========================= //

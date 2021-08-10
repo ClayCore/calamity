@@ -46,7 +46,8 @@ namespace GFX
     void
     Window::create_window()
     {
-        auto win_ptr = glfwCreateWindow(this->m_width, this->m_height, "test", NULL, NULL);
+        auto win_ptr =
+            glfwCreateWindow(this->m_width, this->m_height, "test", NULL, NULL);
 
         if (win_ptr == NULL) {
             std::cerr << "Failed to create GLFW window" << std::endl;
@@ -54,7 +55,7 @@ namespace GFX
             return;
         }
 
-        this->m_window = std::make_unique<GLFWwindow, Utils::DestroyWindowPtr>(win_ptr);
+        this->m_window = std::unique_ptr<GLFWwindow, Utils::DestroyWindowPtr>(win_ptr);
 
         glfwMakeContextCurrent(this->m_window.get());
         glfwSetFramebufferSizeCallback(this->m_window.get(), frame_buffer_callback);
@@ -106,5 +107,16 @@ namespace GFX
 namespace GFX::Handler
 {
     using namespace EventSystem;
+
+    void
+    WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event)
+    {
+    }
+
+    void
+    WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event,
+                                      const WindowHandler::DispPtr&  dispatcher)
+    {
+    }
 
 } // namespace GFX::Handler
