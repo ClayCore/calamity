@@ -18,6 +18,10 @@ project:
         - 'opengl/glad/glad.c'
         - 'graphics/manager.cpp'
         - 'utils/file.cpp'
+        - 'event/internal/event.cpp'
+        - 'event/internal/emitter.cpp'
+        - 'event/internal/dispatcher.cpp'
+        - 'event/internal/listener.cpp'
         # - 'yaml/manager.cpp'
       include:
         - 'zcommon.hpp'
