@@ -16,6 +16,7 @@
 -   [ ] Make the output of the tool neater.
 -   [ ] Refactor into smaller types and functions and make it more readable.
 -   [ ] Add support for building source files with the project (like `glad`) and not just static/shared libraries.
+-   [ ] Add hash of filename to prevent name collisions when building and linking object files.
 
 ## tools/map-editor
 
