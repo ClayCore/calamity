@@ -1,15 +1,5 @@
-#include "event/event.hpp"
 #include "graphics/manager.hpp"
-#include "yaml/manager.hpp"
 #include "zcommon.hpp"
-
-static void
-run(bool& running)
-{
-    while (running) {
-        // Update window
-    }
-}
 
 i32
 main()

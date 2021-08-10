@@ -16,12 +16,13 @@ project:
       sources:
         - 'calamity.cpp'
         - 'opengl/glad/glad.c'
+        - 'event/internal/dispatcher.cpp'
+        - 'event/internal/emitter.cpp'
+        - 'event/internal/event.cpp'
+        - 'event/internal/listener.cpp'
+        - 'graphics/internal/window.cpp'
         - 'graphics/manager.cpp'
         - 'utils/file.cpp'
-        - 'event/internal/event.cpp'
-        - 'event/internal/emitter.cpp'
-        - 'event/internal/dispatcher.cpp'
-        - 'event/internal/listener.cpp'
         # - 'yaml/manager.cpp'
       include:
         - 'zcommon.hpp'

@@ -1,10 +1,11 @@
 #pragma once
 
-#include "dispatcher.hpp"
 #include "event.hpp"
 
 namespace EventSystem
 {
+    class BaseDispatcher;
+
     class BaseListener
     {
         // ==== Utility typedefs ==== //
@@ -20,10 +21,12 @@ namespace EventSystem
         BaseListener(Dispatcher& dispatcher);
         BaseListener(const std::map<EventPtr, Callback>& actions);
 
+        virtual ~BaseListener() {}
+
         // ==== Accesors and mutators ==== //
         // =============================== //
         virtual Callback
-        get_callback(const EventPtr& event) const;
+        get_callback(const EventPtr& event);
 
         virtual Callback
         get_callback(const std::string& name) const;
@@ -50,7 +53,7 @@ namespace EventSystem
         friend inline std::ostream&
         operator<<(std::ostream& os, const BaseListener& ls)
         {
-            os << ls.to_string();
+            return os << ls.to_string();
         }
 
         // ==== Bound variables ==== //

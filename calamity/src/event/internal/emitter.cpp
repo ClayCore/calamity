@@ -4,10 +4,7 @@ namespace EventSystem
 {
     // ==== Constructors ==== //
     // ====================== //
-    BaseEmitter::BaseEmitter()
-    {
-        this->m_dispatcher = std::make_shared<BaseDispatcher>();
-    }
+    BaseEmitter::BaseEmitter() {}
 
     BaseEmitter::BaseEmitter(Dispatcher& dispatcher)
     {
@@ -16,8 +13,7 @@ namespace EventSystem
 
     BaseEmitter::BaseEmitter(const std::vector<EventPtr>& events)
     {
-        this->m_dispatcher = std::make_shared<BaseDispatcher>();
-        this->m_events     = events;
+        this->m_events = events;
     }
 
     // ==== Accessors and mutators ==== //
