@@ -19,16 +19,16 @@ namespace GFX
         // ============================== //
         class WindowHandler
         {
-            // ---- Utility typedefs ---- //
+            //  Utility typedefs          //
             // -------------------------- //
             using EventPtr = std::shared_ptr<Event>;
             using DispPtr  = std::shared_ptr<BaseDispatcher>;
             using Callback = std::function<void()>;
 
-            // ---- Bound structures ---- //
+            // Bound structures           //
             // -------------------------- //
 
-            // ---- List of events to be handled ---- //
+            //  List of events to be handled          //
             // -------------------------------------- //
             // clang-format off
             const Event m_EventList[7] { 
@@ -111,6 +111,9 @@ namespace GFX
                 this->m_listener   = std::make_unique<Listener>();
             }
 
+            // Accessors and mutators           //
+            // -------------------------------- //
+
             // Handling functions           //
             // ---------------------------- //
             void
@@ -175,13 +178,13 @@ namespace GFX
         void
         close_window();
 
-        bool
+        void
         on_update();
 
         void
         draw();
 
-        bool
+        void
         process_input();
 
         static void
