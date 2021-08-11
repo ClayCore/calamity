@@ -87,6 +87,7 @@ namespace GFX
     {
         if (glfwGetKey(this->m_window.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             // TODO: Emit 'WindowClose' event
+            glfwSetWindowShouldClose(this->m_window.get(), true);
             return false;
         } else {
             return true;

@@ -8,11 +8,11 @@ namespace GFX
         Window window(800, 600);
 
         window.init_glfw();
-        window.init_glad();
         window.create_window();
+        window.init_glad();
 
         bool running = true;
-        while (running) {
+        while (running && !glfwWindowShouldClose(window.m_window.get())) {
             running = window.on_update();
         }
     }
