@@ -2,8 +2,8 @@
 
 namespace EventSystem
 {
-    // ==== Constructors ==== //
-    // ====================== //
+    // Constructors           //
+    // ---------------------- //
     BaseDispatcher::BaseDispatcher() {}
 
     BaseDispatcher::BaseDispatcher(Listener& listener)
@@ -16,8 +16,8 @@ namespace EventSystem
         this->m_events = events;
     }
 
-    // ==== Accessors and mutators ==== //
-    // ================================ //
+    // Accessors and mutators           //
+    // -------------------------------- //
     auto
     BaseDispatcher::get_event(usize index) const -> EventPtr
     {
@@ -54,8 +54,8 @@ namespace EventSystem
         this->m_listener = listener;
     }
 
-    // ==== Dispatcher functions ==== //
-    // ============================== //
+    // Dispatcher functions           //
+    // ------------------------------ //
     void
     BaseDispatcher::dispatch(const EventPtr& event)
     {
@@ -68,8 +68,8 @@ namespace EventSystem
         listener->on_event(event);
     }
 
-    // ==== Debugging methods ==== //
-    // =========================== //
+    // Debugging methods           //
+    // --------------------------- //
     std::string
     BaseDispatcher::to_string() const
     {

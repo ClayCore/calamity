@@ -7,13 +7,13 @@ namespace EventSystem
 {
     class BaseDispatcher
     {
-        // ==== Utility typedefs ==== //
-        // ========================== //
+        // Utility typedefs           //
+        // -------------------------- //
         using EventPtr = std::shared_ptr<Event>;
         using Listener = std::shared_ptr<BaseListener>;
 
-        // ==== Constructors ==== //
-        // ====================== //
+        // Constructors           //
+        // ---------------------- //
         public:
         BaseDispatcher();
         BaseDispatcher(Listener& listener);
@@ -21,8 +21,8 @@ namespace EventSystem
 
         virtual ~BaseDispatcher() {}
 
-        // ==== Accessors and mutators ==== //
-        // ================================ //
+        // Accessors and mutators           //
+        // -------------------------------- //
         virtual EventPtr
         get_event(usize index) const;
 
@@ -38,16 +38,16 @@ namespace EventSystem
         virtual void
         bind(const Listener& listener);
 
-        // ==== Dispatcher functions ==== //
-        // ============================== //
+        // Dispatcher functions           //
+        // ------------------------------ //
         virtual void
         dispatch(const EventPtr& event);
 
         virtual void
         dispatch(const EventPtr& event, const Listener& listener);
 
-        // ==== Debugging methods ==== //
-        // =========================== //
+        // Debugging methods           //
+        // --------------------------- //
         std::string
         to_string() const;
 
@@ -57,8 +57,8 @@ namespace EventSystem
             return os << ds.to_string();
         }
 
-        // ==== Bound variables ==== //
-        // ========================= //
+        // Bound variables           //
+        // ------------------------- //
         private:
         Listener m_listener;
 

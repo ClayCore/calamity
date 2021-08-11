@@ -4,33 +4,34 @@
 
 namespace EventSystem
 {
-    // List of predefined events    //
-    // for use with the "underived" //
-    // pointer to a base class.     //
-    // ============================ //
+    /* --------------------------------- **
+    ** List of predefined events for use **
+    ** with the derived and base classes **
+    ** for event handling                **
+    ** --------------------------------- */
     enum class EventType : u16 {
         None = 0,
-        // ==== Window handling events ==== //
-        // ================================ //
+        // Window handling events           //
+        // -------------------------------- //
         WindowClose,
         WindowResize,
         WindowFocus,
         WindowLostFocus,
         WindowMoved,
 
-        // ==== Resource management ======= //
-        // ================================ //
+        // Resource management              //
+        // -------------------------------- //
         LoadResource,
         FreeResource,
 
-        // ==== Engine internals ========== //
-        // ================================ //
+        // Engine internals                 //
+        // -------------------------------- //
         EngineTick,
         EngineUpdate,
         EngineRender,
 
-        // ==== Input handling ============ //
-        // ================================ //
+        // Input handling                   //
+        // -------------------------------- //
         KeyPressed,
         KeyReleased,
         MouseButtonPressed,
@@ -38,16 +39,18 @@ namespace EventSystem
         MouseMoved,
         MouseScrolled,
 
-        // ==== Custom events ============= //
-        // ================================ //
+        // Custom events                    //
+        // -------------------------------- //
         Custom = 0xFF
     };
 
-    // List of event categories
-    // for predefined events.
+    /* --------------------------------- **
+    ** List of categories for use with   **
+    ** predefined events                 **
+    ** --------------------------------- */
     enum class EventCategory : u8 {
-        // ==== Used only for initialization ==== //
-        // ====================================== //
+        // Used only for initialization           //
+        // -------------------------------------- //
         None = 0,
 
         // The following types correspond
@@ -57,20 +60,18 @@ namespace EventSystem
         Engine,
         Input,
 
-        // ==== For custom events ==== //
-        // =========================== //
+        // For custom events           //
+        // --------------------------- //
         Custom = 0xFF
     };
 
-    // Basic event class                  //
-    // It's possible to derive it for use //
-    // with custom event types            //
-    // and categories                     //
-    // ================================== //
+    /* ----------------------------------- **
+    ** Derive this class for custom events **
+    ** ----------------------------------- */
     class Event
     {
-        // ==== Constructors ==== //
-        // ====================== //
+        // Constructors           //
+        // ---------------------- //
 
         // NOTE: for predefined event types
         // use only explicit type constructors
@@ -80,8 +81,8 @@ namespace EventSystem
 
         virtual ~Event() {}
 
-        // ==== Accessors and mutators ==== //
-        // ================================ //
+        // Accessors and mutators           //
+        // -------------------------------- //
         virtual const char*
         get_name() const;
 
@@ -100,8 +101,8 @@ namespace EventSystem
         virtual void
         set_name(const std::string& name);
 
-        // ==== Debugging methods ==== //
-        // =========================== //
+        // Debugging methods           //
+        // --------------------------- //
         std::string
         to_string() const;
 
@@ -111,8 +112,8 @@ namespace EventSystem
             return os << ev.to_string();
         }
 
-        // ==== Bound variables ==== //
-        // ========================= //
+        // Bound variables           //
+        // ------------------------- //
         EventType     m_type;
         EventCategory m_category;
         std::string   m_name;

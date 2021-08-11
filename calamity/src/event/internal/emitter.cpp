@@ -2,8 +2,8 @@
 
 namespace EventSystem
 {
-    // ==== Constructors ==== //
-    // ====================== //
+    // Constructors           //
+    // ---------------------- //
     BaseEmitter::BaseEmitter() {}
 
     BaseEmitter::BaseEmitter(Dispatcher& dispatcher)
@@ -16,8 +16,8 @@ namespace EventSystem
         this->m_events = events;
     }
 
-    // ==== Accessors and mutators ==== //
-    // ================================ //
+    // Accessors and mutators           //
+    // -------------------------------- //
     auto
     BaseEmitter::get_event(usize index) const -> EventPtr
     {
@@ -54,8 +54,8 @@ namespace EventSystem
         this->m_dispatcher = dispatcher;
     }
 
-    // ==== Emitter functions ==== //
-    // =========================== //
+    // Emitter functions           //
+    // --------------------------- //
     void
     BaseEmitter::emit(const EventPtr& event)
     {
@@ -68,8 +68,8 @@ namespace EventSystem
         dispatcher->dispatch(event);
     }
 
-    // ==== Debugging methods ==== //
-    // =========================== //
+    // Debugging methods           //
+    // --------------------------- //
     std::string
     BaseEmitter::to_string() const
     {
