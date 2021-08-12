@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "utils/hash.hpp"
 
 // =============================== //
 // ==== Window implementation ==== //

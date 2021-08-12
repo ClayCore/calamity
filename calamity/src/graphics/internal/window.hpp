@@ -1,7 +1,6 @@
 #pragma once
 
 #include "event/event_system.hpp"
-#include "utils/hash.hpp"
 #include "zcommon.hpp"
 
 // Include glad first
