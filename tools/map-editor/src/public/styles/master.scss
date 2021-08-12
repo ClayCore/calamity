@@ -1,20 +1,19 @@
-// ====================
-// = Global styles ====
-// ====================
+// Global styles           //
+// ----------------------- //
 @use 'global/reset';
 @use 'global/variables' as *;
 @use 'global/utils' as *;
 @use 'global/fonts';
 
-// =======================
-// = Component styles ====
-// =======================
+// Component styles           //
+// -------------------------- //
 @use 'partials/topbar.scss';
 @use 'partials/status.scss';
+@use 'partials/sidebar.scss';
+@use 'partials/toolbar.scss';
 
-// ===========================
-// = Main page stylesheet ====
-// ===========================
+// Main page stylesheet           //
+// ------------------------------ //
 div#wrapper,
 body,
 html {

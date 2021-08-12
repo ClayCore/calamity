@@ -24,7 +24,7 @@ div#topbar {
         flex-direction: row;
         justify-content: flex-start;
 
-        width: 50%;
+        width: 40%;
         height: 100%;
 
         .button {
@@ -40,6 +40,56 @@ div#topbar {
 
             border: 2px solid rgba(0, 0, 0, 0);
             border-radius: 3px;
+
+            white-space: nowrap;
+
+            &:hover {
+                cursor: pointer;
+
+                border: 2px solid $accent;
+                border-radius: 3px;
+
+                color: rgb(255, 255, 255);
+                background-color: rgba($accent-fg, 0.3);
+            }
+        }
+    }
+
+    nav.quick-access {
+        @extend %center-container;
+
+        position: relative;
+
+        flex-direction: row;
+        justify-content: flex-start;
+
+        width: 60%;
+        height: 100%;
+
+        .button {
+            @extend %center-container;
+
+            width: calc(#{$common-icon-size} * 2);
+            height: 100%;
+
+            padding-left: 1vmax;
+            padding-right: 1vmax;
+
+            text-shadow: 2px 2px 2px $hard-shadow;
+
+            border: 2px solid rgba(0, 0, 0, 0);
+            border-radius: 3px;
+
+            white-space: nowrap;
+
+            img {
+                position: relative;
+
+                width: $common-icon-size;
+                height: $common-icon-size;
+
+                padding: 3px;
+            }
 
             &:hover {
                 cursor: pointer;
