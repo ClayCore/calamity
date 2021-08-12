@@ -20,11 +20,21 @@ html(lang='en')
             noscript
                 h1 This map editor will not function without JavaScript support!
 
+            //- Topbar
             include partials/topbar
 
+            //- Page content
             #base
+                //- Toolbar
+                include partials/toolbar
+
+                //- 2D/3D render viewport
                 block viewport
 
+                //- Sidebar
+                include partials/sidebar
+
+            //- Footer and status bar
             include  partials/status
 
         script(src='/scripts/main.js', type='module')
