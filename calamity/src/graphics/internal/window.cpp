@@ -14,6 +14,7 @@ namespace GFX
         this->m_width  = width;
         this->m_height = height;
 
+        // Initialize the listener with a close window event functor
         auto event      = std::make_unique<Event>(EventType::WindowClose);
         auto close_func = [&]() { this->close_window(); };
 
@@ -80,43 +81,50 @@ namespace GFX
         this->send_update();
     }
 
+    // Close the window
     void
     Window::close_window()
     {
         glfwSetWindowShouldClose(this->m_window.get(), true);
     }
 
-    bool
+    void
     Window::on_update()
     {
-        this->send_update();
+        while (!glfwWindowShouldClose(this->m_window.get())) {
+            // Send an update request
+            this->send_update();
 
-        bool result = this->process_input();
+            // Process all the inputs
+            this->process_input();
 
-        this->draw();
+            // Draw the window
+            this->draw();
 
-        glfwSwapBuffers(this->m_window.get());
-        glfwPollEvents();
-
-        return result;
+            // Swap buffers and poll for more input
+            glfwSwapBuffers(this->m_window.get());
+            glfwPollEvents();
+        }
     }
 
     void
     Window::draw()
     {
+        // TODO: Render
+        // Clear the screen
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
     // Handles input
-    bool
+    void
     Window::process_input()
     {
         if (glfwGetKey(this->m_window.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            // Send close window event to the event handler.
+            // This sets the window close flag to true
             auto event = std::make_unique<Event>(EventType::WindowClose);
-            this->m_handler.m_emitter->emit(std::move(event));
-
-            glfwSetWindowShouldClose(this->m_window.get(), true);
+            this->m_handler.emit_event(std::move(event));
         }
     }
 
@@ -135,16 +143,49 @@ namespace GFX::Handler
 {
     using namespace EventSystem;
 
+    // Constructors           //
+    // ---------------------- //
+    WindowHandler::WindowHandler()
+    {
+        this->m_emitter    = std::make_shared<Emitter>();
+        this->m_dispatcher = std::make_shared<Dispatcher>();
+        this->m_listener   = std::make_shared<Listener>();
+
+        // Bind all objects to themselves
+        this->m_emitter->bind(this->m_dispatcher);
+        this->m_dispatcher->bind(this->m_listener);
+        this->m_listener->bind(this->m_dispatcher);
+    }
+
+    // Accessors and mutators           //
+    // -------------------------------- //
+    auto
+    WindowHandler::get_functor(const EventPtr& event) -> Callback
+    {
+        return this->m_listener->get_callback(event->get_name());
+    }
+
+    // Handling functions           //
+    // ---------------------------- //
     void
     WindowHandler::emit_event(const WindowHandler::EventPtr& event)
     {
         this->m_emitter->emit(event);
     }
 
+    // Emitter implementation                  //
+    // --------------------------------------- //
+
+    // Dispatcher implementation               //
+    // --------------------------------------- //
+
+    // Listener implementation                 //
+    // --------------------------------------- //
     void
     WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event)
     {
-        switch (H_GetHash(event->get_name())) {
+        auto event_name = H_GetHash(event->get_name());
+        switch (event_name) {
             case "EngineUpdate"_hash: {
                 // Call functor and dispatch next update event
                 this->m_actions[event]();
@@ -152,6 +193,7 @@ namespace GFX::Handler
                 this->m_dispatcher->dispatch(event);
             } break;
             case "WindowClose"_hash: {
+                // Dispatch the functor immediately
                 this->m_actions[event]();
             } break;
             default: {

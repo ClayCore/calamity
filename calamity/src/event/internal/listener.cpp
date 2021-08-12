@@ -2,8 +2,8 @@
 
 namespace EventSystem
 {
-    // ==== Constructors ==== //
-    // ====================== //
+    // Constructors           //
+    // ---------------------- //
     BaseListener::BaseListener() {}
 
     BaseListener::BaseListener(Dispatcher& dispatcher)
@@ -16,8 +16,8 @@ namespace EventSystem
         this->m_actions = actions;
     }
 
-    // ==== Accessors and mutators ==== //
-    // ================================ //
+    // Accessors and mutators           //
+    // -------------------------------- //
     auto
     BaseListener::get_callback(const EventPtr& event) -> Callback
     {
@@ -46,8 +46,14 @@ namespace EventSystem
         this->m_actions.emplace(event, cb);
     }
 
-    // ==== Debugging methods ==== //
-    // =========================== //
+    void
+    BaseListener::bind(const Dispatcher& dispatcher)
+    {
+        this->m_dispatcher = dispatcher;
+    }
+
+    // Debugging methods           //
+    // --------------------------- //
     std::string
     BaseListener::to_string() const
     {

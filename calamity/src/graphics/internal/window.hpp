@@ -19,16 +19,16 @@ namespace GFX
         // ============================== //
         class WindowHandler
         {
-            // ---- Utility typedefs ---- //
+            //  Utility typedefs          //
             // -------------------------- //
             using EventPtr = std::shared_ptr<Event>;
             using DispPtr  = std::shared_ptr<BaseDispatcher>;
             using Callback = std::function<void()>;
 
-            // ---- Bound structures ---- //
+            // Bound structures           //
             // -------------------------- //
 
-            // ---- List of events to be handled ---- //
+            //  List of events to be handled          //
             // -------------------------------------- //
             // clang-format off
             const Event m_EventList[7] { 
@@ -42,9 +42,9 @@ namespace GFX
             };
             // clang-format on
 
-            // Specialized emitter                   //
-            // for releasing window events           //
-            // ------------------------------------- //
+            // Specialized emitter                     //
+            // for releasing window events             //
+            // --------------------------------------- //
             class Emitter : public BaseEmitter
             {
                 /* --------------------------------------------------------- **
@@ -104,29 +104,26 @@ namespace GFX
             // Constructors           //
             // ---------------------- //
             public:
-            WindowHandler()
-            {
-                this->m_emitter    = std::make_unique<Emitter>();
-                this->m_dispatcher = std::make_unique<Dispatcher>();
-                this->m_listener   = std::make_unique<Listener>();
-            }
+            WindowHandler();
+
+            // Accessors and mutators           //
+            // -------------------------------- //
+            Callback
+            get_functor(const EventPtr& event);
 
             // Handling functions           //
             // ---------------------------- //
             void
             emit_event(const EventPtr& event);
 
-            Callback
-            get_functor(const EventPtr& event);
-
             // Debugging methods           //
             // --------------------------- //
 
             // Bound variables           //
             // ------------------------- //
-            std::unique_ptr<Emitter>    m_emitter;
-            std::unique_ptr<Dispatcher> m_dispatcher;
-            std::unique_ptr<Listener>   m_listener;
+            std::shared_ptr<Emitter>    m_emitter;
+            std::shared_ptr<Dispatcher> m_dispatcher;
+            std::shared_ptr<Listener>   m_listener;
         };
     } // namespace Handler
 
@@ -175,13 +172,13 @@ namespace GFX
         void
         close_window();
 
-        bool
+        void
         on_update();
 
         void
         draw();
 
-        bool
+        void
         process_input();
 
         static void

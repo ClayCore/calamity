@@ -4,18 +4,22 @@
 
 namespace EventSystem
 {
+    /* ------------------------------------------ **
+    ** Necessary forward declaration to prevent   **
+    ** Incomplete types due to smart pointers     **
+    /* ------------------------------------------ */
     class BaseDispatcher;
 
     class BaseListener
     {
-        // ==== Utility typedefs ==== //
-        // ========================== //
+        // Utility typedefs           //
+        // -------------------------- //
         using EventPtr   = std::shared_ptr<Event>;
         using Dispatcher = std::shared_ptr<BaseDispatcher>;
         using Callback   = std::function<void()>;
 
-        // ==== Constructors ==== //
-        // ====================== //
+        // Constructors           //
+        // ---------------------- //
         public:
         BaseListener();
         BaseListener(Dispatcher& dispatcher);
@@ -23,8 +27,8 @@ namespace EventSystem
 
         virtual ~BaseListener() {}
 
-        // ==== Accesors and mutators ==== //
-        // =============================== //
+        // Accessors and mutators           //
+        // -------------------------------- //
         virtual Callback
         get_callback(const EventPtr& event);
 
@@ -37,16 +41,19 @@ namespace EventSystem
         virtual void
         insert_event(const EventPtr& event, const Callback& cb);
 
-        // ==== Listener functions ==== //
-        // ============================ //
+        virtual void
+        bind(const Dispatcher& dispatcher);
+
+        // Listener functions           //
+        // ---------------------------- //
         virtual void
         on_event(const EventPtr& event) = 0;
 
         virtual void
         on_event(const EventPtr& event, const Dispatcher& dispatcher) = 0;
 
-        // ==== Debugging methods ==== //
-        // =========================== //
+        // Debugging methods           //
+        // --------------------------- //
         std::string
         to_string() const;
 
@@ -56,8 +63,8 @@ namespace EventSystem
             return os << ls.to_string();
         }
 
-        // ==== Bound variables ==== //
-        // ========================= //
+        // Bound variables           //
+        // ------------------------- //
         private:
         Dispatcher m_dispatcher;
 
