@@ -157,6 +157,9 @@ namespace GFX
         void
         send_update();
 
+        void
+        init_functors();
+
         // Window functions           //
         // -------------------------- //
         void

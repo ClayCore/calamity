@@ -15,11 +15,7 @@ namespace GFX
         this->m_width  = width;
         this->m_height = height;
 
-        // Initialize the listener with a close window event functor
-        auto event      = std::make_unique<Event>(EventType::WindowClose);
-        auto close_func = [&]() { this->close_window(); };
-
-        this->m_handler.m_listener->set_callback(std::move(event), close_func);
+        this->init_functors();
     }
 
     Window::~Window()
@@ -35,6 +31,20 @@ namespace GFX
         auto event = std::make_unique<Event>(EventType::EngineUpdate);
 
         this->m_handler.emit_event(std::move(event));
+    }
+
+    void
+    Window::init_functors()
+    {
+        auto event_cs   = std::make_unique<Event>(EventType::WindowClose);
+        auto close_func = [&]() { this->close_window(); };
+
+        this->m_handler.m_listener->set_callback(std::move(event_cs), close_func);
+
+        auto event_up    = std::make_unique<Event>(EventType::EngineUpdate);
+        auto update_func = [&]() { this->on_update(); };
+
+        this->m_handler.m_listener->set_callback(std::move(event_up), update_func);
     }
 
     // Window functions           //

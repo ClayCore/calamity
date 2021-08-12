@@ -7,7 +7,7 @@ namespace EventSystem
     /* ------------------------------------------ **
     ** Necessary forward declaration to prevent   **
     ** Incomplete types due to smart pointers     **
-    /* ------------------------------------------ */
+    ** ------------------------------------------ */
     class BaseDispatcher;
 
     class BaseListener
