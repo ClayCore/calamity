@@ -5,9 +5,9 @@
 //
 // Sorry in advance.
 
-// ==================================
-// = Utility types and functions ====
-// ==================================
+// Utility types and functions           //
+// ------------------------------------- //
+
 // Used for passing around references
 // to the context and canvas, also used
 // for passing around various configuration options
@@ -17,6 +17,12 @@ type CanvasRef = {
         object: HTMLCanvasElement;
         context: CanvasRenderingContext2D;
         dimensions: [number, number];
+    };
+    options: {
+        grid: {
+            cell_size: number;
+            color: string;
+        };
     };
 };
 
@@ -30,10 +36,46 @@ const _ = (what: string): NodeListOf<Element> => {
     return document.querySelectorAll(what);
 };
 
-// ==========================
-// = Main initialization ====
-// ==========================
+// Canvas manipulation           //
+// ----------------------------- //
+function createGrid(ref: CanvasRef) {
+    const [width, height] = ref.canvas.dimensions;
+    const { context } = ref.canvas;
+    const { cell_size, color } = ref.options.grid;
+
+    context.lineWidth = 1;
+    context.strokeStyle = color;
+
+    for (let x = cell_size; x < width; x += cell_size) {
+        context.moveTo(x, 0);
+        context.lineTo(x, height);
+    }
+
+    for (let y = cell_size; y < height; y += cell_size) {
+        context.moveTo(0, y);
+        context.lineTo(width, y);
+    }
+
+    context.stroke();
+    context.closePath();
+}
+
+// Main initialization           //
+// ----------------------------- //
 (function () {
+    const draw = (ref: CanvasRef) => {
+        const { context } = ref.canvas;
+
+        // Translate canvas to avoid blurry lines
+        context.translate(0.5, 0.5);
+
+        // Draw stuff here.
+        createGrid(ref);
+
+        // Shift the canvas back after drawing
+        context.translate(-0.5, -0.5);
+    };
+
     const init = () => {
         // Get the main canvas viewport and its context
         const viewport = $('canvas#viewport') as HTMLCanvasElement;
@@ -46,9 +88,9 @@ const _ = (what: string): NodeListOf<Element> => {
         viewport.width = width;
         viewport.height = height;
 
-        // Translate it before performing any drawing/manipulation
-        // to avoid blurry lines and weird scaling
-        context.translate(0.5, 0.5);
+        // Fill the canvas
+        context!.fillStyle = '#000000';
+        context!.fillRect(0, 0, width, height);
 
         const viewport_ref: CanvasRef = {
             canvas: {
@@ -56,10 +98,16 @@ const _ = (what: string): NodeListOf<Element> => {
                 context: context,
                 dimensions: [width, height],
             },
+            options: {
+                grid: {
+                    cell_size: 64,
+                    color: '#ffffff',
+                },
+            },
         };
 
-        // Retranslate it
-        context.translate(-0.5, -0.5);
+        // Draw to the canvas
+        draw(viewport_ref);
     };
 
     // Make sure the DOM is loaded before we try to manipulate it
