@@ -143,12 +143,44 @@ namespace GFX::Handler
 {
     using namespace EventSystem;
 
+    // Constructors           //
+    // ---------------------- //
+    WindowHandler::WindowHandler()
+    {
+        this->m_emitter    = std::make_shared<Emitter>();
+        this->m_dispatcher = std::make_shared<Dispatcher>();
+        this->m_listener   = std::make_shared<Listener>();
+
+        // Bind all objects to themselves
+        this->m_emitter->bind(this->m_dispatcher);
+        this->m_dispatcher->bind(this->m_listener);
+        this->m_listener->bind(this->m_dispatcher);
+    }
+
+    // Accessors and mutators           //
+    // -------------------------------- //
+    auto
+    WindowHandler::get_functor(const EventPtr& event) -> Callback
+    {
+        return this->m_listener->get_callback(event->get_name());
+    }
+
+    // Handling functions           //
+    // ---------------------------- //
     void
     WindowHandler::emit_event(const WindowHandler::EventPtr& event)
     {
         this->m_emitter->emit(event);
     }
 
+    // Emitter implementation                  //
+    // --------------------------------------- //
+
+    // Dispatcher implementation               //
+    // --------------------------------------- //
+
+    // Listener implementation                 //
+    // --------------------------------------- //
     void
     WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event)
     {
