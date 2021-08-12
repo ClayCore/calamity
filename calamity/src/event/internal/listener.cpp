@@ -46,6 +46,12 @@ namespace EventSystem
         this->m_actions.emplace(event, cb);
     }
 
+    void
+    BaseListener::bind(const Dispatcher& dispatcher)
+    {
+        this->m_dispatcher = dispatcher;
+    }
+
     // Debugging methods           //
     // --------------------------- //
     std::string

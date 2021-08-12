@@ -41,6 +41,9 @@ namespace EventSystem
         virtual void
         insert_event(const EventPtr& event, const Callback& cb);
 
+        virtual void
+        bind(const Dispatcher& dispatcher);
+
         // Listener functions           //
         // ---------------------------- //
         virtual void
