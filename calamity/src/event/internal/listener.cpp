@@ -11,7 +11,7 @@ namespace EventSystem
         this->m_dispatcher = dispatcher;
     }
 
-    BaseListener::BaseListener(const std::map<EventPtr, Callback>& actions)
+    BaseListener::BaseListener(const std::map<Event, Callback>& actions)
     {
         this->m_actions = actions;
     }
@@ -21,14 +21,14 @@ namespace EventSystem
     auto
     BaseListener::get_callback(const EventPtr& event) -> Callback
     {
-        return this->m_actions[event];
+        return this->m_actions[*event];
     }
 
     auto
     BaseListener::get_callback(const std::string& name) const -> Callback
     {
         for (auto&& [event, callback] : this->m_actions) {
-            if (event->get_name() == name) {
+            if (event.get_name() == name) {
                 return callback;
             }
         }
@@ -37,13 +37,13 @@ namespace EventSystem
     void
     BaseListener::set_callback(const EventPtr& event, const Callback& cb)
     {
-        this->m_actions[event] = cb;
+        this->m_actions[*event] = cb;
     }
 
     void
     BaseListener::insert_event(const EventPtr& event, const Callback& cb)
     {
-        this->m_actions.emplace(event, cb);
+        this->m_actions.emplace(*event, cb);
     }
 
     void
@@ -62,10 +62,10 @@ namespace EventSystem
 
         for (auto it = this->m_actions.begin(); it != this->m_actions.end(); ++it) {
             // Extract the event
-            EventPtr event = it->first;
+            Event event = it->first;
 
             // Fetch the name
-            std::string event_name = event->to_string();
+            std::string event_name = event.to_string();
 
             // Get the index of the current iteration
             usize index = std::distance(this->m_actions.begin(), it);

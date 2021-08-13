@@ -97,7 +97,7 @@ namespace GFX
                 ** this means for every distinct event              **
                 ** there is a callback function                     **
                 ** ------------------------------------------------ */
-                std::map<WindowHandler::EventPtr, WindowHandler::Callback> m_actions;
+                std::map<Event, WindowHandler::Callback> m_actions;
             };
 
             // Constructors           //

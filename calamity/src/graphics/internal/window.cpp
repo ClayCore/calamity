@@ -195,20 +195,9 @@ namespace GFX::Handler
     void
     WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event)
     {
-        auto event_name = H_GetHash(event->get_name());
-        switch (event_name) {
-            case "EngineUpdate"_hash: {
-                // Call functor and dispatch next update event
-                this->m_actions[event]();
-
-                this->m_dispatcher->dispatch(event);
-            } break;
-            case "WindowClose"_hash: {
-                // Dispatch the functor immediately
-                this->m_actions[event]();
-            } break;
-            default: {
-                // Unimplemented.
+        for (auto&& [key, callback] : this->m_actions) {
+            if (key == *event) {
+                callback();
             }
         }
     }
