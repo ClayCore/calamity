@@ -7,7 +7,7 @@ namespace EventSystem
     /* ------------------------------------------ **
     ** Necessary forward declaration to prevent   **
     ** Incomplete types due to smart pointers     **
-    /* ------------------------------------------ */
+    ** ------------------------------------------ */
     class BaseDispatcher;
 
     class BaseListener
@@ -23,7 +23,7 @@ namespace EventSystem
         public:
         BaseListener();
         BaseListener(Dispatcher& dispatcher);
-        BaseListener(const std::map<EventPtr, Callback>& actions);
+        BaseListener(const std::map<Event, Callback>& actions);
 
         virtual ~BaseListener() {}
 
@@ -68,6 +68,6 @@ namespace EventSystem
         private:
         Dispatcher m_dispatcher;
 
-        std::map<EventPtr, Callback> m_actions;
+        std::map<Event, Callback> m_actions;
     };
 } // namespace EventSystem

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "event/event_system.hpp"
-#include "utils/hash.hpp"
 #include "zcommon.hpp"
 
 // Include glad first
@@ -98,7 +97,7 @@ namespace GFX
                 ** this means for every distinct event              **
                 ** there is a callback function                     **
                 ** ------------------------------------------------ */
-                std::map<WindowHandler::EventPtr, WindowHandler::Callback> m_actions;
+                std::map<Event, WindowHandler::Callback> m_actions;
             };
 
             // Constructors           //
@@ -157,6 +156,9 @@ namespace GFX
         // --------------------------- //
         void
         send_update();
+
+        void
+        init_functors();
 
         // Window functions           //
         // -------------------------- //

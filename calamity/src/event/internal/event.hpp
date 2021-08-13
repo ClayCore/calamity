@@ -101,6 +101,20 @@ namespace EventSystem
         virtual void
         set_name(const std::string& name);
 
+        // Overloads           //
+        // ------------------- //
+        friend inline bool
+        operator==(const Event& lhs, const Event& rhs)
+        {
+            return lhs.get_name() == rhs.get_name();
+        }
+
+        friend inline bool
+        operator!=(const Event& lhs, const Event& rhs)
+        {
+            return !(lhs == rhs);
+        }
+
         // Debugging methods           //
         // --------------------------- //
         std::string
