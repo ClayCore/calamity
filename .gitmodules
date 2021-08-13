@@ -1,0 +1,3 @@
+[submodule "tools/py-build"]
+	path = tools/py-build
+	url = https://github.com/ClayCore/py-build
