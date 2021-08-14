@@ -69,6 +69,7 @@ project:
         lib: 'lib'
 
       header_only: false
+      system_wide: false
       libs:
         - 'libsfml-graphics.a'
         - 'libsfml-window.a'
@@ -84,6 +85,7 @@ project:
         lib: 'lib'
 
       header_only: false
+      system_wide: false
       libs:
         - 'libSDL2.a'
       args:
@@ -95,6 +97,7 @@ project:
         lib: 'lib'
 
       header_only: false
+      system_wide: false
       libs:
         - 'glew32.lib'
       args:
@@ -106,6 +109,7 @@ project:
         lib: 'lib'
 
       header_only: false
+      system_wide: false
       libs:
         - 'glfw3.dll'
       args:
@@ -118,6 +122,7 @@ project:
         include: 'include'
 
       header_only: true
+      system_wide: false
     yaml:
       enabled: false
       paths:
@@ -125,6 +130,7 @@ project:
         lib: 'lib'
 
       header_only: false
+      system_wide: false
       libs:
         - 'yaml.dll'
       args:
