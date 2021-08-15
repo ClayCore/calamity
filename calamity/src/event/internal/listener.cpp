@@ -6,7 +6,7 @@ namespace EventSystem
     // ---------------------- //
     BaseListener::BaseListener() {}
 
-    BaseListener::BaseListener(Dispatcher& dispatcher)
+    BaseListener::BaseListener(Ref<BaseDispatcher>& dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }
@@ -19,7 +19,7 @@ namespace EventSystem
     // Accessors and mutators           //
     // -------------------------------- //
     auto
-    BaseListener::get_callback(const EventPtr& event) -> Callback
+    BaseListener::get_callback(const Ref<Event>& event) -> Callback
     {
         return this->m_actions[*event];
     }
@@ -35,19 +35,19 @@ namespace EventSystem
     }
 
     void
-    BaseListener::set_callback(const EventPtr& event, const Callback& cb)
+    BaseListener::set_callback(const Ref<Event>& event, const Callback& cb)
     {
         this->m_actions[*event] = cb;
     }
 
     void
-    BaseListener::insert_event(const EventPtr& event, const Callback& cb)
+    BaseListener::insert_event(const Ref<Event>& event, const Callback& cb)
     {
         this->m_actions.emplace(*event, cb);
     }
 
     void
-    BaseListener::bind(const Dispatcher& dispatcher)
+    BaseListener::bind(const Ref<BaseDispatcher>& dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }

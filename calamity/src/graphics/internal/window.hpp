@@ -20,8 +20,6 @@ namespace GFX
         {
             //  Utility typedefs          //
             // -------------------------- //
-            using EventPtr = std::shared_ptr<Event>;
-            using DispPtr  = std::shared_ptr<BaseDispatcher>;
             using Callback = std::function<void()>;
 
             // Bound structures           //
@@ -80,15 +78,15 @@ namespace GFX
                 // ---------------------------- //
                 public:
                 void
-                on_event(const WindowHandler::EventPtr& event) override;
+                on_event(const Ref<Event>& event) override;
 
                 void
-                on_event(const WindowHandler::EventPtr& event,
-                         const WindowHandler::DispPtr&  dispatcher) override;
+                on_event(const Ref<Event>&          event,
+                         const Ref<BaseDispatcher>& dispatcher) override;
 
                 // Bound variables           //
                 // ------------------------- //
-                WindowHandler::DispPtr m_dispatcher;
+                Ref<Dispatcher> m_dispatcher;
 
                 /* ------------------------------------------------ **
                 ** Actions are mapped through a key-value pair      **
@@ -108,12 +106,12 @@ namespace GFX
             // Accessors and mutators           //
             // -------------------------------- //
             Callback
-            get_functor(const EventPtr& event);
+            get_functor(const Ref<Event>& event);
 
             // Handling functions           //
             // ---------------------------- //
             void
-            emit_event(const EventPtr& event);
+            emit_event(const Ref<Event>& event);
 
             // Debugging methods           //
             // --------------------------- //
@@ -174,6 +172,8 @@ namespace GFX
         void
         close_window();
 
+        // GLFW functions           //
+        // ------------------------ //
         void
         on_update();
 
@@ -190,6 +190,10 @@ namespace GFX
         // -------------------- //
         u32 m_width;
         u32 m_height;
+
+        std::string m_title;
+
+        bool m_vsync;
 
         // Main handler object
         Handler::WindowHandler m_handler;

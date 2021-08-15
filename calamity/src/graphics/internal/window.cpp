@@ -14,6 +14,8 @@ namespace GFX
     {
         this->m_width  = width;
         this->m_height = height;
+        this->m_title  = "Calamity v0.1.0 alpha";
+        this->m_vsync  = false;
 
         this->init_functors();
     }
@@ -28,7 +30,7 @@ namespace GFX
     void
     Window::send_update()
     {
-        auto event = std::make_unique<Event>(EventType::EngineUpdate);
+        auto event = CreateScope<Event>(EventType::EngineUpdate);
 
         this->m_handler.emit_event(std::move(event));
     }
@@ -36,12 +38,12 @@ namespace GFX
     void
     Window::init_functors()
     {
-        auto event_cs   = std::make_unique<Event>(EventType::WindowClose);
+        auto event_cs   = CreateScope<Event>(EventType::WindowClose);
         auto close_func = [&]() { this->close_window(); };
 
         this->m_handler.m_listener->set_callback(std::move(event_cs), close_func);
 
-        auto event_up    = std::make_unique<Event>(EventType::EngineUpdate);
+        auto event_up    = CreateScope<Event>(EventType::EngineUpdate);
         auto update_func = [&]() { this->on_update(); };
 
         this->m_handler.m_listener->set_callback(std::move(event_up), update_func);
@@ -75,8 +77,8 @@ namespace GFX
     void
     Window::create_window()
     {
-        auto win_ptr =
-            glfwCreateWindow(this->m_width, this->m_height, "test", NULL, NULL);
+        auto win_ptr = glfwCreateWindow(this->m_width, this->m_height,
+                                        this->m_title.c_str(), nullptr, nullptr);
 
         if (win_ptr == NULL) {
             std::cerr << "Failed to create GLFW window" << std::endl;
@@ -99,6 +101,11 @@ namespace GFX
         glfwSetWindowShouldClose(this->m_window.get(), true);
     }
 
+    // GLFW functions           //
+    // ------------------------ //
+
+    // Send an update event to the main window
+    // through the event handler
     void
     Window::on_update()
     {
@@ -118,6 +125,7 @@ namespace GFX
         }
     }
 
+    // Renders and clears the frame
     void
     Window::draw()
     {
@@ -134,7 +142,7 @@ namespace GFX
         if (glfwGetKey(this->m_window.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             // Send close window event to the event handler.
             // This sets the window close flag to true
-            auto event = std::make_unique<Event>(EventType::WindowClose);
+            auto event = CreateScope<Event>(EventType::WindowClose);
             this->m_handler.emit_event(std::move(event));
         }
     }
@@ -158,9 +166,9 @@ namespace GFX::Handler
     // ---------------------- //
     WindowHandler::WindowHandler()
     {
-        this->m_emitter    = std::make_shared<Emitter>();
-        this->m_dispatcher = std::make_shared<Dispatcher>();
-        this->m_listener   = std::make_shared<Listener>();
+        this->m_emitter    = CreateRef<Emitter>();
+        this->m_dispatcher = CreateRef<Dispatcher>();
+        this->m_listener   = CreateRef<Listener>();
 
         // Bind all objects to themselves
         this->m_emitter->bind(this->m_dispatcher);
@@ -171,7 +179,7 @@ namespace GFX::Handler
     // Accessors and mutators           //
     // -------------------------------- //
     auto
-    WindowHandler::get_functor(const EventPtr& event) -> Callback
+    WindowHandler::get_functor(const Ref<Event>& event) -> Callback
     {
         return this->m_listener->get_callback(event->get_name());
     }
@@ -179,7 +187,7 @@ namespace GFX::Handler
     // Handling functions           //
     // ---------------------------- //
     void
-    WindowHandler::emit_event(const WindowHandler::EventPtr& event)
+    WindowHandler::emit_event(const Ref<Event>& event)
     {
         this->m_emitter->emit(event);
     }
@@ -193,7 +201,7 @@ namespace GFX::Handler
     // Listener implementation                 //
     // --------------------------------------- //
     void
-    WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event)
+    WindowHandler::Listener::on_event(const Ref<Event>& event)
     {
         for (auto&& [key, callback] : this->m_actions) {
             if (key == *event) {
@@ -203,8 +211,8 @@ namespace GFX::Handler
     }
 
     void
-    WindowHandler::Listener::on_event(const WindowHandler::EventPtr& event,
-                                      const WindowHandler::DispPtr&  dispatcher)
+    WindowHandler::Listener::on_event(const Ref<Event>&          event,
+                                      const Ref<BaseDispatcher>& dispatcher)
     {
     }
 
