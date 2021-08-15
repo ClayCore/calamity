@@ -1,6 +1,5 @@
-// =============
-// = Colors ====
-// =============
+// Colors           //
+// ---------------- //
 $main-bg: rgb(32, 35, 37);
 $main-fg: rgb(212, 238, 255);
 $accent: rgb(65, 149, 228);
@@ -16,17 +15,15 @@ $accent-fg: rgb(131, 194, 255);
 $shadow-color: rgba(0, 0, 0, 0.102);
 $hard-shadow: rgba(0, 0, 0, 0.749);
 
-// ============
-// = Fonts ====
-// ============
+// Fonts           //
+// --------------- //
 $main-font: 'Roboto', sans-serif;
 $secondary-font: 'Roboto Slab', serif;
 
 $stylish-font: 'Titillium Web', sans-serif;
 
-// =================
-// = Dimensions ====
-// =================
+// Dimensions           //
+// -------------------- //
 $common-icon-size: 16px;
 
 $topbar-height: calc(#{$common-icon-size} * 2);
