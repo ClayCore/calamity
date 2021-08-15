@@ -115,6 +115,15 @@ namespace EventSystem
             return !(lhs == rhs);
         }
 
+        // The function below is completely useless and not necessary
+        // however, the compiler complains that dereferencing
+        // a shared pointer to event, uses this very operator.
+        friend inline bool
+        operator<(const Event& lhs, const Event& rhs)
+        {
+            return lhs.get_type() < rhs.get_type();
+        }
+
         // Debugging methods           //
         // --------------------------- //
         std::string

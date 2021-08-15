@@ -21,7 +21,8 @@ namespace EventSystem
     auto
     BaseListener::get_callback(const Ref<Event>& event) -> Callback
     {
-        return this->m_actions[*event];
+        auto ev = *event;
+        return this->m_actions[ev];
     }
 
     auto
