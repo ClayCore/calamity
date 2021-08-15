@@ -7,44 +7,39 @@ namespace EventSystem
 {
     class BaseDispatcher
     {
-        // Utility typedefs           //
-        // -------------------------- //
-        using EventPtr = std::shared_ptr<Event>;
-        using Listener = std::shared_ptr<BaseListener>;
-
         // Constructors           //
         // ---------------------- //
         public:
         BaseDispatcher();
-        BaseDispatcher(Listener& listener);
-        BaseDispatcher(const std::vector<EventPtr>& events);
+        BaseDispatcher(Ref<BaseListener>& listener);
+        BaseDispatcher(const std::vector<Ref<Event>>& events);
 
         virtual ~BaseDispatcher() {}
 
         // Accessors and mutators           //
         // -------------------------------- //
-        virtual EventPtr
+        virtual Ref<Event>
         get_event(usize index) const;
 
-        virtual Listener
+        virtual Ref<BaseListener>
         get_listener() const;
 
         virtual void
-        set_event(const EventPtr& event, usize index);
+        set_event(const Ref<Event>& event, usize index);
 
         virtual void
-        add_event(const EventPtr& event);
+        add_event(const Ref<Event>& event);
 
         virtual void
-        bind(const Listener& listener);
+        bind(const Ref<BaseListener>& listener);
 
         // Dispatcher functions           //
         // ------------------------------ //
         virtual void
-        dispatch(const EventPtr& event);
+        dispatch(const Ref<Event>& event);
 
         virtual void
-        dispatch(const EventPtr& event, const Listener& listener);
+        dispatch(const Ref<Event>& event, const Ref<BaseListener>& listener);
 
         // Debugging methods           //
         // --------------------------- //
@@ -60,10 +55,10 @@ namespace EventSystem
         // Bound variables           //
         // ------------------------- //
         private:
-        Listener m_listener;
+        Ref<BaseListener> m_listener;
 
         // TODO: make this a queue or a map
         // since we might have distinct listener for many events
-        std::vector<EventPtr> m_events;
+        std::vector<Ref<Event>> m_events;
     };
 } // namespace EventSystem

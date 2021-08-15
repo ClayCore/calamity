@@ -6,12 +6,12 @@ namespace EventSystem
     // ---------------------- //
     BaseDispatcher::BaseDispatcher() {}
 
-    BaseDispatcher::BaseDispatcher(Listener& listener)
+    BaseDispatcher::BaseDispatcher(Ref<BaseListener>& listener)
     {
         this->m_listener = listener;
     }
 
-    BaseDispatcher::BaseDispatcher(const std::vector<EventPtr>& events)
+    BaseDispatcher::BaseDispatcher(const std::vector<Ref<Event>>& events)
     {
         this->m_events = events;
     }
@@ -19,7 +19,7 @@ namespace EventSystem
     // Accessors and mutators           //
     // -------------------------------- //
     auto
-    BaseDispatcher::get_event(usize index) const -> EventPtr
+    BaseDispatcher::get_event(usize index) const -> Ref<Event>
     {
         if (index < this->m_events.size()) {
             return this->m_events[index];
@@ -27,13 +27,13 @@ namespace EventSystem
     }
 
     auto
-    BaseDispatcher::get_listener() const -> Listener
+    BaseDispatcher::get_listener() const -> Ref<BaseListener>
     {
         return this->m_listener;
     }
 
     void
-    BaseDispatcher::set_event(const EventPtr& event, usize index)
+    BaseDispatcher::set_event(const Ref<Event>& event, usize index)
     {
         if (index < this->m_events.size()) {
             auto offset = (this->m_events.begin() + index);
@@ -43,13 +43,13 @@ namespace EventSystem
     }
 
     void
-    BaseDispatcher::add_event(const EventPtr& event)
+    BaseDispatcher::add_event(const Ref<Event>& event)
     {
         this->m_events.push_back(event);
     }
 
     void
-    BaseDispatcher::bind(const Listener& listener)
+    BaseDispatcher::bind(const Ref<BaseListener>& listener)
     {
         this->m_listener = listener;
     }
@@ -57,13 +57,13 @@ namespace EventSystem
     // Dispatcher functions           //
     // ------------------------------ //
     void
-    BaseDispatcher::dispatch(const EventPtr& event)
+    BaseDispatcher::dispatch(const Ref<Event>& event)
     {
         this->m_listener->on_event(event);
     }
 
     void
-    BaseDispatcher::dispatch(const EventPtr& event, const Listener& listener)
+    BaseDispatcher::dispatch(const Ref<Event>& event, const Ref<BaseListener>& listener)
     {
         listener->on_event(event);
     }
@@ -78,7 +78,7 @@ namespace EventSystem
 
         for (auto it = this->m_events.begin(); it < this->m_events.end(); ++it) {
             // Extract the event
-            EventPtr event = *it;
+            Ref<Event> event = *it;
 
             // Fetch the name
             std::string event_name = event->to_string();

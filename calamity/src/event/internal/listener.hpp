@@ -14,15 +14,13 @@ namespace EventSystem
     {
         // Utility typedefs           //
         // -------------------------- //
-        using EventPtr   = std::shared_ptr<Event>;
-        using Dispatcher = std::shared_ptr<BaseDispatcher>;
-        using Callback   = std::function<void()>;
+        using Callback = std::function<void()>;
 
         // Constructors           //
         // ---------------------- //
         public:
         BaseListener();
-        BaseListener(Dispatcher& dispatcher);
+        BaseListener(Ref<BaseDispatcher>& dispatcher);
         BaseListener(const std::map<Event, Callback>& actions);
 
         virtual ~BaseListener() {}
@@ -30,27 +28,27 @@ namespace EventSystem
         // Accessors and mutators           //
         // -------------------------------- //
         virtual Callback
-        get_callback(const EventPtr& event);
+        get_callback(const Ref<Event>& event);
 
         virtual Callback
         get_callback(const std::string& name) const;
 
         virtual void
-        set_callback(const EventPtr& event, const Callback& cb);
+        set_callback(const Ref<Event>& event, const Callback& cb);
 
         virtual void
-        insert_event(const EventPtr& event, const Callback& cb);
+        insert_event(const Ref<Event>& event, const Callback& cb);
 
         virtual void
-        bind(const Dispatcher& dispatcher);
+        bind(const Ref<BaseDispatcher>& dispatcher);
 
         // Listener functions           //
         // ---------------------------- //
         virtual void
-        on_event(const EventPtr& event) = 0;
+        on_event(const Ref<Event>& event) = 0;
 
         virtual void
-        on_event(const EventPtr& event, const Dispatcher& dispatcher) = 0;
+        on_event(const Ref<Event>& event, const Ref<BaseDispatcher>& dispatcher) = 0;
 
         // Debugging methods           //
         // --------------------------- //
@@ -66,7 +64,7 @@ namespace EventSystem
         // Bound variables           //
         // ------------------------- //
         private:
-        Dispatcher m_dispatcher;
+        Ref<BaseDispatcher> m_dispatcher;
 
         std::map<Event, Callback> m_actions;
     };

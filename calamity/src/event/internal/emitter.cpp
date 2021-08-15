@@ -6,12 +6,12 @@ namespace EventSystem
     // ---------------------- //
     BaseEmitter::BaseEmitter() {}
 
-    BaseEmitter::BaseEmitter(Dispatcher& dispatcher)
+    BaseEmitter::BaseEmitter(Ref<BaseDispatcher>& dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }
 
-    BaseEmitter::BaseEmitter(const std::vector<EventPtr>& events)
+    BaseEmitter::BaseEmitter(const std::vector<Ref<Event>>& events)
     {
         this->m_events = events;
     }
@@ -19,7 +19,7 @@ namespace EventSystem
     // Accessors and mutators           //
     // -------------------------------- //
     auto
-    BaseEmitter::get_event(usize index) const -> EventPtr
+    BaseEmitter::get_event(usize index) const -> Ref<Event>
     {
         if (index < this->m_events.size()) {
             return this->m_events[index];
@@ -27,13 +27,13 @@ namespace EventSystem
     }
 
     auto
-    BaseEmitter::get_dispatcher() const -> Dispatcher
+    BaseEmitter::get_dispatcher() const -> Ref<BaseDispatcher>
     {
         return this->m_dispatcher;
     }
 
     void
-    BaseEmitter::set_event(const EventPtr& event, usize index)
+    BaseEmitter::set_event(const Ref<Event>& event, usize index)
     {
         if (index < this->m_events.size()) {
             auto offset = (this->m_events.begin() + index);
@@ -43,13 +43,13 @@ namespace EventSystem
     }
 
     void
-    BaseEmitter::add_event(const EventPtr& event)
+    BaseEmitter::add_event(const Ref<Event>& event)
     {
         this->m_events.push_back(event);
     }
 
     void
-    BaseEmitter::bind(const Dispatcher& dispatcher)
+    BaseEmitter::bind(const Ref<BaseDispatcher>& dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }
@@ -57,13 +57,13 @@ namespace EventSystem
     // Emitter functions           //
     // --------------------------- //
     void
-    BaseEmitter::emit(const EventPtr& event)
+    BaseEmitter::emit(const Ref<Event>& event)
     {
         this->m_dispatcher->dispatch(event);
     }
 
     void
-    BaseEmitter::emit(const EventPtr& event, const Dispatcher& dispatcher)
+    BaseEmitter::emit(const Ref<Event>& event, const Ref<BaseDispatcher>& dispatcher)
     {
         dispatcher->dispatch(event);
     }
@@ -78,7 +78,7 @@ namespace EventSystem
 
         for (auto it = this->m_events.begin(); it < this->m_events.end(); ++it) {
             // Extract the event
-            EventPtr event = *it;
+            Ref<Event> event = *it;
 
             // Fetch the name
             std::string event_name = event->to_string();

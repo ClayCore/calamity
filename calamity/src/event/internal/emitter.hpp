@@ -7,44 +7,39 @@ namespace EventSystem
 {
     class BaseEmitter
     {
-        // Utility typedefs           //
-        // -------------------------- //
-        using EventPtr   = std::shared_ptr<Event>;
-        using Dispatcher = std::shared_ptr<BaseDispatcher>;
-
         // Constructors           //
         // ---------------------- //
         public:
         BaseEmitter();
-        BaseEmitter(Dispatcher& dispatcher);
-        BaseEmitter(const std::vector<EventPtr>& events);
+        BaseEmitter(Ref<BaseDispatcher>& dispatcher);
+        BaseEmitter(const std::vector<Ref<Event>>& events);
 
         virtual ~BaseEmitter() {}
 
         // Accessors and mutators           //
         // -------------------------------- //
-        virtual EventPtr
+        virtual Ref<Event>
         get_event(usize index) const;
 
-        virtual Dispatcher
+        virtual Ref<BaseDispatcher>
         get_dispatcher() const;
 
         virtual void
-        set_event(const EventPtr& event, usize index);
+        set_event(const Ref<Event>& event, usize index);
 
         virtual void
-        add_event(const EventPtr& event);
+        add_event(const Ref<Event>& event);
 
         virtual void
-        bind(const Dispatcher& dispatcher);
+        bind(const Ref<BaseDispatcher>& dispatcher);
 
         // Emitter functions           //
         // --------------------------- //
         virtual void
-        emit(const EventPtr& event);
+        emit(const Ref<Event>& event);
 
         virtual void
-        emit(const EventPtr& event, const Dispatcher& dispatcher);
+        emit(const Ref<Event>& event, const Ref<BaseDispatcher>& dispatcher);
 
         // Debugging methods           //
         // --------------------------- //
@@ -60,7 +55,7 @@ namespace EventSystem
         // Bound variables           //
         // ------------------------- //
         private:
-        Dispatcher            m_dispatcher;
-        std::vector<EventPtr> m_events;
+        Ref<BaseDispatcher>     m_dispatcher;
+        std::vector<Ref<Event>> m_events;
     };
 } // namespace EventSystem
