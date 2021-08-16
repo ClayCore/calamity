@@ -1,0 +1,154 @@
+project:
+  name: 'calamity'
+  authors: ['claymore <marekczjk@gmail.com>']
+  version: '0.1.0'
+  language: 'cpp'
+
+  dirs:
+    target: 'target'
+    build: 'build'
+    include: 'include'
+    source: 'src'
+    deps: 'vendor'
+
+  setup:
+    files:
+      sources:
+        - 'calamity.cpp'
+        - 'opengl/glad/glad.c'
+        - 'event/internal/dispatcher.cpp'
+        - 'event/internal/emitter.cpp'
+        - 'event/internal/event.cpp'
+        - 'event/internal/listener.cpp'
+        - 'graphics/internal/window.cpp'
+        - 'graphics/manager.cpp'
+        - 'utils/file.cpp'
+        # - 'yaml/manager.cpp'
+      include:
+        - 'zcommon.hpp'
+
+    type: 'exe'
+    compiler: 'g++'
+    profiles:
+      debug:
+        - '-Og'
+        - '-std=c++17'
+        - '-Wall'
+        - '-Wextra'
+        - '-Wcast-align'
+        - '-Wconversion'
+        - '-Wdouble-promotion'
+        - '-Wduplicated-branches'
+        - '-Wduplicated-cond'
+        - '-Wformat=2'
+        - '-Wlogical-op'
+        - '-Wmisleading-indentation'
+        - '-Wnon-virtual-dtor'
+        - '-Wnull-dereference'
+        - '-Wold-style-cast'
+        - '-Woverloaded-virtual'
+        - '-Wpedantic'
+        - '-Wshadow'
+        - '-Wsign-conversion'
+        - '-Wunused'
+        - '-Wuseless-cast'
+        - '-march=native'
+        - '-DLOG_USE_COLOR'
+      release:
+        - '-O3'
+        - '-std=c++17'
+        - '-flto'
+        - '-march=native'
+        - '-DLOG_USE_COLOR'
+
+  dependencies:
+    sfml:
+      enabled: false
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      header_only: false
+      system_wide: false
+      libs:
+        - 'libsfml-graphics.a'
+        - 'libsfml-window.a'
+        - 'libsfml-system.a'
+      args:
+        - '-lsfml-graphics'
+        - '-lsfml-window'
+        - '-lsfml-system'
+    sdl2:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      search_paths:
+        include: '/usr/include/SDL2'
+        lib: '/usr/lib'
+
+      header_only: false
+      system_wide: true
+      libs:
+        - 'libSDL2.so'
+      args:
+        - '-lSDL2'
+    glew:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      search_paths:
+        include: '/usr/include/GL'
+        lib: '/usr/lib/pkgconfig'
+
+      header_only: false
+      system_wide: true
+      libs:
+        - 'glew32.lib'
+      args:
+        - '-lGLEW'
+    glfw3:
+      enabled: true
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      search_paths:
+        include: '/usr/include/GLFW'
+        lib: '/usr/lib'
+
+      header_only: false
+      system_wide: true
+
+      libs:
+        - 'libglfw.so.3.3'
+      args:
+        - '-lGL'
+        - '-lglfw3'
+        - '-lX11'
+        - '-ldl'
+    glm:
+      enabled: true
+      paths:
+        include: 'include'
+
+      search_paths:
+        include: '/usr/include/glm'
+
+      header_only: true
+      system_wide: true
+    yaml:
+      enabled: false
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      header_only: false
+      system_wide: false
+      libs:
+        - 'yaml.dll'
+      args:
+        - '-lyaml'
