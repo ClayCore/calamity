@@ -127,7 +127,7 @@ project:
         - 'libglfw.so.3.3'
       args:
         - '-lGL'
-        - '-lglfw3'
+        - '-lglfw'
         - '-lX11'
         - '-ldl'
     glm:
