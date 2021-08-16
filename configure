@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Required to initialize and update modules
+if [[ "$(ls -A tools/py-build)" ]] then;
+    git submodule init
+    git submodule update
+fi
+
+# Required to pull dependencies
+pushd tools/py-build > /dev/null || exit
+
+poetry install
+
+popd > /dev/null || exit
+    
