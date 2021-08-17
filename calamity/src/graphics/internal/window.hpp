@@ -8,7 +8,7 @@
 // Then glfw
 #include "GLFW/glfw3.h"
 
-namespace GFX
+namespace Calamity::GFX
 {
     namespace Handler
     {
@@ -201,4 +201,4 @@ namespace GFX
         // Main glfw window
         std::unique_ptr<GLFWwindow, Utils::DestroyWindowPtr> m_window;
     };
-} // namespace GFX
+} // namespace Calamity::GFX

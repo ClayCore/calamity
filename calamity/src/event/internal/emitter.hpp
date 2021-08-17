@@ -3,7 +3,7 @@
 #include "dispatcher.hpp"
 #include "event.hpp"
 
-namespace EventSystem
+namespace Calamity::EventSystem
 {
     class BaseEmitter
     {
@@ -58,4 +58,4 @@ namespace EventSystem
         Ref<BaseDispatcher>     m_dispatcher;
         std::vector<Ref<Event>> m_events;
     };
-} // namespace EventSystem
+} // namespace Calamity::EventSystem

@@ -1,7 +1,7 @@
 #include "manager.hpp"
 #include "utils/file.hpp"
 
-namespace Yaml
+namespace Calamity::Yaml
 {
     struct DataOffset {
         const std::vector<std::string>& data;
@@ -78,4 +78,4 @@ namespace Yaml
             M_ParseLevel(*data);
         }
     }
-} // namespace Yaml
+} // namespace Calamity::Yaml

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace EventSystem
+namespace Calamity::EventSystem
 {
     // Constructors           //
     // ---------------------- //

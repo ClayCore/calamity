@@ -1,6 +1,6 @@
 #include "file.hpp"
 
-namespace File
+namespace Calamity::File
 {
     std::optional<std::vector<std::string>>
     load_file(std::string file_path)
@@ -21,4 +21,4 @@ namespace File
 
         return lines;
     }
-} // namespace File
+} // namespace Calamity::File

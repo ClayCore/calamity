@@ -4,7 +4,7 @@
 // =============================== //
 // ==== Window implementation ==== //
 // =============================== //
-namespace GFX
+namespace Calamity::GFX
 {
     using namespace EventSystem;
 
@@ -153,12 +153,12 @@ namespace GFX
     {
         glViewport(0, 0, width, height);
     }
-} // namespace GFX
+} // namespace Calamity::GFX
 
 // ====================================== //
 // ==== Event handler implementation ==== //
 // ====================================== //
-namespace GFX::Handler
+namespace Calamity::GFX::Handler
 {
     using namespace EventSystem;
 
@@ -216,4 +216,4 @@ namespace GFX::Handler
     {
     }
 
-} // namespace GFX::Handler
+} // namespace Calamity::GFX::Handler

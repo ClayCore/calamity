@@ -1,6 +1,6 @@
 #include "manager.hpp"
 
-namespace GFX
+namespace Calamity::GFX
 {
     void
     R_Init()
@@ -13,4 +13,4 @@ namespace GFX
 
         window.on_update();
     }
-} // namespace GFX
+} // namespace Calamity::GFX

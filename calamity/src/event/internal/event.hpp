@@ -2,7 +2,7 @@
 
 #include "zcommon.hpp"
 
-namespace EventSystem
+namespace Calamity::EventSystem
 {
     /* --------------------------------- **
     ** List of predefined events for use **
@@ -141,4 +141,4 @@ namespace EventSystem
         EventCategory m_category;
         std::string   m_name;
     };
-} // namespace EventSystem
+} // namespace Calamity::EventSystem

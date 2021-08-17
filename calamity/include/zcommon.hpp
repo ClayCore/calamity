@@ -48,52 +48,55 @@
 #define internal static
 #define global static
 
-// Utility typedefs
-using u64   = uint64_t;
-using u32   = uint32_t;
-using u16   = uint16_t;
-using u8    = uint8_t;
-using usize = size_t;
-
-using Byte  = u8;
-using Word  = u16;
-using Dword = u32;
-using Qword = u64;
-
-using i64 = int64_t;
-using i32 = int32_t;
-using i16 = int16_t;
-using i8  = int8_t;
-
-using SignedByte  = i8;
-using SignedWord  = i16;
-using SignedDword = i32;
-using SignedQword = i64;
-
-using f32 = float;
-using f64 = double;
-
-// Utility types
-template <class T>
-using Scope = std::unique_ptr<T>;
-
-template <class T, typename... Args>
-constexpr Scope<T>
-CreateScope(Args&&... args)
+namespace Calamity
 {
-    return std::make_unique<T>(std::forward<Args>(args)...);
-}
+    // Utility typedefs
+    using u64   = uint64_t;
+    using u32   = uint32_t;
+    using u16   = uint16_t;
+    using u8    = uint8_t;
+    using usize = size_t;
 
-template <class T>
-using Ref = std::shared_ptr<T>;
+    using Byte  = u8;
+    using Word  = u16;
+    using Dword = u32;
+    using Qword = u64;
 
-template <class T, typename... Args>
-constexpr Ref<T>
-CreateRef(Args&&... args)
-{
-    return std::make_shared<T>(std::forward<Args>(args)...);
-}
+    using i64 = int64_t;
+    using i32 = int32_t;
+    using i16 = int16_t;
+    using i8  = int8_t;
 
+    using SignedByte  = i8;
+    using SignedWord  = i16;
+    using SignedDword = i32;
+    using SignedQword = i64;
+
+    using f32 = float;
+    using f64 = double;
+
+    // Utility types
+    template <class T>
+    using Scope = std::unique_ptr<T>;
+
+    template <class T, typename... Args>
+    constexpr Scope<T>
+    CreateScope(Args&&... args)
+    {
+        return std::make_unique<T>(std::forward<Args>(args)...);
+    }
+
+    template <class T>
+    using Ref = std::shared_ptr<T>;
+
+    template <class T, typename... Args>
+    constexpr Ref<T>
+    CreateRef(Args&&... args)
+    {
+        return std::make_shared<T>(std::forward<Args>(args)...);
+    }
+
+} // namespace Calamity
 // using char8  = char8_t;
 // using char16 = char16_t;
 // using char32 = char32_t;

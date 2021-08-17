@@ -1,6 +1,6 @@
 #include "listener.hpp"
 
-namespace EventSystem
+namespace Calamity::EventSystem
 {
     // Constructors           //
     // ---------------------- //
@@ -88,4 +88,4 @@ namespace EventSystem
 
         return implode.str();
     }
-} // namespace EventSystem
+} // namespace Calamity::EventSystem

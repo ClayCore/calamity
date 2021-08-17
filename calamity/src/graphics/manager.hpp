@@ -2,8 +2,8 @@
 
 #include "internal/window.hpp"
 
-namespace GFX
+namespace Calamity::GFX
 {
     void
     R_Init();
-} // namespace GFX
+} // namespace Calamity::GFX

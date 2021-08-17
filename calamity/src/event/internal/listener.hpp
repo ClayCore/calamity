@@ -2,7 +2,7 @@
 
 #include "event.hpp"
 
-namespace EventSystem
+namespace Calamity::EventSystem
 {
     /* ------------------------------------------ **
     ** Necessary forward declaration to prevent   **
@@ -68,4 +68,4 @@ namespace EventSystem
 
         std::map<Event, Callback> m_actions;
     };
-} // namespace EventSystem
+} // namespace Calamity::EventSystem
