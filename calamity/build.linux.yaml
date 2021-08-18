@@ -62,6 +62,20 @@ project:
         - '-DLOG_USE_COLOR'
 
   dependencies:
+    spdlog:
+      enabled: true
+
+      paths:
+        include: 'include'
+        lib: 'lib'
+
+      header_only: false
+      system_wide: false
+
+      libs:
+        - 'libspdlog.a'
+      args:
+        - '-lspdlog'
     sfml:
       enabled: false
       paths:
