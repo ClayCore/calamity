@@ -36,7 +36,7 @@ namespace Calamity::EventSystem
     BaseDispatcher::set_event(const Ref<Event>& event, usize index)
     {
         if (index < this->m_events.size()) {
-            auto offset = (this->m_events.begin() + index);
+            auto offset = (this->m_events.begin() + static_cast<isize>(index));
 
             this->m_events.insert(offset, event);
         }

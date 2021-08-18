@@ -18,7 +18,7 @@ namespace Calamity
         return Detail::fnv1a_32(s, count);
     }
 
-    [[nodiscard]] constexpr u32
+    [[nodiscard]] u32
     H_GetHash(const std::string& key) noexcept
     {
         return Detail::fnv1a_32(key.c_str(), key.size());
