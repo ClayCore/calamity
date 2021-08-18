@@ -1,9 +1,10 @@
 #include "graphics/manager.hpp"
 #include "zcommon.hpp"
 
-i32
+int
 main()
 {
+    using namespace Calamity;
     // YAML PARSING TEST
     // std::string path =
     // "S:\\wplace\\cpp\\stream_dev\\gamedev_project\\calamity\\assets\\maps\\e1m1.yaml";
