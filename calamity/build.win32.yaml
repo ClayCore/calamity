@@ -53,12 +53,14 @@ project:
         - '-Wunused'
         - '-Wuseless-cast'
         - '-march=native'
+        - '-fdiagnostics-color=always'
         - '-DLOG_USE_COLOR'
       release:
         - '-O3'
         - '-std=c++17'
         - '-flto'
         - '-march=native'
+        - '-fdiagnostics-color=always'
         - '-DLOG_USE_COLOR'
 
   dependencies:
