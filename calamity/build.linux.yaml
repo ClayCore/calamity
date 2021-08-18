@@ -22,7 +22,7 @@ project:
         - 'event/internal/listener.cpp'
         - 'graphics/internal/window.cpp'
         - 'graphics/manager.cpp'
-        - 'utils/file.cpp'
+        - 'utils/io/file.cpp'
         # - 'yaml/manager.cpp'
       include:
         - 'zcommon.hpp'
