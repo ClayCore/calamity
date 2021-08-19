@@ -21,34 +21,33 @@ namespace Calamity::EventSystem
         public:
         BaseListener();
         BaseListener(Ref<BaseDispatcher>& dispatcher);
-        BaseListener(const std::map<Event, Callback>& actions);
 
-        virtual ~BaseListener() {}
+        virtual ~BaseListener() = default;
 
         // Accessors and mutators           //
         // -------------------------------- //
         virtual Callback
-        get_callback(const Ref<Event>& event);
+        get_callback(Scope<Event> event);
 
         virtual Callback
         get_callback(const std::string& name) const;
 
         virtual void
-        set_callback(const Ref<Event>& event, const Callback& cb);
+        set_callback(Scope<Event> event, const Callback& cb);
 
         virtual void
-        insert_event(const Ref<Event>& event, const Callback& cb);
+        insert_event(Scope<Event> event, const Callback& cb);
 
         virtual void
-        bind(const Ref<BaseDispatcher>& dispatcher);
+        bind(Ref<BaseDispatcher> dispatcher);
 
         // Listener functions           //
         // ---------------------------- //
         virtual void
-        on_event(const Ref<Event>& event) = 0;
+        on_event(Scope<Event> event) = 0;
 
         virtual void
-        on_event(const Ref<Event>& event, const Ref<BaseDispatcher>& dispatcher) = 0;
+        on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher) = 0;
 
         // Debugging methods           //
         // --------------------------- //

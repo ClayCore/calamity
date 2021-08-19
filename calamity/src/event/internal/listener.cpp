@@ -11,15 +11,10 @@ namespace Calamity::EventSystem
         this->m_dispatcher = dispatcher;
     }
 
-    BaseListener::BaseListener(const std::map<Event, Callback>& actions)
-    {
-        this->m_actions = actions;
-    }
-
     // Accessors and mutators           //
     // -------------------------------- //
     auto
-    BaseListener::get_callback(const Ref<Event>& event) -> Callback
+    BaseListener::get_callback(Scope<Event> event) -> Callback
     {
         auto ev = *event;
         return this->m_actions[ev];
@@ -29,26 +24,26 @@ namespace Calamity::EventSystem
     BaseListener::get_callback(const std::string& name) const -> Callback
     {
         for (auto&& [event, callback] : this->m_actions) {
-            if (event.get_name() == name) {
+            if (std::strcmp(event.get_name(), name.data()) == 0) {
                 return callback;
             }
         }
     }
 
     void
-    BaseListener::set_callback(const Ref<Event>& event, const Callback& cb)
+    BaseListener::set_callback(Scope<Event> event, const Callback& cb)
     {
         this->m_actions[*event] = cb;
     }
 
     void
-    BaseListener::insert_event(const Ref<Event>& event, const Callback& cb)
+    BaseListener::insert_event(Scope<Event> event, const Callback& cb)
     {
         this->m_actions.emplace(*event, cb);
     }
 
     void
-    BaseListener::bind(const Ref<BaseDispatcher>& dispatcher)
+    BaseListener::bind(Ref<BaseDispatcher> dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }
@@ -69,11 +64,13 @@ namespace Calamity::EventSystem
             std::string event_name = event.to_string();
 
             // Get the index of the current iteration
-            usize index = std::distance(this->m_actions.begin(), it);
+            isize index = std::distance(this->m_actions.begin(), it);
 
             // Format into a string
-            auto format = "\tEventID: %u -- [%s]\n";
-            auto size   = std::snprintf(nullptr, 0, format);
+            auto format   = "\tEventID: %u -- [%s]\n";
+            auto size_raw = std::snprintf(nullptr, 0, format, index, event_name.c_str());
+
+            usize size = static_cast<usize>(std::abs(size_raw));
 
             std::string output(size + 1, '\0');
             std::sprintf(&output[0], format, index, event_name.c_str());
