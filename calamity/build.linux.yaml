@@ -32,7 +32,7 @@ project:
     profiles:
       debug:
         - '-Og'
-        - '-std=c++17'
+        - '-std=c++20'
         - '-Wall'
         - '-Wextra'
         - '-Wcast-align'
@@ -56,7 +56,7 @@ project:
         - '-DLOG_USE_COLOR'
       release:
         - '-O3'
-        - '-std=c++17'
+        - '-std=c++20'
         - '-flto'
         - '-march=native'
         - '-DLOG_USE_COLOR'
