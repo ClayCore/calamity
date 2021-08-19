@@ -83,14 +83,27 @@ namespace Calamity::EventSystem
 
         // Accessors and mutators           //
         // -------------------------------- //
-        virtual const char*
-        get_name() const;
+        constexpr const char*
+        get_name() const
+        {
+            if (std::empty(this->m_name)) {
+                return this->get_name_from_type(this->m_type);
+            } else {
+                return this->m_name.c_str();
+            }
+        }
 
-        virtual EventType
-        get_type() const;
+        constexpr EventType
+        get_type() const
+        {
+            return this->m_type;
+        }
 
-        virtual EventCategory
-        get_category() const;
+        constexpr EventCategory
+        get_category() const
+        {
+            return this->m_category;
+        }
 
         virtual const char*
         get_name_from_type(const EventType& type) const;
@@ -103,25 +116,25 @@ namespace Calamity::EventSystem
 
         // Overloads           //
         // ------------------- //
-        friend inline bool
-        operator==(const Event& lhs, const Event& rhs)
+        constexpr bool
+        operator==(const Event& rhs) const
         {
-            return lhs.get_name() == rhs.get_name();
+            return this->get_name() == rhs.get_name();
         }
 
-        friend inline bool
-        operator!=(const Event& lhs, const Event& rhs)
+        constexpr bool
+        operator!=(const Event& rhs) const
         {
-            return !(lhs == rhs);
+            return !(*this == rhs);
         }
 
         // The function below is completely useless and not necessary
         // however, the compiler complains that dereferencing
         // a shared pointer to event, uses this very operator.
-        friend inline bool
-        operator<(const Event& lhs, const Event& rhs)
+        constexpr bool
+        operator<(const Event& rhs) const
         {
-            return lhs.get_type() < rhs.get_type();
+            return this->get_type() < rhs.get_type();
         }
 
         // Debugging methods           //

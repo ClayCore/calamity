@@ -11,11 +11,6 @@ namespace Calamity::EventSystem
         this->m_listener = listener;
     }
 
-    BaseDispatcher::BaseDispatcher(const std::vector<Ref<Event>>& events)
-    {
-        this->m_events = events;
-    }
-
     // Accessors and mutators           //
     // -------------------------------- //
     auto
@@ -23,6 +18,8 @@ namespace Calamity::EventSystem
     {
         if (index < this->m_events.size()) {
             return this->m_events[index];
+        } else {
+            return nullptr;
         }
     }
 
@@ -33,23 +30,23 @@ namespace Calamity::EventSystem
     }
 
     void
-    BaseDispatcher::set_event(const Ref<Event>& event, usize index)
+    BaseDispatcher::set_event(Scope<Event> event, usize index)
     {
         if (index < this->m_events.size()) {
             auto offset = (this->m_events.begin() + static_cast<isize>(index));
 
-            this->m_events.insert(offset, event);
+            this->m_events.insert(offset, std::move(event));
         }
     }
 
     void
-    BaseDispatcher::add_event(const Ref<Event>& event)
+    BaseDispatcher::add_event(Scope<Event> event)
     {
-        this->m_events.push_back(event);
+        this->m_events.push_back(std::move(event));
     }
 
     void
-    BaseDispatcher::bind(const Ref<BaseListener>& listener)
+    BaseDispatcher::bind(Ref<BaseListener> listener)
     {
         this->m_listener = listener;
     }
@@ -57,15 +54,15 @@ namespace Calamity::EventSystem
     // Dispatcher functions           //
     // ------------------------------ //
     void
-    BaseDispatcher::dispatch(const Ref<Event>& event)
+    BaseDispatcher::dispatch(Scope<Event> event)
     {
-        this->m_listener->on_event(event);
+        this->m_listener->on_event(std::move(event));
     }
 
     void
-    BaseDispatcher::dispatch(const Ref<Event>& event, const Ref<BaseListener>& listener)
+    BaseDispatcher::dispatch(Scope<Event> event, Ref<BaseListener> listener)
     {
-        listener->on_event(event);
+        listener->on_event(std::move(event));
     }
 
     // Debugging methods           //
@@ -84,11 +81,13 @@ namespace Calamity::EventSystem
             std::string event_name = event->to_string();
 
             // Get the index of the current iteration
-            usize index = std::distance(this->m_events.begin(), it);
+            isize index = std::distance(this->m_events.begin(), it);
 
             // Format into a string
-            auto format = "\tEventID: %u -- [%s]\n";
-            auto size   = std::snprintf(nullptr, 0, format);
+            auto format   = "\tEventID: %u -- [%s]\n";
+            auto size_raw = std::snprintf(nullptr, 0, format, index, event_name.c_str());
+
+            usize size = static_cast<usize>(std::abs(size_raw));
 
             std::string output(size + 1, '\0');
             std::sprintf(&output[0], format, index, event_name.c_str());

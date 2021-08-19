@@ -78,11 +78,10 @@ namespace Calamity::GFX
                 // ---------------------------- //
                 public:
                 void
-                on_event(const Ref<Event>& event) override;
+                on_event(Scope<Event> event) override;
 
                 void
-                on_event(const Ref<Event>&          event,
-                         const Ref<BaseDispatcher>& dispatcher) override;
+                on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher) override;
 
                 // Bound variables           //
                 // ------------------------- //
@@ -106,12 +105,12 @@ namespace Calamity::GFX
             // Accessors and mutators           //
             // -------------------------------- //
             Callback
-            get_functor(const Ref<Event>& event);
+            get_functor(Scope<Event> event);
 
             // Handling functions           //
             // ---------------------------- //
             void
-            emit_event(const Ref<Event>& event);
+            emit_event(Scope<Event> event);
 
             // Debugging methods           //
             // --------------------------- //

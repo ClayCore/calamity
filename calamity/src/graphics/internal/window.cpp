@@ -179,7 +179,7 @@ namespace Calamity::GFX::Handler
     // Accessors and mutators           //
     // -------------------------------- //
     auto
-    WindowHandler::get_functor(const Ref<Event>& event) -> Callback
+    WindowHandler::get_functor(Scope<Event> event) -> Callback
     {
         return this->m_listener->get_callback(event->get_name());
     }
@@ -187,9 +187,9 @@ namespace Calamity::GFX::Handler
     // Handling functions           //
     // ---------------------------- //
     void
-    WindowHandler::emit_event(const Ref<Event>& event)
+    WindowHandler::emit_event(Scope<Event> event)
     {
-        this->m_emitter->emit(event);
+        this->m_emitter->emit(std::move(event));
     }
 
     // Emitter implementation                  //
@@ -201,7 +201,7 @@ namespace Calamity::GFX::Handler
     // Listener implementation                 //
     // --------------------------------------- //
     void
-    WindowHandler::Listener::on_event(const Ref<Event>& event)
+    WindowHandler::Listener::on_event(Scope<Event> event)
     {
         for (auto&& [key, callback] : this->m_actions) {
             if (key == *event) {
@@ -211,8 +211,7 @@ namespace Calamity::GFX::Handler
     }
 
     void
-    WindowHandler::Listener::on_event(const Ref<Event>&          event,
-                                      const Ref<BaseDispatcher>& dispatcher)
+    WindowHandler::Listener::on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher)
     {
     }
 

@@ -17,114 +17,98 @@ namespace Calamity::EventSystem
         this->m_name     = this->get_name_from_type(type);
     }
 
-    // Accessors and mutators           //
-    // -------------------------------- //
-    const char*
-    Event::get_name() const
-    {
-        if (!this->m_name.empty()) {
-            return this->m_name.c_str();
-        } else {
-            return this->get_name_from_type(this->m_type);
-        }
-    }
-
-    EventType
-    Event::get_type() const
-    {
-        return this->m_type;
-    }
-
-    EventCategory
-    Event::get_category() const
-    {
-        return this->m_category;
-    }
-
     const char*
     Event::get_name_from_type(const EventType& type) const
     {
+        auto result = "";
+
         // clang-format off
         switch (type) {
-            case EventType::None:                   { return "None";                };
-            // Window handling events                                               //
-            // -------------------------------------------------------------------- //
-            case EventType::WindowClose:            { return "WindowClose";         };
-            case EventType::WindowResize:           { return "WindowResize";        };
-            case EventType::WindowFocus:            { return "WindowFocus";         };
-            case EventType::WindowLostFocus:        { return "WindowLostFocus";     };
-            case EventType::WindowMoved:            { return "WindowMoved";         };
-            // Resource management                                                  //
-            // -------------------------------------------------------------------- //
-            case EventType::LoadResource:           { return "LoadResource";        };
-            case EventType::FreeResource:           { return "FreeResource";        };
-            // Engine internals                                                     //
-            // -------------------------------------------------------------------- //
-            case EventType::EngineTick:             { return "EngineTick";          };
-            case EventType::EngineUpdate:           { return "EngineUpdate";        };
-            case EventType::EngineRender:           { return "EngineRender";        };
-            // Input handling                                                       //
-            // -------------------------------------------------------------------- //
-            case EventType::KeyPressed:             { return "KeyPressed";          };
-            case EventType::KeyReleased:            { return "KeyReleased";         };
-            case EventType::MouseButtonPressed:     { return "MouseButtonPressed";  };
-            case EventType::MouseButtonReleased:    { return "MouseButtonReleased"; };
-            case EventType::MouseMoved:             { return "MouseMoved";          };
-            case EventType::MouseScrolled:          { return "MouseScrolled";       };
-            // Custom events                                                        //
-            // -------------------------------------------------------------------- //
-            default:                                { return "Custom event";        };
+            case EventType::None:                   { result = "None";                }; break;
+            // Window handling events                                                        //
+            // ----------------------------------------------------------------------------- //
+            case EventType::WindowClose:            { result = "WindowClose";         }; break;
+            case EventType::WindowResize:           { result = "WindowResize";        }; break;
+            case EventType::WindowFocus:            { result = "WindowFocus";         }; break;
+            case EventType::WindowLostFocus:        { result = "WindowLostFocus";     }; break;
+            case EventType::WindowMoved:            { result = "WindowMoved";         }; break;
+            // Resource management                                                           //
+            // ----------------------------------------------------------------------------- //
+            case EventType::LoadResource:           { result = "LoadResource";        }; break;
+            case EventType::FreeResource:           { result = "FreeResource";        }; break;
+            // Engine internals                                                              //
+            // ----------------------------------------------------------------------------- //
+            case EventType::EngineTick:             { result = "EngineTick";          }; break;
+            case EventType::EngineUpdate:           { result = "EngineUpdate";        }; break;
+            case EventType::EngineRender:           { result = "EngineRender";        }; break;
+            // Input handling                                                                //
+            // ----------------------------------------------------------------------------- //
+            case EventType::KeyPressed:             { result = "KeyPressed";          }; break;
+            case EventType::KeyReleased:            { result = "KeyReleased";         }; break;
+            case EventType::MouseButtonPressed:     { result = "MouseButtonPressed";  }; break;
+            case EventType::MouseButtonReleased:    { result = "MouseButtonReleased"; }; break;
+            case EventType::MouseMoved:             { result = "MouseMoved";          }; break;
+            case EventType::MouseScrolled:          { result = "MouseScrolled";       }; break;
+            // Custom events                                                                 //
+            // ----------------------------------------------------------------------------- //
+            default:                                { result = "Custom event";        }; break;
         }
-        // clang-format on   
+        // clang-format on
+
+        return result;
     }
 
-    EventCategory 
-    Event::get_category_from_type(const EventType& type) const 
+    EventCategory
+    Event::get_category_from_type(const EventType& type) const
     {
+        auto result = EventCategory::None;
+
         // clang-format off
         switch (type) {
-            case EventType::None:                   { return EventCategory::None;       };
-            // Window handling events                                                   //
-            // ------------------------------------------------------------------------ //
-            case EventType::WindowClose:            { return EventCategory::Window;     };
-            case EventType::WindowResize:           { return EventCategory::Window;     };
-            case EventType::WindowFocus:            { return EventCategory::Window;     };
-            case EventType::WindowLostFocus:        { return EventCategory::Window;     };
-            case EventType::WindowMoved:            { return EventCategory::Window;     };
-            // Resource management                                                      //
-            // ------------------------------------------------------------------------ //
-            case EventType::LoadResource:           { return EventCategory::Resource;   };
-            case EventType::FreeResource:           { return EventCategory::Resource;   };
-            // Engine internals                                                         //
-            // ------------------------------------------------------------------------ //
-            case EventType::EngineTick:             { return EventCategory::Engine;     };
-            case EventType::EngineUpdate:           { return EventCategory::Engine;     };
-            case EventType::EngineRender:           { return EventCategory::Engine;     };
-            // Input handling                                                           //
-            // ------------------------------------------------------------------------ //
-            case EventType::KeyPressed:             { return EventCategory::Input;      };
-            case EventType::KeyReleased:            { return EventCategory::Input;      };
-            case EventType::MouseButtonPressed:     { return EventCategory::Input;      };
-            case EventType::MouseButtonReleased:    { return EventCategory::Input;      };
-            case EventType::MouseMoved:             { return EventCategory::Input;      };
-            case EventType::MouseScrolled:          { return EventCategory::Input;      };
-            // Custom events                                                            //
-            // ------------------------------------------------------------------------ //
-            default:                                { return EventCategory::Custom;     };
+            case EventType::None:                   { result = EventCategory::None;       }; break;
+            // Window handling events                                                            //
+            // --------------------------------------------------------------------------------- //
+            case EventType::WindowClose:            { result = EventCategory::Window;     }; break;
+            case EventType::WindowResize:           { result = EventCategory::Window;     }; break;
+            case EventType::WindowFocus:            { result = EventCategory::Window;     }; break;
+            case EventType::WindowLostFocus:        { result = EventCategory::Window;     }; break;
+            case EventType::WindowMoved:            { result = EventCategory::Window;     }; break;
+            // Resource management                                                               //
+            // --------------------------------------------------------------------------------- //
+            case EventType::LoadResource:           { result = EventCategory::Resource;   }; break;
+            case EventType::FreeResource:           { result = EventCategory::Resource;   }; break;
+            // Engine internals                                                                  //
+            // --------------------------------------------------------------------------------- //
+            case EventType::EngineTick:             { result = EventCategory::Engine;     }; break;
+            case EventType::EngineUpdate:           { result = EventCategory::Engine;     }; break;
+            case EventType::EngineRender:           { result = EventCategory::Engine;     }; break;
+            // Input handling                                                                    //
+            // --------------------------------------------------------------------------------- //
+            case EventType::KeyPressed:             { result = EventCategory::Input;      }; break;
+            case EventType::KeyReleased:            { result = EventCategory::Input;      }; break;
+            case EventType::MouseButtonPressed:     { result = EventCategory::Input;      }; break;
+            case EventType::MouseButtonReleased:    { result = EventCategory::Input;      }; break;
+            case EventType::MouseMoved:             { result = EventCategory::Input;      }; break;
+            case EventType::MouseScrolled:          { result = EventCategory::Input;      }; break;
+            // Custom events                                                                     //
+            // --------------------------------------------------------------------------------- //
+            default:                                { result = EventCategory::Custom;     }; break;
         }
-        // clang-format on 
+        // clang-format on
+
+        return result;
     }
 
-    void 
-    Event::set_name(const std::string& name) 
+    void
+    Event::set_name(const std::string& name)
     {
         this->m_name = name;
     }
 
     // Debugging methods           //
     // --------------------------- //
-    std::string 
-    Event::to_string() const 
+    std::string
+    Event::to_string() const
     {
         if (!this->m_name.empty()) {
             return this->get_name();
@@ -134,4 +118,4 @@ namespace Calamity::EventSystem
             return this->get_name_from_type(this->m_type);
         }
     }
-} // namespace EventSystem
+} // namespace Calamity::EventSystem

@@ -6,14 +6,9 @@ namespace Calamity::EventSystem
     // ---------------------- //
     BaseEmitter::BaseEmitter() {}
 
-    BaseEmitter::BaseEmitter(Ref<BaseDispatcher>& dispatcher)
+    BaseEmitter::BaseEmitter(Ref<BaseDispatcher> dispatcher)
     {
         this->m_dispatcher = dispatcher;
-    }
-
-    BaseEmitter::BaseEmitter(const std::vector<Ref<Event>>& events)
-    {
-        this->m_events = events;
     }
 
     // Accessors and mutators           //
@@ -23,6 +18,8 @@ namespace Calamity::EventSystem
     {
         if (index < this->m_events.size()) {
             return this->m_events[index];
+        } else {
+            return nullptr;
         }
     }
 
@@ -33,23 +30,23 @@ namespace Calamity::EventSystem
     }
 
     void
-    BaseEmitter::set_event(const Ref<Event>& event, usize index)
+    BaseEmitter::set_event(Scope<Event> event, usize index)
     {
         if (index < this->m_events.size()) {
             auto offset = (this->m_events.begin() + static_cast<isize>(index));
 
-            this->m_events.insert(offset, event);
+            this->m_events.insert(offset, std::move(event));
         }
     }
 
     void
-    BaseEmitter::add_event(const Ref<Event>& event)
+    BaseEmitter::add_event(Scope<Event> event)
     {
-        this->m_events.push_back(event);
+        this->m_events.push_back(std::move(event));
     }
 
     void
-    BaseEmitter::bind(const Ref<BaseDispatcher>& dispatcher)
+    BaseEmitter::bind(Ref<BaseDispatcher> dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }
@@ -57,15 +54,15 @@ namespace Calamity::EventSystem
     // Emitter functions           //
     // --------------------------- //
     void
-    BaseEmitter::emit(const Ref<Event>& event)
+    BaseEmitter::emit(Scope<Event> event)
     {
-        this->m_dispatcher->dispatch(event);
+        this->m_dispatcher->dispatch(std::move(event));
     }
 
     void
-    BaseEmitter::emit(const Ref<Event>& event, const Ref<BaseDispatcher>& dispatcher)
+    BaseEmitter::emit(Scope<Event> event, Ref<BaseDispatcher> dispatcher)
     {
-        dispatcher->dispatch(event);
+        dispatcher->dispatch(std::move(event));
     }
 
     // Debugging methods           //
@@ -84,11 +81,13 @@ namespace Calamity::EventSystem
             std::string event_name = event->to_string();
 
             // Get the index of the current iteration
-            usize index = std::distance(this->m_events.begin(), it);
+            isize index = std::distance(this->m_events.begin(), it);
 
             // Format into a string
-            auto format = "\tEventID: %u -- [%s]\n";
-            auto size   = std::snprintf(nullptr, 0, format);
+            auto format   = "\tEventID: %u -- [%s]\n";
+            auto size_raw = std::snprintf(nullptr, 0, format, index, event_name.c_str());
+
+            usize size = static_cast<usize>(std::abs(size_raw));
 
             std::string output(size + 1, '\0');
             std::sprintf(&output[0], format, index, event_name.c_str());
