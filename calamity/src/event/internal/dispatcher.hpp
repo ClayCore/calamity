@@ -9,7 +9,7 @@ namespace Calamity::EventSystem
     {
         // Constructors           //
         // ---------------------- //
-        public:
+      public:
         BaseDispatcher();
         BaseDispatcher(Ref<BaseListener>& listener);
 
@@ -17,47 +17,38 @@ namespace Calamity::EventSystem
 
         // Accessors and mutators           //
         // -------------------------------- //
-        virtual Ref<Event>
-        get_event(usize index) const;
+        virtual Ref<Event> get_event(usize index) const;
 
-        virtual Ref<BaseListener>
-        get_listener() const;
+        virtual Ref<BaseListener> get_listener() const;
 
-        virtual void
-        set_event(Scope<Event> event, usize index);
+        virtual void set_event(Scope<Event> event, usize index);
 
-        virtual void
-        add_event(Scope<Event> event);
+        virtual void add_event(Scope<Event> event);
 
-        virtual void
-        bind(Ref<BaseListener> listener);
+        virtual void bind(Ref<BaseListener> listener);
 
         // Dispatcher functions           //
         // ------------------------------ //
-        virtual void
-        dispatch(Scope<Event> event);
+        virtual void dispatch(Scope<Event> event);
 
-        virtual void
-        dispatch(Scope<Event> event, Ref<BaseListener> listener);
+        virtual void dispatch(Scope<Event> event, Ref<BaseListener> listener);
 
         // Debugging methods           //
         // --------------------------- //
-        std::string
-        to_string() const;
+        std::string to_string() const;
 
-        friend inline std::ostream&
-        operator<<(std::ostream& os, const BaseDispatcher& ds)
+        friend inline std::ostream& operator<<(std::ostream& os, const BaseDispatcher& ds)
         {
             return os << ds.to_string();
         }
 
         // Bound variables           //
         // ------------------------- //
-        private:
+      private:
         Ref<BaseListener> m_listener;
 
         // TODO: make this a queue or a map
         // since we might have distinct listener for many events
         std::vector<Ref<Event>> m_events;
     };
-} // namespace Calamity::EventSystem
+}  // namespace Calamity::EventSystem

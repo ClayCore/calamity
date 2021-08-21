@@ -8,11 +8,10 @@ namespace Calamity::Log
 
     class Sink
     {
-        public:
+      public:
         virtual ~Sink() = default;
 
-        virtual void
-        log(Level level, const std::string& msg) = 0;
+        virtual void log(Level level, const std::string& msg) = 0;
     };
 
     class StdoutSink final : public Sink
@@ -20,8 +19,7 @@ namespace Calamity::Log
         explicit StdoutSink();
         ~StdoutSink();
 
-        void
-        log(Level level, const std::string& msg) override;
+        void log(Level level, const std::string& msg) override;
 
         std::mutex m_lock;
     };
@@ -29,4 +27,4 @@ namespace Calamity::Log
     class Logger
     {
     };
-} // namespace Calamity::Log
+}  // namespace Calamity::Log

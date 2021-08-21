@@ -17,8 +17,7 @@ namespace Calamity::EventSystem
         this->m_name     = this->get_name_from_type(type);
     }
 
-    const char*
-    Event::get_name_from_type(const EventType& type) const
+    const char* Event::get_name_from_type(const EventType& type) const
     {
         auto result = "";
 
@@ -58,8 +57,7 @@ namespace Calamity::EventSystem
         return result;
     }
 
-    EventCategory
-    Event::get_category_from_type(const EventType& type) const
+    EventCategory Event::get_category_from_type(const EventType& type) const
     {
         auto result = EventCategory::None;
 
@@ -99,16 +97,14 @@ namespace Calamity::EventSystem
         return result;
     }
 
-    void
-    Event::set_name(const std::string& name)
+    void Event::set_name(const std::string& name)
     {
         this->m_name = name;
     }
 
     // Debugging methods           //
     // --------------------------- //
-    std::string
-    Event::to_string() const
+    std::string Event::to_string() const
     {
         if (!this->m_name.empty()) {
             return this->get_name();
@@ -118,4 +114,4 @@ namespace Calamity::EventSystem
             return this->get_name_from_type(this->m_type);
         }
     }
-} // namespace Calamity::EventSystem
+}  // namespace Calamity::EventSystem

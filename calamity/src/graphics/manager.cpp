@@ -2,8 +2,7 @@
 
 namespace Calamity::GFX
 {
-    void
-    R_Init()
+    void R_Init()
     {
         Window window(800, 600);
 
@@ -13,4 +12,4 @@ namespace Calamity::GFX
 
         window.on_update();
     }
-} // namespace Calamity::GFX
+}  // namespace Calamity::GFX

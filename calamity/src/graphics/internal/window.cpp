@@ -27,16 +27,14 @@ namespace Calamity::GFX
 
     // Utility functions           //
     // --------------------------- //
-    void
-    Window::send_update()
+    void Window::send_update()
     {
         auto event = CreateScope<Event>(EventType::EngineUpdate);
 
         this->m_handler.emit_event(std::move(event));
     }
 
-    void
-    Window::init_functors()
+    void Window::init_functors()
     {
         auto event_cs   = CreateScope<Event>(EventType::WindowClose);
         auto close_func = [&]() { this->close_window(); };
@@ -53,8 +51,7 @@ namespace Calamity::GFX
     // -------------------------- //
 
     // Initializes and configures glfw
-    void
-    Window::init_glfw()
+    void Window::init_glfw()
     {
         glfwInit();
 
@@ -64,21 +61,18 @@ namespace Calamity::GFX
     }
 
     // Initializes glad
-    void
-    Window::init_glad()
+    void Window::init_glad()
     {
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             std::cerr << "Failed to initialize glad" << std::endl;
             return;
         }
     }
 
     // Creates the main window
-    void
-    Window::create_window()
+    void Window::create_window()
     {
-        auto win_ptr = glfwCreateWindow(this->m_width, this->m_height,
-                                        this->m_title.c_str(), nullptr, nullptr);
+        auto win_ptr = glfwCreateWindow(this->m_width, this->m_height, this->m_title.c_str(), nullptr, nullptr);
 
         if (win_ptr == NULL) {
             std::cerr << "Failed to create GLFW window" << std::endl;
@@ -95,8 +89,7 @@ namespace Calamity::GFX
     }
 
     // Close the window
-    void
-    Window::close_window()
+    void Window::close_window()
     {
         glfwSetWindowShouldClose(this->m_window.get(), true);
     }
@@ -106,8 +99,7 @@ namespace Calamity::GFX
 
     // Send an update event to the main window
     // through the event handler
-    void
-    Window::on_update()
+    void Window::on_update()
     {
         while (!glfwWindowShouldClose(this->m_window.get())) {
             // Send an update request
@@ -126,8 +118,7 @@ namespace Calamity::GFX
     }
 
     // Renders and clears the frame
-    void
-    Window::draw()
+    void Window::draw()
     {
         // TODO: Render
         // Clear the screen
@@ -136,8 +127,7 @@ namespace Calamity::GFX
     }
 
     // Handles input
-    void
-    Window::process_input()
+    void Window::process_input()
     {
         if (glfwGetKey(this->m_window.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             // Send close window event to the event handler.
@@ -148,12 +138,11 @@ namespace Calamity::GFX
     }
 
     // Redraw viewport each time the window is resized
-    void
-    Window::frame_buffer_callback(GLFWwindow* window, i32 width, i32 height)
+    void Window::frame_buffer_callback(GLFWwindow* window, i32 width, i32 height)
     {
         glViewport(0, 0, width, height);
     }
-} // namespace Calamity::GFX
+}  // namespace Calamity::GFX
 
 // ====================================== //
 // ==== Event handler implementation ==== //
@@ -178,16 +167,14 @@ namespace Calamity::GFX::Handler
 
     // Accessors and mutators           //
     // -------------------------------- //
-    auto
-    WindowHandler::get_functor(Scope<Event> event) -> Callback
+    auto WindowHandler::get_functor(Scope<Event> event) -> Callback
     {
         return this->m_listener->get_callback(event->get_name());
     }
 
     // Handling functions           //
     // ---------------------------- //
-    void
-    WindowHandler::emit_event(Scope<Event> event)
+    void WindowHandler::emit_event(Scope<Event> event)
     {
         this->m_emitter->emit(std::move(event));
     }
@@ -200,19 +187,15 @@ namespace Calamity::GFX::Handler
 
     // Listener implementation                 //
     // --------------------------------------- //
-    void
-    WindowHandler::Listener::on_event(Scope<Event> event)
+    void WindowHandler::Listener::on_event(Scope<Event> event)
     {
         for (auto&& [key, callback] : this->m_actions) {
-            if (key == *event) {
-                callback();
-            }
+            if (key == *event) { callback(); }
         }
     }
 
-    void
-    WindowHandler::Listener::on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher)
+    void WindowHandler::Listener::on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher)
     {
     }
 
-} // namespace Calamity::GFX::Handler
+}  // namespace Calamity::GFX::Handler

@@ -3,7 +3,8 @@
 
 namespace Calamity::Yaml
 {
-    struct DataOffset {
+    struct DataOffset
+    {
         const std::vector<std::string>& data;
 
         usize offset;
@@ -16,17 +17,14 @@ namespace Calamity::Yaml
     ** There needs to be a better way. I need to think of one.     = **
     ** For now this code does not work, so don't bother            = **
     ** Ignore and move on                                          = **/
-    static void
-    M_ParseYaml(const DataOffset& args)
+    static void M_ParseYaml(const DataOffset& args)
     {
         for (auto it = args.data.begin() + args.offset; it < args.data.end(); ++it) {
             std::string line = *it;
 
             // Newlines and empty strings indicate the end
             // of a block
-            if (line == "\n" || line == " ") {
-                break;
-            }
+            if (line == "\n" || line == " ") { break; }
 
             std::printf("Got line: [%s] at offset: [%u]\n", line.c_str(), args.offset);
 
@@ -45,8 +43,7 @@ namespace Calamity::Yaml
 
     // Parse and deserialize all map files, stored in
     // /calamity/src/assets/maps/*
-    static void
-    M_ParseLevel(std::vector<std::string>& raw_data)
+    static void M_ParseLevel(std::vector<std::string>& raw_data)
     {
         for (auto& it : raw_data) {
             // Removes any single quotes and spaces
@@ -67,15 +64,12 @@ namespace Calamity::Yaml
     }
 
     // TODO: change to `std::vector<std::string>`
-    void
-    M_Init(const std::string& path)
+    void M_Init(const std::string& path)
     {
         std::cout << "Initialized YAML parsing manager" << std::endl;
 
         // Parse all the maps and levels
         // for now there's only one.
-        if (auto data = File::load_file(path)) {
-            M_ParseLevel(*data);
-        }
+        if (auto data = File::load_file(path)) { M_ParseLevel(*data); }
     }
-} // namespace Calamity::Yaml
+}  // namespace Calamity::Yaml

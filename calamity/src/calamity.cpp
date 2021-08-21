@@ -1,8 +1,7 @@
 #include "graphics/manager.hpp"
 #include "zcommon.hpp"
 
-int
-main()
+int main()
 {
     using namespace Calamity;
     // YAML PARSING TEST

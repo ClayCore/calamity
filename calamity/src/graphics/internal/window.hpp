@@ -76,12 +76,10 @@ namespace Calamity::GFX
 
                 // Listener functions           //
                 // ---------------------------- //
-                public:
-                void
-                on_event(Scope<Event> event) override;
+              public:
+                void on_event(Scope<Event> event) override;
 
-                void
-                on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher) override;
+                void on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher) override;
 
                 // Bound variables           //
                 // ------------------------- //
@@ -99,29 +97,27 @@ namespace Calamity::GFX
 
             // Constructors           //
             // ---------------------- //
-            public:
+          public:
             WindowHandler();
 
             // Accessors and mutators           //
             // -------------------------------- //
-            Callback
-            get_functor(Scope<Event> event);
+            Callback get_functor(Scope<Event> event);
 
             // Handling functions           //
             // ---------------------------- //
-            void
-            emit_event(Scope<Event> event);
+            void emit_event(Scope<Event> event);
 
             // Debugging methods           //
             // --------------------------- //
 
             // Bound variables           //
             // ------------------------- //
-            std::shared_ptr<Emitter>    m_emitter;
+            std::shared_ptr<Emitter> m_emitter;
             std::shared_ptr<Dispatcher> m_dispatcher;
-            std::shared_ptr<Listener>   m_listener;
+            std::shared_ptr<Listener> m_listener;
         };
-    } // namespace Handler
+    }  // namespace Handler
 
     // Window utilities           //
     // ========================== //
@@ -131,18 +127,19 @@ namespace Calamity::GFX
         ** Supply the smart pointer to `GLFWwindow`    **
         ** with a method to destroy itself             **
         ** ------------------------------------------- */
-        struct DestroyWindowPtr {
-            void
-            operator()(GLFWwindow* ptr)
+        struct DestroyWindowPtr
+        {
+            void operator()(GLFWwindow* ptr)
             {
                 glfwDestroyWindow(ptr);
             }
         };
-    } // namespace Utils
+    }  // namespace Utils
 
     // Main window structure           //
     // =============================== //
-    struct Window {
+    struct Window
+    {
         // Constructors           //
         // ---------------------- //
         Window(u32 width, u32 height);
@@ -151,39 +148,29 @@ namespace Calamity::GFX
 
         // Utility functions           //
         // --------------------------- //
-        void
-        send_update();
+        void send_update();
 
-        void
-        init_functors();
+        void init_functors();
 
         // Window functions           //
         // -------------------------- //
-        void
-        init_glfw();
+        void init_glfw();
 
-        void
-        init_glad();
+        void init_glad();
 
-        void
-        create_window();
+        void create_window();
 
-        void
-        close_window();
+        void close_window();
 
         // GLFW functions           //
         // ------------------------ //
-        void
-        on_update();
+        void on_update();
 
-        void
-        draw();
+        void draw();
 
-        void
-        process_input();
+        void process_input();
 
-        static void
-        frame_buffer_callback(GLFWwindow* window, i32 width, i32 height);
+        static void frame_buffer_callback(GLFWwindow* window, i32 width, i32 height);
 
         // Properties           //
         // -------------------- //
@@ -200,4 +187,4 @@ namespace Calamity::GFX
         // Main glfw window
         std::unique_ptr<GLFWwindow, Utils::DestroyWindowPtr> m_window;
     };
-} // namespace Calamity::GFX
+}  // namespace Calamity::GFX

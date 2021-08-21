@@ -1,107 +1,76 @@
 #pragma once
 
-#include "types.hpp"
+#include "GL/glew.h"
+#include "utils/hash/hash.hpp"
 #include "zcommon.hpp"
 
 namespace Calamity::GFX
 {
-    // Base virtual classes                 //
-    // Derive for use with either           //
-    // Vulkan or OpenGL shaders             //
-    // ==================================== //
     namespace Utils
     {
-        // Base shader class           //
-        // =========================== //
-        class Shader
+        class ShaderLoader
         {
-            public:
-            // Destructors           //
-            // --------------------- //
-            virtual ~Shader() = default;
+          public:
+            static Ref<Shader> load(const std::string& path);
 
-            // Shader functions           //
-            // -------------------------- //
-            virtual void
-            bind() const = 0;
+            inline static void set_filepath(const std::string& path)
+            {
+                s_shader_filepath = path;
+            }
 
-            virtual void
-            unbind() const = 0;
+          private:
+            static std::string s_shader_filepath;
 
-            static Ref<Shader>
-            create(const std::string& path);
-
-            // Accessors and mutators           //
-            // -------------------------------- //
-            virtual const std::string&
-            get_name() const = 0;
+            static std::unordered_map<usize, Ref<Shader>> s_shader_cache;
         };
+    }  // namespace Utils
 
-        // Base shader library           //
-        // ============================= //
-        class ShaderLibrary
-        {
-            public:
-            // Shader library functions           //
-            // ---------------------------------- //
-            void
-            add(const std::string& name, const Ref<Shader>& shader);
-
-            void
-            add(const Ref<Shader>& shader);
-
-            Ref<Shader>
-            load(const std::string& path);
-
-            Ref<Shader>
-            load(const std::string& name, const std::string& path);
-
-            // Accessors and mutators           //
-            // -------------------------------- //
-            Ref<Shader>
-            get(const std::string& name);
-
-            bool
-            exists(const std::string& name) const;
-
-            // Properties           //
-            // -------------------- //
-            private:
-            std::unordered_map<std::string, Ref<Shader>> m_shaders;
-        };
-    } // namespace Utils
-
-    // OpenGL Shader class           //
-    // ============================= //
-    class OpenGLShader : public Utils::Shader
+    class Shader
     {
-        public:
+        friend class Utils::ShaderLoader;
+
+      private:
+        // Utility typedefs           //
+        // -------------------------- //
+        using SourceMap = std::unordered_map<usize, std::string>;
+
         // Constructors           //
         // ---------------------- //
-        OpenGLShader(const std::string& path);
+        Shader(const std::string& path);
 
-        OpenGLShader(const std::string& name, const std::string& vert_src,
-                     const std::string& frag_src);
-        virtual ~OpenGLShader();
+        // Utility methods for           //
+        // compiling shaders             //
+        // ----------------------------- //
+        void compile(const SourceMap& sources);
 
-        // Shader functions           //
-        // -------------------------- //
-        virtual void
-        bind() const override;
+        static usize from_string(const std::string& type);
 
-        virtual void
-        unbind() const override;
+        // Preprocess the source code                //
+        // to push a shader onto the cache           //
+        // ----------------------------------------- //
+        SourceMap preprocess_binary(std::string& source);
 
-        virtual const std::string&
-        get_name() const override
+      public:
+        ~Shader();
+
+        // Enables a given shader           //
+        // -------------------------------- //
+        void bind() const;
+
+        // Disables a given shader           //
+        // --------------------------------- //
+        void unbind() const;
+
+        constexpr usize get_shader_id() const
         {
-            return m_name;
+            return this->m_shader_id;
         }
 
         // Properties           //
         // -------------------- //
-        private:
-        std::string m_path;
-        std::string m_name;
+      private:
+        usize m_shader_id;
+        std::string m_shader_path;
     };
-} // namespace Calamity::GFX
+
+}  // namespace Calamity::GFX

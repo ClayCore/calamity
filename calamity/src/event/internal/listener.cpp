@@ -4,7 +4,9 @@ namespace Calamity::EventSystem
 {
     // Constructors           //
     // ---------------------- //
-    BaseListener::BaseListener() {}
+    BaseListener::BaseListener()
+    {
+    }
 
     BaseListener::BaseListener(Ref<BaseDispatcher>& dispatcher)
     {
@@ -13,45 +15,37 @@ namespace Calamity::EventSystem
 
     // Accessors and mutators           //
     // -------------------------------- //
-    auto
-    BaseListener::get_callback(Scope<Event> event) -> Callback
+    auto BaseListener::get_callback(Scope<Event> event) -> Callback
     {
         auto ev = *event;
         return this->m_actions[ev];
     }
 
-    auto
-    BaseListener::get_callback(const std::string& name) const -> Callback
+    auto BaseListener::get_callback(const std::string& name) const -> Callback
     {
         for (auto&& [event, callback] : this->m_actions) {
-            if (std::strcmp(event.get_name(), name.data()) == 0) {
-                return callback;
-            }
+            if (std::strcmp(event.get_name(), name.data()) == 0) { return callback; }
         }
     }
 
-    void
-    BaseListener::set_callback(Scope<Event> event, const Callback& cb)
+    void BaseListener::set_callback(Scope<Event> event, const Callback& cb)
     {
         this->m_actions[*event] = cb;
     }
 
-    void
-    BaseListener::insert_event(Scope<Event> event, const Callback& cb)
+    void BaseListener::insert_event(Scope<Event> event, const Callback& cb)
     {
         this->m_actions.emplace(*event, cb);
     }
 
-    void
-    BaseListener::bind(Ref<BaseDispatcher> dispatcher)
+    void BaseListener::bind(Ref<BaseDispatcher> dispatcher)
     {
         this->m_dispatcher = dispatcher;
     }
 
     // Debugging methods           //
     // --------------------------- //
-    std::string
-    BaseListener::to_string() const
+    std::string BaseListener::to_string() const
     {
         std::vector<std::string> buffer;
         buffer.push_back("Listener: \n");
@@ -80,9 +74,8 @@ namespace Calamity::EventSystem
 
         // Implode the buffer into a single string
         std::ostringstream implode;
-        std::copy(buffer.begin(), buffer.end(),
-                  std::ostream_iterator<std::string>(implode, "\n"));
+        std::copy(buffer.begin(), buffer.end(), std::ostream_iterator<std::string>(implode, "\n"));
 
         return implode.str();
     }
-} // namespace Calamity::EventSystem
+}  // namespace Calamity::EventSystem

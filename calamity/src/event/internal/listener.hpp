@@ -18,7 +18,7 @@ namespace Calamity::EventSystem
 
         // Constructors           //
         // ---------------------- //
-        public:
+      public:
         BaseListener();
         BaseListener(Ref<BaseDispatcher>& dispatcher);
 
@@ -26,45 +26,36 @@ namespace Calamity::EventSystem
 
         // Accessors and mutators           //
         // -------------------------------- //
-        virtual Callback
-        get_callback(Scope<Event> event);
+        virtual Callback get_callback(Scope<Event> event);
 
-        virtual Callback
-        get_callback(const std::string& name) const;
+        virtual Callback get_callback(const std::string& name) const;
 
-        virtual void
-        set_callback(Scope<Event> event, const Callback& cb);
+        virtual void set_callback(Scope<Event> event, const Callback& cb);
 
-        virtual void
-        insert_event(Scope<Event> event, const Callback& cb);
+        virtual void insert_event(Scope<Event> event, const Callback& cb);
 
-        virtual void
-        bind(Ref<BaseDispatcher> dispatcher);
+        virtual void bind(Ref<BaseDispatcher> dispatcher);
 
         // Listener functions           //
         // ---------------------------- //
-        virtual void
-        on_event(Scope<Event> event) = 0;
+        virtual void on_event(Scope<Event> event) = 0;
 
-        virtual void
-        on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher) = 0;
+        virtual void on_event(Scope<Event> event, Ref<BaseDispatcher> dispatcher) = 0;
 
         // Debugging methods           //
         // --------------------------- //
-        std::string
-        to_string() const;
+        std::string to_string() const;
 
-        friend inline std::ostream&
-        operator<<(std::ostream& os, const BaseListener& ls)
+        friend inline std::ostream& operator<<(std::ostream& os, const BaseListener& ls)
         {
             return os << ls.to_string();
         }
 
         // Bound variables           //
         // ------------------------- //
-        private:
+      private:
         Ref<BaseDispatcher> m_dispatcher;
 
         std::map<Event, Callback> m_actions;
     };
-} // namespace Calamity::EventSystem
+}  // namespace Calamity::EventSystem
